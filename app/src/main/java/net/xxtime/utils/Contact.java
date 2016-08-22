@@ -1,5 +1,20 @@
 package net.xxtime.utils;
 
+import android.util.Log;
+
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import net.xxtime.bean.AreaBean;
+import net.xxtime.bean.CitysBean;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +25,17 @@ import java.util.regex.Pattern;
 public class Contact {
 
     public final static String USERINFO="userinfo";
+    public static double Latitude;
+    public static double Longitude;
+    public static String City="无锡市";
+    public static String ChooseCity;
+    public static String CityCode;
+    public static String ChooseCityCode;
 
+    public static String CurTime;
+
+    public static CitysBean citysBean;
+    public static List<AreaBean> listAreas=new ArrayList<>();
     /**
      * 判断是否是手机号
      * @param mobiles
@@ -22,5 +47,124 @@ public class Contact {
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
+
+    public static int getDateCha(String startTime,String endTime){
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date  begin = dfs.parse(startTime);
+            java.util.Date end = dfs.parse(endTime);
+            long diff = end.getTime()-begin.getTime();//这样得到的差值是微秒级别
+            return (int) (diff / (1000 * 60 * 60 * 24));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 时间比较
+     * @return
+     */
+    public static int getStatus(String startTime,String middleTime,String endTime){
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date  begin = dfs.parse(startTime);
+            java.util.Date  middle = dfs.parse(middleTime);
+            java.util.Date end = dfs.parse(endTime);
+
+            if (end.getTime()-middle.getTime()<0){
+                return -1;
+            }else if (middle.getTime()-begin.getTime()>=0&&end.getTime()-middle.getTime()>=0){
+                return 1;
+            }else {
+                return 0;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String getPinYin(String inputString) {
+        HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
+        format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+        format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+        format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
+
+        char[] input = inputString.trim().toCharArray();
+        StringBuffer output = new StringBuffer("");
+
+        try {
+            for (int i = 0; i < input.length; i++) {
+                if (Character.toString(input[i]).matches("[\u4E00-\u9FA5]")) {
+                    String[] temp = PinyinHelper.toHanyuPinyinStringArray(input[i], format);
+                    output.append(temp[0]);
+                    output.append(" ");
+                } else
+                    output.append(Character.toString(input[i]));
+            }
+        } catch (BadHanyuPinyinOutputFormatCombination e) {
+            e.printStackTrace();
+        }
+        return output.toString();
+    }
+
+
+    /**
+     * 获取城市code
+     * @param city
+     * @return
+     */
+    public static String getCode(String city){
+
+        if (Contact.citysBean!=null){
+            if (Contact.citysBean.getProvince()!=null) {
+                for (int i = 0; i < Contact.citysBean.getProvince().size(); i++) {
+                    if (Contact.citysBean.getProvince().get(i).getAddName().equals(city)){
+                        return Contact.citysBean.getProvince().get(i).getCode();
+                    }
+                    if (Contact.citysBean.getProvince().get(i).getCity()!=null){
+                        for (int j=0;j<Contact.citysBean.getProvince().get(i).getCity().size();j++){
+                            if (Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName().equals(city)){
+                                return Contact.citysBean.getProvince().get(i).getCity().get(j).getCode();
+                            }
+                            if (Contact.citysBean.getProvince().get(i).getCity().get(j).getArea()!=null){
+                                for (int z=0;z<Contact.citysBean.getProvince().get(i).getCity().get(j).getArea().size();z++){
+                                    if (Contact.citysBean.getProvince().get(i).getCity().get(j).getArea().get(z).getAddName().equals(city)){
+                                        return Contact.citysBean.getProvince().get(i).getCity().get(j).getArea().get(z).getCode();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 将图片联合路径处理成单个
+     *
+     * @param imgs
+     * @return
+     */
+    public static List<String> getPhotos(String imgs) {
+        List<String> listphotos = new ArrayList<String>();
+        int index = imgs.indexOf(",");
+        String imgurl;
+        while (index > -1) {
+            imgurl = imgs.substring(0, index);
+            listphotos.add(imgurl);
+            Log.e("imgUrl==>", imgurl);
+            imgs = imgs.substring(index + 1);
+            index = imgs.indexOf(",");
+        }
+        Log.e("imgs==>", imgs);
+        listphotos.add(imgs);
+        return listphotos;
+    }
+
 
 }

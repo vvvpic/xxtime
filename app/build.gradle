@@ -1,21 +1,35 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'vvvpic'
+            keyPassword '320325'
+            storeFile file('D:/keystore/vvvpic')
+            storePassword '320325'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '23.0.1'
-
     defaultConfig {
         applicationId "net.xxtime"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.config
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    productFlavors {
     }
 }
 
@@ -29,4 +43,8 @@ dependencies {
     compile 'cz.msebera.android:httpclient:4.3.6'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile project(':pulltorefreshlibrary')
+    compile files('libs/AMap_Location_V2.7.0_20160726.jar')
+    compile files('libs/pinyin4j-2.5.0.jar')
+    compile files('libs/uk-co-senab-photoview.jar')
 }

@@ -6,7 +6,7 @@
 
     <color name="white">#fff</color>
     <color name="background">#eee</color>
-    <color name="line_color">#eee</color>
+    <color name="line_color">#ddd</color>
     <color name="hint_color">#ddd</color>
     <color name="txt_333">#444</color>
     <color name="txt_666">#666</color>
@@ -14,6 +14,8 @@
     <color name="txt_9D">#9d9d9d</color>
     <color name="blue">#17B2EB</color>
     <color name="easyblue">#5fd0f9</color>
+    <color name="balck">#000000</color>
 
     <color name="transparent">#00000000</color>
+    <color name="red">#FF5C00</color>
 </resources>

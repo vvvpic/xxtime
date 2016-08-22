@@ -109,4 +109,24 @@ public class SharedUtils {
         return sharedPreferences.getString("locaid","");
     }
 
+    /**
+     * 设置
+     * @param context
+     */
+    public static void setCity(Context context, String city){
+        sharedPreferences=context.getSharedPreferences(Contact.USERINFO,  Context.MODE_APPEND);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("city",city);
+        editor.commit();
+    }
+
+    /**
+     * 获取默认城市
+     * @param context
+     * @return
+     */
+    public static String getCity(Context context){
+        sharedPreferences=context.getSharedPreferences(Contact.USERINFO,  Context.MODE_APPEND);
+        return sharedPreferences.getString("city","");
+    }
 }
