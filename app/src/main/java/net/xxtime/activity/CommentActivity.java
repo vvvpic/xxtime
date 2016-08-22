@@ -5,8 +5,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.loopj.android.http.RequestParams;
+
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
+import net.xxtime.utils.SharedUtils;
 import net.xxtime.view.CommentView;
 
 public class CommentActivity extends BaseActivity {
@@ -15,6 +18,7 @@ public class CommentActivity extends BaseActivity {
     private View headView;
     private TextView  tvRate ;
     private CommentView cvRate;
+    private String buscode;
 
     @Override
     public void setContentView() {
@@ -33,6 +37,12 @@ public class CommentActivity extends BaseActivity {
     @Override
     public void initDatas() {
         setTitle("累计获取评价");
+        buscode=getIntent().getStringExtra("buscode");
+
+        params=new RequestParams();
+        params.put("reqCode","getBusCommentByBuscode");
+        params.put("buscode", buscode);
+        post("userJob",params,"getBusCommentByBuscode");
     }
 
     @Override

@@ -178,6 +178,13 @@ public class FirmHomeActivity extends BaseActivity implements AdapterView.OnItem
                 }
                 post("userJob",params,"focusPosition");
                 break;
+            case R.id.flAsses:
+                intent=new Intent(this,CommentActivity.class);
+                if(busInfoBean!=null) {
+                    intent.putExtra("buscode",busInfoBean.getDefaultAList().get(0).getBuscode());
+                }
+                Jump(intent);
+                break;
         }
     }
 
