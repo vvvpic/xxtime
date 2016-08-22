@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:overScrollMode="never"
+    android:orientation="vertical"
+    tools:context="net.xxtime.activity.RecruitActivity">
+
+    <include layout="@layout/header"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        <TextView
+            android:id="@+id/tvWelfare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="@dimen/txt_12"
+            android:textColor="@color/txt_666"
+            android:text="公益组织（0）"
+            android:gravity="center"/>
+
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="30dp"
+                android:background="@color/line_color"
+                android:layout_gravity="center_vertical|right"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        <TextView
+            android:id="@+id/tvSchool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="@dimen/txt_12"
+            android:textColor="@color/txt_666"
+            android:text="实习专区（0）"
+            android:gravity="center"/>
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="30dp"
+                android:background="@color/line_color"
+                android:layout_gravity="center_vertical|right"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvSocial"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:textSize="@dimen/txt_12"
+            android:textColor="@color/txt_666"
+            android:text="社会兼职（0）"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <ListView
+        android:id="@+id/lvJobs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null">
+
+    </ListView>
+
+</LinearLayout>

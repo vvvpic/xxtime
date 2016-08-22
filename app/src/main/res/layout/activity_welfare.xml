@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="net.xxtime.activity.WelfareActivity">
+    <include layout="@layout/header"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/rlAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:textSize="@dimen/content"
+                android:text="结算方式"
+                android:gravity="center"
+                android:drawableRight="@mipmap/down_arrow"
+                android:layout_centerInParent="true"
+                android:textColor="@color/txt_333"/>
+
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/line_color"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:textSize="@dimen/content"
+                android:text="全部日期"
+                android:gravity="center"
+                android:drawableRight="@mipmap/down_arrow"
+                android:layout_centerInParent="true"
+                android:textColor="@color/txt_333"/>
+
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/line_color"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:textSize="@dimen/content"
+                android:text="默认排序"
+                android:gravity="center"
+                android:drawableRight="@mipmap/down_arrow"
+                android:layout_centerInParent="true"
+                android:textColor="@color/txt_333"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/plJobs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:overScrollMode="never"
+        ></com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+    <RelativeLayout
+        android:id="@+id/rlEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="350dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:textColor="@color/txt_999"
+            android:drawableTop="@mipmap/ico_empty"
+            android:text="很遗憾，没有找到查询结果"
+            android:gravity="center"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+</LinearLayout>

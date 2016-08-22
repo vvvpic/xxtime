@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周一"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周二"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周三"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周四"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周五"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周六"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="周日"
+            android:gravity="center"
+            android:textColor="@color/txt_666"
+            android:textSize="@dimen/txt_12"/>
+    </LinearLayout>
+
+    <com.longtu.base.view.ScrollGridView
+        android:id="@+id/gvDates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:listSelector="@color/transparent"
+        android:layout_marginBottom="10dp"
+        android:numColumns="7"></com.longtu.base.view.ScrollGridView>
+
+</LinearLayout>

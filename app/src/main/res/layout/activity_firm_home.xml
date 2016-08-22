@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="net.xxtime.activity.FirmHomeActivity">
+
+    <include layout="@layout/header"/>
+
+    <ScrollView
+        android:id="@+id/svFirm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/flBring"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                >
+                <TextView
+                    android:id="@+id/tvBring"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="3dp"
+                    android:text="0"
+                    android:textSize="@dimen/txt_12"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_666"
+                    android:layout_gravity="center_horizontal"
+                    android:text="累计招聘岗位"
+                    android:layout_marginBottom="3dp"
+                    android:textSize="@dimen/txt_12"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="30dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@color/line_color"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flBringNumder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                >
+                <TextView
+                    android:id="@+id/tvBringNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="3dp"
+                    android:text="0"
+                    android:textSize="@dimen/txt_12"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_666"
+                    android:layout_gravity="center_horizontal"
+                    android:text="累计招聘人数"
+                    android:layout_marginBottom="3dp"
+                    android:textSize="@dimen/txt_12"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="30dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@color/line_color"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/flAsses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                >
+                <TextView
+                    android:id="@+id/tvAsses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="3dp"
+                    android:text="0"
+                    android:textSize="@dimen/txt_12"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_666"
+                    android:layout_gravity="center_horizontal"
+                    android:text="累计获取评价"
+                    android:layout_marginBottom="3dp"
+                    android:textSize="@dimen/txt_12"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/line"
+                android:layout_height="30dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@color/line_color"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_333"
+        android:textSize="@dimen/content"
+        android:text="企业简介"
+        android:padding="15dp"/>
+
+    <TextView
+        android:id="@+id/tvBusInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/txt_12"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/txt_666"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_333"
+        android:textSize="@dimen/content"
+        android:text="企业展示"
+        android:padding="15dp"/>
+
+            <com.longtu.base.view.ScrollGridView
+                android:id="@+id/gvBusimgs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:numColumns="2">
+            </com.longtu.base.view.ScrollGridView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+           >
+
+            <ImageView
+                android:id="@+id/ivBuslogo"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:src="@mipmap/ico_defult"/>
+
+            <TextView
+                android:id="@+id/tvAppy"
+                android:layout_width="70dp"
+                android:layout_height="17dp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:text="报名中"
+                android:gravity="center"
+                android:background="@drawable/garey_border"
+                android:layout_gravity="bottom|center_horizontal"/>
+
+        </FrameLayout>
+
+        <RatingBar
+            android:id="@+id/rbAssess"
+            android:layout_width="wrap_content"
+            android:layout_height="13dp"
+            android:gravity="center"
+            style="@style/foodRatingBar"
+            android:rating="4"
+            android:isIndicator="true"
+            android:focusable="false"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@id/ll0"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp">
+                <TextView
+                    android:id="@+id/tvUint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="@dimen/tar"
+                    android:textColor="@color/txt_333"
+                    android:text="元/天"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:text="100"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/red"
+                    android:layout_toLeftOf="@id/tvUint"
+                    android:textSize="@dimen/price"/>
+
+                <TextView
+                    android:id="@+id/tvJobname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/tvPrice"
+                    android:textColor="@color/txt_333"
+                    android:layout_centerVertical="true"
+                    android:text="滨湖开发"
+                    android:layout_marginLeft="2dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/title"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="@dimen/content"
+                    android:textColor="@color/txt_999"
+                    android:text="完工结算"
+                    android:layout_marginRight="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/tvStatus"
+                    android:textColor="@color/txt_999"
+                    android:layout_centerVertical="true"
+                    android:text="滨湖"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:drawableLeft="@mipmap/location_ico"
+                    android:textSize="@dimen/txt_12"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_999"
+                    android:layout_centerVertical="true"
+                    android:text="滨湖"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:drawableLeft="@mipmap/ico_time"
+                    android:textSize="@dimen/txt_12"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/tvLucency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_999"
+                    android:layout_centerVertical="true"
+                    android:text="滨湖"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:drawableLeft="@mipmap/ico_lucency"
+                    android:textSize="@dimen/txt_12"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+</LinearLayout>
