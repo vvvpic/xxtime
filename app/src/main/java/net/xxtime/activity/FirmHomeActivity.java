@@ -158,6 +158,9 @@ public class FirmHomeActivity extends BaseActivity implements AdapterView.OnItem
                 intent=new Intent(this,RecruitActivity.class);
                 if(busInfoBean!=null) {
                     intent.putExtra("buscode",busInfoBean.getDefaultAList().get(0).getBuscode());
+                    intent.putExtra("welfare",busInfoBean.getDefaultAList().get(0).getGyCount());
+                    intent.putExtra("social",busInfoBean.getDefaultAList().get(0).getJzCount());
+                    intent.putExtra("bring",busInfoBean.getDefaultAList().get(0).getZpgw());
                 }
                 Jump(intent);
                 break;

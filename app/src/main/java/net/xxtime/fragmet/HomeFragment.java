@@ -30,6 +30,7 @@ import net.xxtime.R;
 import net.xxtime.activity.CityChooseActivity;
 import net.xxtime.activity.JobDetailsActivity;
 import net.xxtime.activity.JobSearchActivity;
+import net.xxtime.activity.OnlineJobActivity;
 import net.xxtime.activity.SocialActivity;
 import net.xxtime.activity.WelfareActivity;
 import net.xxtime.adapter.AccountAdapter;
@@ -289,6 +290,10 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
             listimageviews.add(imageView);
             llPoint.addView(imageView);
         }
+
+        if (getHomeLbtBean.getDefaultAList().size()<=1){
+            llPoint.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -432,6 +437,9 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 break;
             case R.id.llSocial:
                 homeActivity.Jump(SocialActivity.class);
+                break;
+            case R.id.llOnline:
+                homeActivity.Jump(OnlineJobActivity.class);
                 break;
         }
     }

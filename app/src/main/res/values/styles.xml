@@ -12,4 +12,9 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="my_radiobtn_style" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_radionbtn</item>
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
 </resources>

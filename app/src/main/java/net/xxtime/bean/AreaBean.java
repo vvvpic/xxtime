@@ -15,6 +15,7 @@ public class AreaBean implements Serializable {
     private String code;
     private String addName;
     public String Pinyin;
+    public boolean nextbool=false;
 
     public String getCode() {
         return code;

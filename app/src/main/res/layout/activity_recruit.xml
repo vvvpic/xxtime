@@ -75,12 +75,27 @@
         android:layout_height="@dimen/line"
         android:background="@color/line_color"/>
 
-    <ListView
-        android:id="@+id/lvJobs"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/plJobs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null">
+        android:divider="@null"
+        android:overScrollMode="never"
+        ></com.handmark.pulltorefresh.library.PullToRefreshListView>
+    <RelativeLayout
+        android:id="@+id/rlEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="350dp">
 
-    </ListView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:textColor="@color/txt_999"
+            android:text="很遗憾，没有找到查询结果"
+            android:drawableTop="@mipmap/ico_empty"
+            android:gravity="center"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -13,7 +13,7 @@ public class BusInfoBean implements Serializable {
      * prompt : 成功
      * msg : 获取企业信息成功！
      * success : true
-     * defaultAList : [{"buslogo":"http://www.xxtime.net:80/images/ht-qysjimg/logo/IMG2016080428716.jpg","updatetime":"2016-08-04 10:11:14","areaname":"新区","deposit":0,"avgStarNum":0,"userid":"15206172683","buslicense":"IMG2016080408899.jpg","busimg6":"IMG2016080447338.jpg","busimg5":"IMG2016080428469.png","busimg4":"IMG2016080419210.jpg","busimg3":"IMG2016080413586.jpg","city":"320200","busimg1":"IMG2016080400673.jpg","busimg2":"IMG2016080406677.jpg","balance":0,"username":"呵呵","rztype":"1","points":null,"idchardopposite":"IMG2016080429917.jpg","provice":"320000","isdelete":0,"zpgw":6,"email":"","telephoneqh":"","staffid":null,"isFocus":0,"bustype":1,"msgcount":0,"isforbidden":0,"buscontent":"","provicename":"江苏省","idchardpositive":"IMG2016080418335.jpg","createtime":"2016-08-04 09:56:21","buscode":"2016080421206","area":"320296","busscale":1,"regionalname":"江苏区","busfullname":"苹果手机专营店","catename":"手机/通讯","yjratio":10,"cateid":4,"bushomepage":"","busimg":"http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080400673.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080406677.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080413586.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080419210.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080428469.png,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080447338.jpg","hdpj":0,"zprs":1,"failurereason":null,"certification":1,"address":"新安花园二区188栋","cityname":"无锡市","telephone":""}]
+     * defaultAList : [{"buslogo":"http://www.xxtime.net:80/images/ht-qysjimg/logo/IMG2016080428716.jpg","areaname":"新区","updatetime":"2016-08-04 10:11:14","deposit":0,"avgStarNum":4,"userid":"15206172683","buslicense":"IMG2016080408899.jpg","busimg6":"IMG2016080447338.jpg","busimg5":"IMG2016080428469.png","busimg4":"IMG2016080419210.jpg","busimg3":"IMG2016080413586.jpg","city":"320200","busimg1":"IMG2016080400673.jpg","jzCount":6,"busimg2":"IMG2016080406677.jpg","balance":0,"username":"呵呵","rztype":"1","points":null,"idchardopposite":"IMG2016080429917.jpg","provice":"320000","isdelete":0,"zpgw":6,"email":"","telephoneqh":"","staffid":null,"isFocus":0,"bustype":1,"msgcount":0,"isforbidden":0,"buscontent":"","provicename":"江苏省","idchardpositive":"IMG2016080418335.jpg","createtime":"2016-08-04 09:56:21","buscode":"2016080421206","area":"320296","busscale":1,"regionalname":"江苏区","busfullname":"苹果手机专营店","catename":"手机/通讯","yjratio":10,"cateid":4,"bushomepage":"","busimg":"http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080400673.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080406677.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080413586.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080419210.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080428469.png,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080447338.jpg","hdpj":2,"zprs":1,"failurereason":null,"certification":1,"address":"新安花园二区188栋","gyCount":0,"cityname":"无锡市","telephone":""}]
      */
 
     private String bflag;
@@ -22,10 +22,10 @@ public class BusInfoBean implements Serializable {
     private boolean success;
     /**
      * buslogo : http://www.xxtime.net:80/images/ht-qysjimg/logo/IMG2016080428716.jpg
-     * updatetime : 2016-08-04 10:11:14
      * areaname : 新区
+     * updatetime : 2016-08-04 10:11:14
      * deposit : 0
-     * avgStarNum : 0
+     * avgStarNum : 4
      * userid : 15206172683
      * buslicense : IMG2016080408899.jpg
      * busimg6 : IMG2016080447338.jpg
@@ -34,6 +34,7 @@ public class BusInfoBean implements Serializable {
      * busimg3 : IMG2016080413586.jpg
      * city : 320200
      * busimg1 : IMG2016080400673.jpg
+     * jzCount : 6
      * busimg2 : IMG2016080406677.jpg
      * balance : 0
      * username : 呵呵
@@ -64,11 +65,12 @@ public class BusInfoBean implements Serializable {
      * cateid : 4
      * bushomepage :
      * busimg : http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080400673.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080406677.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080413586.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080419210.jpg,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080428469.png,http://www.xxtime.net:80/images/ht-qysjimg/busimg/IMG2016080447338.jpg
-     * hdpj : 0
+     * hdpj : 2
      * zprs : 1
      * failurereason : null
      * certification : 1
      * address : 新安花园二区188栋
+     * gyCount : 0
      * cityname : 无锡市
      * telephone :
      */
@@ -117,8 +119,8 @@ public class BusInfoBean implements Serializable {
 
     public static class DefaultAListBean {
         private String buslogo;
-        private String updatetime;
         private String areaname;
+        private String updatetime;
         private int deposit;
         private int avgStarNum;
         private String userid;
@@ -129,6 +131,7 @@ public class BusInfoBean implements Serializable {
         private String busimg3;
         private String city;
         private String busimg1;
+        private int jzCount=0;
         private String busimg2;
         private int balance;
         private String username;
@@ -137,7 +140,7 @@ public class BusInfoBean implements Serializable {
         private String idchardopposite;
         private String provice;
         private int isdelete;
-        private int zpgw;
+        private int zpgw=0;
         private String email;
         private String telephoneqh;
         private Object staffid;
@@ -159,11 +162,12 @@ public class BusInfoBean implements Serializable {
         private int cateid;
         private String bushomepage;
         private String busimg;
-        private int hdpj;
-        private int zprs;
+        private int hdpj=0;
+        private int zprs=0;
         private Object failurereason;
         private int certification;
         private String address;
+        private int gyCount=0;
         private String cityname;
         private String telephone;
 
@@ -175,20 +179,20 @@ public class BusInfoBean implements Serializable {
             this.buslogo = buslogo;
         }
 
-        public String getUpdatetime() {
-            return updatetime;
-        }
-
-        public void setUpdatetime(String updatetime) {
-            this.updatetime = updatetime;
-        }
-
         public String getAreaname() {
             return areaname;
         }
 
         public void setAreaname(String areaname) {
             this.areaname = areaname;
+        }
+
+        public String getUpdatetime() {
+            return updatetime;
+        }
+
+        public void setUpdatetime(String updatetime) {
+            this.updatetime = updatetime;
         }
 
         public int getDeposit() {
@@ -269,6 +273,14 @@ public class BusInfoBean implements Serializable {
 
         public void setBusimg1(String busimg1) {
             this.busimg1 = busimg1;
+        }
+
+        public int getJzCount() {
+            return jzCount;
+        }
+
+        public void setJzCount(int jzCount) {
+            this.jzCount = jzCount;
         }
 
         public String getBusimg2() {
@@ -549,6 +561,14 @@ public class BusInfoBean implements Serializable {
 
         public void setAddress(String address) {
             this.address = address;
+        }
+
+        public int getGyCount() {
+            return gyCount;
+        }
+
+        public void setGyCount(int gyCount) {
+            this.gyCount = gyCount;
         }
 
         public String getCityname() {

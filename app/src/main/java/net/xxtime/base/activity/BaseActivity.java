@@ -54,8 +54,10 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
     public static final int REQUEST_C_IMAGE = 4;
     public static final int QCODE=5;
     public static final int PHOTO=6;
+    public static final int Languge=7;
+    public static final int SelecctLanguge=8;
 
-    private ImageView ivBack;
+    public ImageView ivBack;
     private TextView tvTitle;
     public ImageView ivRight;
 

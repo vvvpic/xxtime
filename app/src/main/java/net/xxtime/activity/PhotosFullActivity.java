@@ -121,6 +121,7 @@ public class PhotosFullActivity extends Activity implements OnPageChangeListener
         vp_photo.setOnPageChangeListener(this);
         btn_del.setOnClickListener(this);
 
+
     }
 
     @Override

@@ -82,15 +82,21 @@ public class CommentView extends View {
 
         canvas.drawRect(XxtimeApplication.width/50+XxtimeApplication.width/12 ,jian7,w-XxtimeApplication.width/50,jian4+h/50,dgraypaint);
         canvas.drawRect(XxtimeApplication.width/50+XxtimeApplication.width/12 ,jian7,XxtimeApplication.width/50+XxtimeApplication.width/12+(red*pw/100),jian4+h/50,redpaint);
-        canvas.drawText(red+"%",XxtimeApplication.width/50+(red*pw/100) , jian4, whitepaint);
+        if (red>5) {
+            canvas.drawText(red + "%", XxtimeApplication.width / 50 + (red * pw / 100), jian4, whitepaint);
+        }
 
         canvas.drawRect(XxtimeApplication.width/50+XxtimeApplication.width/12 ,jian7+jian4,w-XxtimeApplication.width/50,2*jian4+h/50,dgraypaint);
         canvas.drawRect(XxtimeApplication.width/50+XxtimeApplication.width/12 ,jian7+jian4,XxtimeApplication.width/50+XxtimeApplication.width/12+(yellow*pw/100),2*jian4+h/50,yellowpaint);
-        canvas.drawText(yellow+"%",XxtimeApplication.width/50+(yellow*pw/100) , jian4*2, whitepaint);
+        if (yellow>5) {
+            canvas.drawText(yellow + "%", XxtimeApplication.width / 50 + (yellow * pw / 100), jian4 * 2, whitepaint);
+        }
 
         canvas.drawRect(XxtimeApplication.width/50+XxtimeApplication.width/12 ,jian7+2*jian4,w-XxtimeApplication.width/50,3*jian4+h/50,dgraypaint);
         canvas.drawRect(XxtimeApplication.width/50+XxtimeApplication.width/12 ,jian7+2*jian4,XxtimeApplication.width/50+XxtimeApplication.width/12+(gary*pw/100),3*jian4+h/50,graypaint);
-        canvas.drawText(gary+"%",XxtimeApplication.width/50+(gary*pw/100) , jian4*3, whitepaint);
+        if (gary>5) {
+            canvas.drawText(gary + "%", XxtimeApplication.width / 50 + (gary * pw / 100), jian4 * 3, whitepaint);
+        }
 
     }
 }

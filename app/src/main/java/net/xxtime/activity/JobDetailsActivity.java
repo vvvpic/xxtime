@@ -325,7 +325,7 @@ public class JobDetailsActivity extends BaseActivity {
     public void initDatas() {
         setTitle("岗位详情");
         setRightVisibility(View.VISIBLE);
-        setRightResource(R.mipmap.ico_share);
+        setRightResource(R.mipmap.ic_share);
         tvTel.setText(Html.fromHtml(html));
         jobcode=getIntent().getStringExtra("jobcode");
         params=new RequestParams();

@@ -9,7 +9,9 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import net.xxtime.bean.AreaBean;
+import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.CitysBean;
+import net.xxtime.bean.StudentUserInfoBean;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +37,13 @@ public class Contact {
     public static String CurTime;
 
     public static CitysBean citysBean;
+
+    public static CitysBean choosecitysBean;
+
+    public static StudentUserInfoBean studentUserInfoBean;
+
+    public static CheckStudentBean checkStudentBean;
+
     public static List<AreaBean> listAreas=new ArrayList<>();
     /**
      * 判断是否是手机号

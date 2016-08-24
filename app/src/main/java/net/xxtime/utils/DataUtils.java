@@ -33,6 +33,11 @@ public class DataUtils {
         return maxDate;
     }
 
+    public static String getDate(long time){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(new Date(time));
+    }
+
     public static String getWeek(String pTime) {
         String Week = "";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
