@@ -123,7 +123,7 @@ public class StudentUserInfoBean implements Serializable {
         this.defaultAList = defaultAList;
     }
 
-    public static class DefaultAListBean {
+    public static class DefaultAListBean implements Serializable{
         private String areaname;
         private String updatetime;
         private String isstudent;

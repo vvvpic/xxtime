@@ -8,9 +8,7 @@
     tools:context="net.xxtime.activity.PerfectInfoActivity">
 
     <include layout="@layout/header"/>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,14 +60,13 @@
                 android:layout_height="45dp">
                 <TextView
                     android:id="@+id/tv0"
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:text="昵称"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_alignParentLeft="true"
-                    android:drawableLeft="@mipmap/ico_must"
                     android:textColor="@color/txt_333"/>
 
                 <EditText
@@ -81,6 +78,7 @@
                     android:layout_toRightOf="@id/tv0"
                     android:layout_centerVertical="true"
                     android:paddingTop="10dp"
+                    android:enabled="false"
                     android:paddingBottom="10dp"
                     android:singleLine="true"
                     android:gravity="center_vertical"
@@ -99,14 +97,13 @@
                 android:layout_height="45dp">
                 <TextView
                     android:id="@+id/tv1"
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:text="姓名"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_alignParentLeft="true"
-                    android:drawableLeft="@mipmap/ico_must"
                     android:textColor="@color/txt_333"/>
 
                 <EditText
@@ -117,6 +114,7 @@
                     android:textSize="@dimen/content"
                     android:layout_toRightOf="@id/tv1"
                     android:layout_centerVertical="true"
+                    android:enabled="false"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:gravity="center_vertical"
@@ -136,48 +134,30 @@
                 android:layout_height="45dp">
                 <TextView
                     android:id="@+id/tv2"
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:text="性别"
-                    android:drawableLeft="@mipmap/ico_must"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/txt_333"/>
 
-                <RadioGroup
-                    android:id="@+id/sexgroup"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvSex"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:textColor="@color/txt_333"
+                    android:textSize="@dimen/content"
                     android:layout_toRightOf="@id/tv2"
-                    android:orientation="horizontal" >
-
-                    <RadioButton
-                        android:id="@+id/rbtn_male"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="男"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_female"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="女"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                </RadioGroup>
-
+                    android:layout_centerVertical="true"
+                    android:enabled="false"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColorHint="@color/hint_color"
+                    android:singleLine="true"
+                    android:background="@null"/>
             </RelativeLayout>
 
             <View
@@ -244,9 +224,10 @@
                     android:layout_toRightOf="@id/tv4"
                     android:layout_centerVertical="true"
                     android:padding="10dp"
+                    android:enabled="false"
                     android:gravity="center_vertical"
                     android:textColorHint="@color/hint_color"
-                    android:hint="请输入身高(cm)"
+                    android:hint="未设置"
                     android:inputType="number"
                     android:singleLine="true"
                     android:background="@null"/>
@@ -281,8 +262,9 @@
                     android:layout_centerVertical="true"
                     android:padding="10dp"
                     android:gravity="center_vertical"
+                    android:enabled="false"
                     android:textColorHint="@color/hint_color"
-                    android:hint="请输入体重(kg)"
+                    android:hint="未设置"
                     android:inputType="number"
                     android:singleLine="true"
                     android:background="@null"/>
@@ -316,9 +298,10 @@
                     android:layout_toRightOf="@id/tv6"
                     android:layout_centerVertical="true"
                     android:padding="10dp"
+                    android:enabled="false"
                     android:gravity="center_vertical"
                     android:textColorHint="@color/hint_color"
-                    android:hint="请输入邮箱"
+                    android:hint="未设置"
                     android:singleLine="true"
                     android:background="@null"/>
             </RelativeLayout>
@@ -342,48 +325,30 @@
                 android:layout_height="45dp">
                 <TextView
                     android:id="@+id/tv7"
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:text="学生"
-                    android:drawableLeft="@mipmap/ico_must"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/txt_333"/>
 
-                <RadioGroup
-                    android:id="@+id/sexStudent"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvStudent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:textColor="@color/txt_333"
+                    android:textSize="@dimen/content"
                     android:layout_toRightOf="@id/tv7"
-                    android:orientation="horizontal" >
-
-                    <RadioButton
-                        android:id="@+id/rbtnStudentYes"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="是"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                    <RadioButton
-                        android:id="@+id/rbtnStudentNo"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="否"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                </RadioGroup>
-
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:textColorHint="@color/hint_color"
+                    android:hint="未设置"
+                    android:singleLine="true"
+                    android:background="@null"/>
             </RelativeLayout>
 
             <View
@@ -396,13 +361,12 @@
                 android:layout_height="45dp">
                 <TextView
                     android:id="@+id/tv8"
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:text="所在城市"
-                    android:drawableLeft="@mipmap/ico_must"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/txt_333"/>
 
@@ -460,7 +424,7 @@
                     android:padding="10dp"
                     android:gravity="center_vertical"
                     android:textColorHint="@color/hint_color"
-                    android:hint="请选择"
+                    android:hint="未请选择"
                     android:background="@null"/>
             </RelativeLayout>
 
@@ -483,52 +447,20 @@
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/txt_333"/>
 
-                <RadioGroup
-                    android:id="@+id/sexLanguage"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvLanguageType"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:textColor="@color/txt_333"
+                    android:textSize="@dimen/content"
                     android:layout_toRightOf="@id/tv10"
-                    android:layout_marginLeft="5dp"
-                    android:orientation="horizontal" >
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:gravity="center_vertical"
+                    android:textColorHint="@color/hint_color"
+                    android:hint="未设置"
+                    android:background="@null"/>
 
-                    <RadioButton
-                        android:id="@+id/rbtnLanC"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="日常交流"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                    <RadioButton
-                        android:id="@+id/rbtnLanWork"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="工作交流"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                    <RadioButton
-                        android:id="@+id/rbtnLanS"
-                        style="@style/my_radiobtn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="学术交流"
-                        android:textColor="@color/txt_333"
-                        android:textSize="@dimen/content" />
-
-                </RadioGroup>
 
             </RelativeLayout>
 
@@ -573,7 +505,8 @@
                 android:padding="15dp"
                 android:gravity="top|left"
                 android:textColorHint="@color/hint_color"
-                android:hint="请自我评价"
+                android:hint="未填写请自我评价"
+                android:enabled="false"
                 android:lines="3"
                 android:maxLines="3"
                 android:background="@null"/>
@@ -585,23 +518,12 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="30dp"
                 android:background="@color/background"/>
 
         </LinearLayout>
 
 
     </ScrollView>
-
-    <Button
-        android:id="@+id/btnBrowse"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:textSize="@dimen/content"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:text="简历预览"
-        android:background="@color/blue"/>
-</RelativeLayout>
 
 </LinearLayout>

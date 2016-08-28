@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -56,6 +57,8 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
     public static final int PHOTO=6;
     public static final int Languge=7;
     public static final int SelecctLanguge=8;
+    public static final int SelecctPAY=9;
+    public static final int PAY=10;
 
     public ImageView ivBack;
     private TextView tvTitle;
@@ -142,6 +145,11 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
             ivBack.setImageResource(id);
     }
 
+    public void loading(ImageView iv){
+        iv.setImageResource(R.drawable.loading);
+        AnimationDrawable animationDrawable = (AnimationDrawable) iv.getDrawable();
+        animationDrawable.start();
+    }
 
     public void post(final String requestname, RequestParams params,final String requestCode){
 
@@ -158,7 +166,9 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
                 Log.e(requestname, new String(responseBody));
                 Log.e("statusCode==>", statusCode+"");
                 OnReceive(requestCode, new String(responseBody));
-                disMiss();
+                if (!requestCode.equals("modifyStudentUserInfo")) {
+                    disMiss();
+                }
                 for (Header h : headers) {
                     Log.e(h.getName(), h.getValue());
                 }
@@ -191,7 +201,6 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
                 Log.e("responseBody==>",new String(responseBody));
 
                 OnReceive(requestCode, new String(responseBody));
-                disMiss();
             }
 
             @Override

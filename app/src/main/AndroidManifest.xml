@@ -15,8 +15,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 用于访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
@@ -24,6 +22,12 @@
 
     <!-- 添加可以向外拨打电话的权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- 往sdcard中写入数据的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 在sdcard中创建/删除文件的权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".base.activity.XxtimeApplication"
@@ -78,7 +82,24 @@
         <activity android:name=".activity.OnlineJobActivity" />
         <activity android:name=".activity.PerfectInfoActivity" />
         <activity android:name=".activity.SelectAreaActivity" />
-        <activity android:name=".activity.SelectLanguageActivity"></activity>
+        <activity android:name=".activity.SelectLanguageActivity" />
+        <activity android:name=".activity.BrowseInfoActivity" />
+        <activity android:name=".activity.PersoninfoActivity" />
+        <activity android:name=".activity.AuthenticationActivity" />
+        <activity android:name=".activity.WalksActivity" />
+        <activity android:name=".activity.MyFollowActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.AlterMobileActivity" />
+        <activity android:name=".activity.AlterPwdActivity" />
+        <activity android:name=".activity.FeedbackActivity" />
+        <activity android:name=".activity.JoinActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.MymoneyActivity" />
+        <activity android:name=".activity.AlipayActivity" />
+        <activity android:name=".activity.WeixinActivity" />
+        <activity android:name=".activity.TradeListActivity" />
+        <activity android:name=".activity.ExtractActivity"></activity>
+        <activity android:name=".activity.SelectPayActivity"></activity>
     </application>
 
 </manifest>

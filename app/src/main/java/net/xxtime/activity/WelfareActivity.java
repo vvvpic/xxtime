@@ -152,6 +152,7 @@ public class WelfareActivity extends BaseActivity implements AdapterView.OnItemC
         ivLoading =(ImageView) FooterView.findViewById(R.id.ivLoading);
         tvLoading=(TextView)FooterView.findViewById(R.id.tvLoading);
         lvJobs.addFooterView(FooterView);
+        loading(ivLoading);
     }
 
     @Override

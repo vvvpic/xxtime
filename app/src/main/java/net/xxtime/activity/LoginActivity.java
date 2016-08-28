@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
 import android.widget.Button;
@@ -68,6 +69,8 @@ public class LoginActivity extends BaseActivity {
     public void initDatas() {
         setTitle("闲暇时光登录");
         seBackVisibility(View.INVISIBLE);
+
+        Log.e("SharedUtils==>",SharedUtils.getUserName(this)+"--"+SharedUtils.getUserPwd(this));
 
         if (!StringUtils.isEmpty(SharedUtils.getUserName(this))){
             etPhone.setText(SharedUtils.getUserName(this));

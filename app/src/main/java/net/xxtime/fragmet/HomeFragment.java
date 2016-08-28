@@ -408,11 +408,11 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         });
     }
 
+
     @Override
     public void ResumeDatas() {
 
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -441,8 +441,11 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
             case R.id.llOnline:
                 homeActivity.Jump(OnlineJobActivity.class);
                 break;
+            case R.id.llSchool:
+                break;
         }
     }
+
 
     @Override
     public void Receive(String requestname, String response) {

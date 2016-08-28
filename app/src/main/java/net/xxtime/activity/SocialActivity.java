@@ -148,6 +148,7 @@ public class SocialActivity extends BaseActivity implements AdapterView.OnItemCl
         ivLoading =(ImageView) FooterView.findViewById(R.id.ivLoading);
         tvLoading=(TextView)FooterView.findViewById(R.id.tvLoading);
         lvJobs.addFooterView(FooterView);
+        loading(ivLoading);
     }
 
     @Override

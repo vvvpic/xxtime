@@ -3,6 +3,7 @@ package net.xxtime.fragmet;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -19,11 +20,18 @@ import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xxtime.R;
+import net.xxtime.activity.AuthenticationActivity;
+import net.xxtime.activity.MyFollowActivity;
+import net.xxtime.activity.MymoneyActivity;
 import net.xxtime.activity.PerfectInfoActivity;
+import net.xxtime.activity.PersoninfoActivity;
+import net.xxtime.activity.SettingActivity;
+import net.xxtime.activity.WalksActivity;
 import net.xxtime.base.fragment.BaseFragment;
 import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.StudentUserInfoBean;
 import net.xxtime.utils.Contact;
+import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.SharedUtils;
 
 /**
@@ -67,7 +75,7 @@ public class MyFragment extends BaseFragment {
         }
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getLogo())){
-            ImageLoader.getInstance().displayImage(studentUserInfoBean.getDefaultAList().get(0).getLogo(),ivAvatar);
+            ImageLoader.getInstance().displayImage(studentUserInfoBean.getDefaultAList().get(0).getLogo(),ivAvatar, OptionsUtils.getSimpleOptions(100));
         }
     }
 
@@ -133,10 +141,27 @@ public class MyFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tvRz://认证
-
+                if (Contact.checkStudentBean!=null) {
+                    if (Contact.checkStudentBean.isSuccess()) {
+                        intent=new Intent(getActivity(),AuthenticationActivity.class);
+                        if (studentUserInfoBean!=null) {
+                            intent.putExtra("isstudent",studentUserInfoBean.getDefaultAList().get(0).getIsstudent());
+                        }
+                        homeActivity.Jump(intent);
+                    } else {
+                        personaldialog.show();
+                    }
+                }
                 break;
             case R.id.tvBs://保送
-
+                if (Contact.checkStudentBean!=null) {
+                    if (Contact.checkStudentBean.isSuccess()) {
+                        intent=new Intent(getActivity(),WalksActivity.class);
+                        homeActivity.Jump(intent);
+                    } else {
+                        personaldialog.show();
+                    }
+                }
                 break;
             case R.id.tvDz://定制
 
@@ -144,23 +169,41 @@ public class MyFragment extends BaseFragment {
             case R.id.tvMyMsg://我的信息
                 if (Contact.checkStudentBean!=null) {
                     if (Contact.checkStudentBean.isSuccess()) {
-
+                        homeActivity.Jump(PersoninfoActivity.class);
                     } else {
                         personaldialog.show();
                     }
                 }
                 break;
             case R.id.tvMyMon://我的钱包
-
+                if (Contact.checkStudentBean!=null) {
+                    if (Contact.checkStudentBean.isSuccess()) {
+                        intent=new Intent(getActivity(),MymoneyActivity.class);
+                        if (studentUserInfoBean!=null){
+                            intent.putExtra("balance",studentUserInfoBean.getDefaultAList().get(0).getBalance());
+                            intent.putExtra("earnestmoney",studentUserInfoBean.getDefaultAList().get(0).getEarnestmoney());
+                        }
+                        homeActivity.Jump(intent);
+                    } else {
+                        personaldialog.show();
+                    }
+                }
                 break;
             case R.id.tvShare://分享
 
                 break;
             case R.id.tvFollow://关注
-
+                if (Contact.checkStudentBean!=null) {
+                    if (Contact.checkStudentBean.isSuccess()) {
+                        intent=new Intent(getActivity(),MyFollowActivity.class);
+                        homeActivity.Jump(intent);
+                    } else {
+                        personaldialog.show();
+                    }
+                }
                 break;
             case R.id.tvSetting://设置
-
+                homeActivity.Jump(SettingActivity.class);
                 break;
             case R.id.btnCancel:
                 personaldialog.dismiss();

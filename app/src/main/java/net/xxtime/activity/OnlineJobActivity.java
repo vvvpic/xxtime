@@ -107,6 +107,7 @@ public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScr
         ivLoading =(ImageView) FooterView.findViewById(R.id.ivLoading);
         tvLoading=(TextView)FooterView.findViewById(R.id.tvLoading);
         lvJobs.addFooterView(FooterView);
+        loading(ivLoading);
     }
 
     @Override

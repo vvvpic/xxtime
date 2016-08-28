@@ -12,6 +12,7 @@ import com.longtu.base.util.StringUtils;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.XxtimeApplication;
+import net.xxtime.listener.DeleteListener;
 import net.xxtime.utils.ImageLoader;
 
 import java.util.List;
@@ -24,16 +25,20 @@ public class PhotoRAdapter extends BaseAdapter {
     private List<String> listphotos;
     private Context context;
     private ImageLoader imageLoader;
+    private DeleteListener deleteListener;
+    private int browse;
 
-    public PhotoRAdapter(List<String> listphotos, Context context){
+    public PhotoRAdapter(List<String> listphotos, Context context, DeleteListener deleteListener,int browse){
         this.listphotos=listphotos;
         this.context=context;
         imageLoader = ImageLoader.getInstance(3 , ImageLoader.Type.LIFO);
+        this.deleteListener=deleteListener;
+        this.browse=browse;
     }
 
     @Override
     public int getCount() {
-        return listphotos.size()<6?listphotos.size()+1:listphotos.size();
+        return listphotos.size()<6?(browse==0?listphotos.size()+1:listphotos.size()):listphotos.size();
     }
 
     @Override
@@ -63,10 +68,14 @@ public class PhotoRAdapter extends BaseAdapter {
         params.width= XxtimeApplication.width/3-XxtimeApplication.width/20;
         params.height=params.width;
         photo_item.ivPhoto.setVisibility(View.VISIBLE);
-        photo_item.ivPhoto.setBackgroundResource(R.drawable.btn_add_img_selecter);
+        photo_item.ivPhoto.setImageResource(R.drawable.btn_add_img_selecter);
 
        if (listphotos.size()>position){
-           photo_item.ivDel.setVisibility(View.VISIBLE);
+           if (browse==0) {
+               photo_item.ivDel.setVisibility(View.VISIBLE);
+           }else {
+               photo_item.ivDel.setVisibility(View.GONE);
+           }
             if (!StringUtils.isEmpty(listphotos.get(position))){
                 if (listphotos.get(position).indexOf("http://")>-1||listphotos.get(position).indexOf("https://")>-1){
                     com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(listphotos.get(position),photo_item.ivPhoto);
@@ -78,6 +87,12 @@ public class PhotoRAdapter extends BaseAdapter {
            photo_item.ivDel.setVisibility(View.GONE);
        }
 
+        photo_item.ivDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteListener.ondel(position);
+            }
+        });
 
         return convertView;
     }

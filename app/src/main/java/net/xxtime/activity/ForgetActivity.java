@@ -138,7 +138,6 @@ public class ForgetActivity extends BaseActivity {
                 params.put("telephone",etPhone.getText().toString());
                 pullpost("studentUser",params,"checkStudentUserByPhone");
 
-
                 break;
             case R.id.btnNext:
 

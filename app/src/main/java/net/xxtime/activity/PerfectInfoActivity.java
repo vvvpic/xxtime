@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -22,21 +24,29 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.longtu.base.util.FileUtils;
 import com.longtu.base.util.StringUtils;
 import com.longtu.base.util.ToastUtils;
 import com.longtu.base.view.ScrollGridView;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xxtime.R;
 import net.xxtime.adapter.PhotoRAdapter;
 import net.xxtime.base.activity.BaseActivity;
+import net.xxtime.bean.CommonBean;
+import net.xxtime.bean.StudentUserInfoBean;
+import net.xxtime.bean.StudentUserPictureBean;
+import net.xxtime.listener.DeleteListener;
 import net.xxtime.utils.ImageUtils;
+import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.ParseFilePath;
 import net.xxtime.utils.SharedUtils;
 import net.xxtime.view.DateTimePickDialog;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,13 +56,16 @@ import java.util.Locale;
 /**
  * 完善用户资料
  */
-public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnItemClickListener,DeleteListener {
 
     private PhotoRAdapter photoRAdapter;
     private List<String> listphotos;
     private ScrollGridView gvPhotos;
 
     private PopupWindow choosePhotoWindow;
+
+    private StudentUserPictureBean studentUserPictureBean;
+    private StudentUserInfoBean studentUserInfoBean;
 
     private RelativeLayout  rlAvatar;
     private ImageView ivAvatar;
@@ -67,9 +80,87 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private EditText etBrift;
 
     private int choosephoto=0;//0头像 1照片
-    private String avatar;
+    private String avatar="";
 
     private TextView tvRight;
+    private Button btnBrowse;
+
+    private Message msg;
+    private CommonBean commonBean;
+    private int uploadint=0,up=0;
+
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    if (commonBean!=null){
+//                        ToastUtils.show(PerfectInfoActivity.this,commonBean.getMsg());
+                        if (commonBean.getBflag().equals("1")){
+                            if (!StringUtils.isEmpty(avatar)){
+                                if (avatar.indexOf("http://")<0){
+                                    params=new RequestParams();
+                                    params.put("reqCode","uploadImages");
+                                    params.put("userid", SharedUtils.getUserId(PerfectInfoActivity.this));
+                                    params.put("type",1);
+                                    File myFile = new File(avatar);
+                                    try {
+                                        params.put("file1", myFile);
+                                    } catch(FileNotFoundException e) {}
+                                    uploadint++;
+                                    pullpost("studentUser", params,"uploadImages");
+                                }
+                            }
+
+                            if (listphotos.size()>0){
+                                for (int i=0;i<listphotos.size();i++){
+                                    if (listphotos.get(i).indexOf("http://")<0){
+                                        params=new RequestParams();
+                                        params.put("reqCode","uploadImages");
+                                        params.put("userid", SharedUtils.getUserId(PerfectInfoActivity.this));
+                                        params.put("type",2);
+                                        File myFile = new File(listphotos.get(i));
+                                        try {
+                                            params.put("file1", myFile);
+                                        } catch(FileNotFoundException e) {}
+                                        uploadint++;
+                                        pullpost("studentUser", params,"uploadImages");
+                                    }
+                                }
+                            }
+
+                            if (uploadint==0){
+                                disMiss();
+                                ToastUtils.show(PerfectInfoActivity.this,"修改完善个人信息成功！");
+                                finish();
+                            }
+//                            ToastUtils.show(PerfectInfoActivity.this,"正在保存图片");
+                        }
+                    }
+                    break;
+                case 2:
+                    up++;
+                    if (up==uploadint){
+                        disMiss();
+                        ToastUtils.show(PerfectInfoActivity.this,"修改完善个人信息成功！");
+                        finish();
+                    }
+                    break;
+                case 3:
+                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    if (commonBean!=null){
+                        ToastUtils.show(PerfectInfoActivity.this,commonBean.getMsg());
+                        if (commonBean.getBflag().equals("1")){
+                            listphotos.remove(delpos);
+                            photoRAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     public void setContentView() {
@@ -102,18 +193,124 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         tvRight=(TextView)findViewById(R.id.tvRight);
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("完成");
+        btnBrowse=(Button) findViewById(R.id.btnBrowse);
 
     }
 
     @Override
     public void initDatas() {
+        studentUserPictureBean= (StudentUserPictureBean) getIntent().getSerializableExtra("photos");
+        studentUserInfoBean=(StudentUserInfoBean)  getIntent().getSerializableExtra("studentUser");
         initChooseWindow();
         listphotos=new ArrayList<>();
-        photoRAdapter=new PhotoRAdapter(listphotos,this);
-        gvPhotos.setAdapter(photoRAdapter);
+
         setTitle("完善个人信息");
+        if (studentUserInfoBean!=null) {
+            setIserInfo();
+        }
+
+        if (studentUserPictureBean!=null&&studentUserPictureBean.getDefaultAList()!=null){
+            setPhotoRAdapter();
+        }
+
+        photoRAdapter=new PhotoRAdapter(listphotos,this,this,0);
+        gvPhotos.setAdapter(photoRAdapter);
 
     }
+
+    private void setPhotoRAdapter(){
+        for (int i=0;i<studentUserPictureBean.getDefaultAList().size();i++){
+            listphotos.add(studentUserPictureBean.getDefaultAList().get(i).getPicture());
+        }
+
+    }
+
+    private void setIserInfo(){
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getNickname())){
+            etNiceName.setText(studentUserInfoBean.getDefaultAList().get(0).getNickname());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getName())){
+            etName.setText(studentUserInfoBean.getDefaultAList().get(0).getName());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getName())){
+            etName.setText(studentUserInfoBean.getDefaultAList().get(0).getName());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getGender())){
+            gender=Integer.valueOf(studentUserInfoBean.getDefaultAList().get(0).getGender());
+            if (studentUserInfoBean.getDefaultAList().get(0).getGender().equals("1")) {
+               rbtn_male.setChecked(true);
+            }else {
+                rbtn_female.setChecked(false);
+            }
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getBirthday())){
+            tvBrith.setText(studentUserInfoBean.getDefaultAList().get(0).getBirthday());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getHeight())){
+            etHeight.setText(studentUserInfoBean.getDefaultAList().get(0).getHeight());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getWeight())){
+            etWeight.setText(studentUserInfoBean.getDefaultAList().get(0).getWeight());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEmail())){
+            etEmail.setText(studentUserInfoBean.getDefaultAList().get(0).getEmail());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getIsstudent())){
+            if (studentUserInfoBean.getDefaultAList().get(0).getIsstudent().equals("1")) {
+                rbtnStudentYes.setChecked(true);
+            }else {
+                rbtnStudentNo.setChecked(true);
+            }
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEmail())){
+            etEmail.setText(studentUserInfoBean.getDefaultAList().get(0).getEmail());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getProvincename())
+                ||!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getCityname())||
+                !StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getAreaname())){
+            tvCity.setText(studentUserInfoBean.getDefaultAList().get(0).getProvincename()+studentUserInfoBean.getDefaultAList().get(0).getCityname()
+                    +studentUserInfoBean.getDefaultAList().get(0).getAreaname());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignname())){
+            tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getForeignname());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignlevel())){
+            if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("1")) {
+                rbtnLanC.setChecked(true);
+            }else if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("2")) {
+                rbtnLanWork.setChecked(true);
+            }else if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("3")) {
+                rbtnLanS.setChecked(true);
+            }
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids())){
+            etBrift.setText(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getLogo())){
+            avatar=studentUserInfoBean.getDefaultAList().get(0).getLogo();
+            ImageLoader.getInstance().displayImage(studentUserInfoBean.getDefaultAList().get(0).getLogo(),ivAvatar, OptionsUtils.getSimpleOptions(80));
+        }
+
+        provinecode=studentUserInfoBean.getDefaultAList().get(0).getProvince();
+        citycode=studentUserInfoBean.getDefaultAList().get(0).getCity();
+        areacode=studentUserInfoBean.getDefaultAList().get(0).getArea();
+        foreignid=studentUserInfoBean.getDefaultAList().get(0).getForeignid();
+    }
+
 
     @Override
     public void setDatas() {
@@ -131,6 +328,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         tvBrith.setOnClickListener(this);
         tvCity.setOnClickListener(this);
         tvLanguage.setOnClickListener(this);
+        btnBrowse.setOnClickListener(this);
     }
 
     @Override
@@ -171,12 +369,12 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 break;
             case R.id.tvRight:
 
-                if (!StringUtils.isEmpty(etNiceName.getText().toString())){
+                if (StringUtils.isEmpty(etNiceName.getText().toString())){
                     ToastUtils.show(this,"请输入用户名");
                     return;
                 }
 
-                if (!StringUtils.isEmpty(etName.getText().toString())){
+                if (StringUtils.isEmpty(etName.getText().toString())){
                     ToastUtils.show(this,"请输入姓名");
                     return;
                 }
@@ -245,6 +443,8 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                     params.put("self_appraisalids",etBrift.getText().toString());
                 }
 
+                Log.e("param==>",params.toString());
+
                 post("studentUser",params,"modifyStudentUserInfo");
 
                 break;
@@ -260,6 +460,52 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
             case R.id.tvLanguage:
                 intent=new Intent(this,SelectLanguageActivity.class);
                 Jump(intent,Languge);
+                break;
+            case R.id.btnBrowse:
+
+                intent=new Intent(this,BrowseInfoActivity.class);
+                intent.putExtra("nickname",etNiceName.getText().toString());
+                intent.putExtra("name",etName.getText().toString());
+                if (rbtn_female.isChecked()){
+                    intent.putExtra("gender","女");
+                }else{
+                    intent.putExtra("gender","男");
+                }
+
+                if (rbtnStudentYes.isChecked()){
+                    intent.putExtra("isstudent","是");
+                }else if (rbtnStudentNo.isChecked()){
+                    intent.putExtra("isstudent","否");
+                }
+
+                intent.putExtra("city",tvCity.getText().toString());
+                intent.putExtra("birthday",tvBrith.getText().toString());
+                intent.putExtra("height",etHeight.getText().toString());
+
+                intent.putExtra("weight",etWeight.getText().toString());
+
+                intent.putExtra("email",etEmail.getText().toString());
+
+                intent.putExtra("foreignname",foreignname);
+
+                if (rbtnLanC.isChecked()){
+                    intent.putExtra("foreignlevel","日常交流");
+                }else if (rbtnLanWork.isChecked()){
+                    intent.putExtra("foreignlevel","工作交流");
+                }else if (rbtnLanS.isChecked()){
+                    intent.putExtra("foreignlevel","学术交流");
+                }
+
+                intent.putExtra("self_appraisalids",etBrift.getText().toString());
+
+                intent.putStringArrayListExtra("photos", (ArrayList<String>) listphotos);
+
+                intent.putExtra("title","简历预览");
+
+                intent.putExtra("avatar",avatar);
+
+                Jump(intent);
+
                 break;
         }
     }
@@ -297,10 +543,15 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 if (choosephoto==0) {
                     startPhotoZoom(uri);
                 }else {
-//                    Log.e("imgPath==>",uri.getPath());
-                    listphotos.add(uri.getPath());
-                    photoRAdapter=new PhotoRAdapter(listphotos,this);
-                    gvPhotos.setAdapter(photoRAdapter);
+                    Cursor cursor = getContentResolver().query(uri, null, null, null,null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                        listphotos.add(path);
+                        photoRAdapter=new PhotoRAdapter(listphotos,this,this,0);
+                        gvPhotos.setAdapter(photoRAdapter);
+                    }
+
+
                 }
             }
         } else if (requestCode == SET_PHOTO) {
@@ -335,7 +586,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 }
             }else {
                 listphotos.add(Environment.getExternalStorageDirectory() + "/chakeshe/" + name);
-                photoRAdapter=new PhotoRAdapter(listphotos,this);
+                photoRAdapter=new PhotoRAdapter(listphotos,this,this,0);
                 gvPhotos.setAdapter(photoRAdapter);
             }
         }else if (requestCode==AREA&&resultCode==SELECTAREA){
@@ -390,5 +641,50 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 choosePhotoWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
             }
         }
+    }
+
+    @Override
+    public void OnReceive(String requestname, String response) {
+        msg=new Message();
+        if (requestname.equals("modifyStudentUserInfo")){
+            msg.what=1;
+        }else if (requestname.equals("uploadImages")){
+            msg.what=2;
+        }else if (requestname.equals("deleteStudentUserPictureMulti")){
+            msg.what=3;
+        }
+
+        msg.obj=response;
+        handler.sendMessage(msg);
+    }
+
+    @Override
+    public void ondel(int position) {
+        delpos=position;
+        if (listphotos.get(position).indexOf("http://")>-1){
+            int userpictureids=getImageid(listphotos.get(position));
+            if (userpictureids>-1){
+                params=new RequestParams();
+                params.put("reqCode","deleteStudentUserPictureMulti");
+                params.put("userpictureids", userpictureids);
+                pullpost("studentUser",params,"deleteStudentUserPictureMulti");
+            }
+        }else {
+            listphotos.remove(position);
+            photoRAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private int delpos=-1;
+    private int getImageid(String url){
+
+        if (studentUserPictureBean!=null){
+            for (int i=0;i<studentUserPictureBean.getDefaultAList().size();i++){
+                if (studentUserPictureBean.getDefaultAList().get(i).getPicture().equals(url)){
+                    return studentUserPictureBean.getDefaultAList().get(i).getUserpictureid();
+                }
+            }
+        }
+        return -1;
     }
 }

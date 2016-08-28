@@ -93,7 +93,7 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         intent=new Intent();
         intent.putExtra("foreignname",foreignBean.getDefaultAList().get(position).getForeignname());
-        intent.putExtra("foreignid",foreignBean.getDefaultAList().get(position).getForeignid());
+        intent.putExtra("foreignid",foreignBean.getDefaultAList().get(position).getForeignid()+"");
         setResult(SelecctLanguge,intent);
         finish();
     }

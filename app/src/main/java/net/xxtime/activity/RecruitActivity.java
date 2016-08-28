@@ -114,6 +114,7 @@ public class RecruitActivity extends BaseActivity implements AbsListView.OnScrol
         ivLoading =(ImageView) FooterView.findViewById(R.id.ivLoading);
         tvLoading=(TextView)FooterView.findViewById(R.id.tvLoading);
         lvJobs.addFooterView(FooterView);
+        loading(ivLoading);
     }
 
     @Override
