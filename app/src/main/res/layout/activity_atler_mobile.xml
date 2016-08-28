@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.AlterMobileActivity">
+
+    <include layout="@layout/header"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="原手机号"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <TextView
+            android:id="@+id/tvMoblie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_333"
+            android:textSize="@dimen/content"
+            android:layout_toRightOf="@id/tv2"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/hint_color"
+            android:inputType="number"
+            android:singleLine="true"
+            android:background="@null"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="新手机号"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv1"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/etNewMobile"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/content"
+                android:textColor="@color/txt_333"
+                android:textColorHint="@color/hint_color"
+                android:hint="请输入新手机号"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:inputType="number"
+                />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:textColor="@color/txt_333"
+                    android:background="@null"
+                    android:text="发送验证码"
+                    android:textSize="@dimen/content"/>
+
+                <View
+                    android:layout_width="@dimen/line"
+                    android:layout_height="45dp"
+                    android:background="@color/line_color"/>
+            </FrameLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="验证码"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <EditText
+            android:id="@+id/etCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_333"
+            android:textSize="@dimen/content"
+            android:layout_toRightOf="@id/tv3"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/hint_color"
+            android:inputType="number"
+            android:singleLine="true"
+            android:hint="请输入你收到的验证码"
+            android:background="@null"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <Button
+        android:id="@+id/btnAlter"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/btn_blue_seletor"
+        android:textColor="@color/white"
+        android:textSize="@dimen/content"
+        android:text="确定修改"
+        android:layout_margin="15dp"/>
+</LinearLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="net.xxtime.activity.WalksActivity">
+
+    <include layout="@layout/header"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="期望薪资（元/天）"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <EditText
+            android:id="@+id/etDayprice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_333"
+            android:textSize="@dimen/content"
+            android:layout_toRightOf="@id/tv1"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/hint_color"
+            android:singleLine="true"
+            android:inputType="number"
+            android:hint="请输入薪资"
+            android:background="@null"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="期望薪资（元/时）"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/txt_333"/>
+
+        <EditText
+            android:id="@+id/etTimeprice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_333"
+            android:textSize="@dimen/content"
+            android:layout_toRightOf="@id/tv2"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/hint_color"
+            android:singleLine="true"
+            android:inputType="number"
+            android:layout_marginRight="15dp"
+            android:hint="请输入薪资"
+            android:background="@null"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_999"
+        android:textSize="@dimen/txt_12"
+        android:lineSpacingExtra="3dp"
+        android:text="声明:\n1、上报自己要求的薪资标准;\n2、当有企业希望本平台帮助找兼职人员时，本平台首先保证“申请保送人员上岗”。"
+        android:layout_margin="15dp"/>
+
+    <Button
+        android:id="@+id/btnSet"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue"
+        android:textSize="@dimen/content"
+        android:textColor="@color/white"
+        android:text="提交"
+        android:layout_margin="15dp"/>
+
+</LinearLayout>

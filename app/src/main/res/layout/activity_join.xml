@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="net.xxtime.activity.JoinActivity">
+
+    <include layout="@layout/header"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="合作城市"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_333"
+            android:textSize="@dimen/content"
+            android:layout_toRightOf="@id/tv3"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/hint_color"
+            android:hint="请选择城市"
+            android:background="@null"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+    <EditText
+        android:id="@+id/etContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/content"
+        android:textColor="@color/txt_333"
+        android:textColorLink="@color/hint_color"
+        android:padding="15dp"
+        android:lines="6"
+        android:gravity="top|left"
+        android:background="@null"
+        android:hint="请输入申请理由..."/>
+
+    <Button
+        android:id="@+id/btnOk"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/content"
+        android:gravity="center"
+        android:text="确认"
+        android:background="@drawable/btn_blue_seletor"/>
+
+</LinearLayout>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="net.xxtime.activity.AlipayActivity">
+
+    <include layout="@layout/header"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="支付宝号"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <EditText
+            android:id="@+id/etAlipay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:textColor="@color/txt_333"
+            android:textColorHint="@color/hint_color"
+            android:hint="请填写正确的支付宝号"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:padding="5dp"
+            android:layout_toRightOf="@id/tv1"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:layout_marginLeft="15dp"
+        android:background="@color/line_color"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="真实姓名"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:textColor="@color/txt_333"
+            android:textColorHint="@color/hint_color"
+            android:hint="务必与支付宝绑定姓名一致"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:padding="5dp"
+            android:layout_toRightOf="@id/tv2"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:layout_marginLeft="15dp"
+        android:background="@color/line_color"/>
+
+    <Button
+        android:id="@+id/btnOk"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/content"
+        android:gravity="center"
+        android:text="确认"
+        android:background="@drawable/btn_blue_seletor"/>
+
+</LinearLayout>
