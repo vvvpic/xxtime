@@ -1,1 +1,1 @@
-include ':app', ':pulltorefreshlibrary'
+include ':app', ':pulltorefreshlibrary', ':lib:pingpp', ':lib:pingpp_one', ':lib:bdwallet_pay_sdk'
