@@ -26,6 +26,7 @@ import net.xxtime.activity.MymoneyActivity;
 import net.xxtime.activity.PerfectInfoActivity;
 import net.xxtime.activity.PersoninfoActivity;
 import net.xxtime.activity.SettingActivity;
+import net.xxtime.activity.ShareActivity;
 import net.xxtime.activity.WalksActivity;
 import net.xxtime.base.fragment.BaseFragment;
 import net.xxtime.bean.CheckStudentBean;
@@ -190,7 +191,7 @@ public class MyFragment extends BaseFragment {
                 }
                 break;
             case R.id.tvShare://分享
-
+                homeActivity.Jump(ShareActivity.class);
                 break;
             case R.id.tvFollow://关注
                 if (Contact.checkStudentBean!=null) {
