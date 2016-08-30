@@ -23,6 +23,7 @@
             android:src="@mipmap/ico_fllow"/>
 
         <TextView
+            android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/content"
@@ -32,6 +33,7 @@
             android:textColor="@color/txt_333"/>
 
         <ImageView
+            android:id="@+id/iv8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ico_arrow_right"
@@ -39,6 +41,15 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />
+
+        <ImageView
+            android:id="@+id/ivMsgFollow"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/circle_red"
+            android:layout_alignRight="@id/iv0"
+            android:layout_alignTop="@id/iv0"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <View
@@ -70,6 +81,7 @@
             android:textColor="@color/txt_333"/>
 
         <ImageView
+            android:id="@+id/iv7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ico_arrow_right"
@@ -77,6 +89,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />
+
+        <ImageView
+            android:id="@+id/ivMsgApply"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/circle_red"
+            android:visibility="gone"
+            android:layout_alignRight="@id/iv1"
+            android:layout_alignTop="@id/iv1"/>
+
     </RelativeLayout>
 
     <View
@@ -113,6 +135,7 @@
             android:textColor="@color/txt_333"/>
 
         <ImageView
+            android:id="@+id/iv6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ico_arrow_right"
@@ -120,6 +143,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />
+
+        <ImageView
+            android:id="@+id/ivMsgSalary"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/circle_red"
+            android:visibility="gone"
+            android:layout_alignRight="@id/iv2"
+            android:layout_alignTop="@id/iv2"/>
+
     </RelativeLayout>
 
     <View
@@ -151,6 +184,7 @@
             android:textColor="@color/txt_333"/>
 
         <ImageView
+            android:id="@+id/iv9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ico_arrow_right"
@@ -158,6 +192,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />
+
+        <ImageView
+            android:id="@+id/ivMsgWithdraw"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/circle_red"
+            android:visibility="gone"
+            android:layout_alignRight="@id/iv4"
+            android:layout_alignTop="@id/iv4"/>
+
     </RelativeLayout>
 
     <View
@@ -194,6 +238,7 @@
             android:textColor="@color/txt_333"/>
 
         <ImageView
+            android:id="@+id/iv10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ico_arrow_right"
@@ -201,6 +246,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />
+
+        <ImageView
+            android:id="@+id/ivMsgSystem"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:visibility="gone"
+            android:src="@drawable/circle_red"
+            android:layout_alignRight="@id/iv5"
+            android:layout_alignTop="@id/iv5"/>
+
     </RelativeLayout>
 
     <View

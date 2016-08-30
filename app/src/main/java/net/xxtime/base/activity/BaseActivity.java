@@ -217,7 +217,6 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
                 BaseActivity.this.onProgress(bytesWritten, totalSize);
             }
 
-
         });
     }
 

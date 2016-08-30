@@ -5,6 +5,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSONObject;
 import com.loopj.android.http.RequestParams;
@@ -23,6 +24,8 @@ public class TradeListActivity extends BaseActivity {
     private TradeListBean tradeListBean;
     private Message msg;
 
+    private RelativeLayout rlEmpty;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -30,8 +33,16 @@ public class TradeListActivity extends BaseActivity {
                 case 1:
                     tradeListBean= JSONObject.parseObject(msg.obj.toString(),TradeListBean.class);
                     if (tradeListBean!=null&&tradeListBean.getBflag().equals("1")){
-                        tradeAdapter=new TradeAdapter(tradeListBean.getDefaultAList(),TradeListActivity.this);
-                        lvTrades.setAdapter(tradeAdapter);
+                        if (tradeListBean.getDefaultAList()!=null&&tradeListBean.getDefaultAList().size()>0) {
+                            tradeAdapter = new TradeAdapter(tradeListBean.getDefaultAList(), TradeListActivity.this);
+                            lvTrades.setAdapter(tradeAdapter);
+                        }else {
+                            lvTrades.setVisibility(View.GONE);
+                            rlEmpty.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        lvTrades.setVisibility(View.GONE);
+                        rlEmpty.setVisibility(View.VISIBLE);
                     }
                     break;
             }
@@ -46,6 +57,7 @@ public class TradeListActivity extends BaseActivity {
     @Override
     public void initViews() {
         lvTrades=(ListView)findViewById(R.id.lvTrades);
+        rlEmpty=(RelativeLayout)findViewById(R.id.rlEmpty);
     }
 
     @Override

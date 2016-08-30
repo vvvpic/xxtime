@@ -1,9 +1,14 @@
 package net.xxtime.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,13 +16,17 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.longtu.base.util.StringUtils;
+import com.longtu.base.util.ToastUtils;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.ShareWayBean;
+import net.xxtime.utils.ImageUtils;
 import net.xxtime.utils.SharedUtils;
+
+import java.io.File;
 
 public class ShareActivity extends BaseActivity {
 
@@ -86,9 +95,48 @@ public class ShareActivity extends BaseActivity {
         ivQr.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (!StringUtils.isEmpty(shareWayBean.getDefaultAList().get(0).getQRcodeUrl())) {
+                                Bitmap bitmap = ImageUtils.getImage(shareWayBean.getDefaultAList().get(0).getQRcodeUrl());
+
+                                ImageUtils.saveFile(bitmap,
+                                        shareWayBean.getDefaultAList().get(0).getQRcodeUrl().substring(
+                                                shareWayBean.getDefaultAList().get(0).getQRcodeUrl()
+                                                        .lastIndexOf("/") + 1),ShareActivity.this);
+                                Log.e("load==>", "保存成功2！");
+
+                                handler.post(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        ToastUtils.show(ShareActivity.this,
+                                                "已经保存到手机");
+                                        sdScan();
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
                 return false;
             }
         });
+    }
+
+    /***
+     * 保存图片通知手机扫描
+     */
+    public void sdScan() {
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/chakeshe/"));
+        intent.setData(uri);
+        sendBroadcast(intent);
     }
 
     @Override
@@ -100,7 +148,7 @@ public class ShareActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tvRight:
-
+                Jump(InviteActivity.class);
                 break;
             case R.id.btnShare:
 

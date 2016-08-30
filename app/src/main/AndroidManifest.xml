@@ -135,12 +135,12 @@
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
 
         <!-- 银联支付 sdk -->
         <activity
@@ -313,7 +313,13 @@
             android:name="com.pingplusplus.libone.PaySuccessActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/pingpp_title_activity_pay_sucessed" />
-        <activity android:name=".activity.ShareActivity"></activity>
+        <activity android:name=".activity.ShareActivity" />
+        <activity android:name=".activity.InviteActivity" />
+        <activity android:name=".activity.MsgFollowActivity" />
+        <activity android:name=".activity.MsgApplyActivity"></activity>
+        <activity android:name=".activity.MsgSalaryActivity"></activity>
+        <activity android:name=".activity.MsgWithdrawActivity"></activity>
+        <activity android:name=".activity.MsgSystemActivity"></activity>
     </application>
 
 </manifest>

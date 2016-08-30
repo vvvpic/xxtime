@@ -181,6 +181,7 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
             case 3:
                 if (msgFragment != null) {
                     transaction.show(msgFragment);
+                    msgFragment.Refresh();
                     // 否则是第一次切换则添加fragment1，注意添加后是会显示出来的，replace方法也是先remove后add
                 }else {
                     msgFragment = new MsgFragment();

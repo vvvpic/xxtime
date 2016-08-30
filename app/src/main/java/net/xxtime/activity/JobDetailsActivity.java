@@ -273,8 +273,6 @@ public class JobDetailsActivity extends BaseActivity {
             tvWorkTime.append("\n可自由选择工作日期");
         }
 
-
-
     }
 
     @Override
