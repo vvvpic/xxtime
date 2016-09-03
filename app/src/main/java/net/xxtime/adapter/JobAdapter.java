@@ -1,6 +1,7 @@
 package net.xxtime.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,10 @@ import com.longtu.base.util.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xxtime.R;
+import net.xxtime.activity.AssessActivity;
 import net.xxtime.bean.GetHomeLbtBean;
 import net.xxtime.bean.JobByConditionBean;
+import net.xxtime.listener.SignListener;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.OptionsUtils;
 
@@ -28,6 +31,17 @@ public class JobAdapter extends BaseAdapter {
 
     private List<JobByConditionBean.DefaultAListBean> listsdefaultAListBeens;
     private Context context;
+    private String status="";
+
+    private SignListener listener;
+
+    public void setSignListener( SignListener listener){
+        this.listener=listener;
+    }
+
+    public void setStatus(String status){
+        this.status=status;
+    }
 
     public JobAdapter(List<JobByConditionBean.DefaultAListBean> listsdefaultAListBeens,Context context){
         this.listsdefaultAListBeens=listsdefaultAListBeens;
@@ -50,7 +64,7 @@ public class JobAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         Job_item job_item;
         if (convertView==null){
@@ -66,10 +80,13 @@ public class JobAdapter extends BaseAdapter {
             job_item.tvLucency=(TextView) convertView.findViewById(R.id.tvLucency);
             job_item.tvAdress=(TextView) convertView.findViewById(R.id.tvAdress);
             job_item.tvStatus=(TextView) convertView.findViewById(R.id.tvStatus);
+            job_item.tvOperate=(TextView) convertView.findViewById(R.id.tvOperate);
             convertView.setTag(job_item);
         }else {
             job_item= (Job_item) convertView.getTag();
         }
+
+        job_item.tvOperate.setVisibility(View.GONE);
 
         if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getBuslogo())){
             ImageLoader.getInstance().displayImage(listsdefaultAListBeens.get(position).getBuslogo(),job_item.ivBuslogo, OptionsUtils.getSimpleOptions(10));
@@ -104,6 +121,10 @@ public class JobAdapter extends BaseAdapter {
         if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getAddress())){
             job_item.tvAdress.append(listsdefaultAListBeens.get(position).getAddress());
         }
+
+        if (StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
+            job_item.tvAdress.setText("地址不限");
+        }
         if (listsdefaultAListBeens.get(position).getSettlementtime()==1){
             job_item.tvStatus.setText("日结");
         }else if (listsdefaultAListBeens.get(position).getSettlementtime()==2){
@@ -128,11 +149,40 @@ public class JobAdapter extends BaseAdapter {
             job_item.tvTime.setText("报名日期不限");
         }
 
+        if (!StringUtils.isEmpty(status)){
+            job_item.tvAppy.setText(status);
+        }
+
         if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getLabelnames())){
             job_item.tvLucency.setText(listsdefaultAListBeens.get(position).getLabelnames().replace(","," "));
+        }else {
+            job_item.tvLucency.setText("无附加说明");
         }
 
         job_item.rbAssess.setRating(listsdefaultAListBeens.get(position).getStarNum());
+
+
+        if (status.equals("待评价")){
+            job_item.tvOperate.setVisibility(View.VISIBLE);
+            job_item.tvOperate.setText("评价");
+        }else if (status.equals("待签到")){
+            job_item.tvOperate.setVisibility(View.VISIBLE);
+            job_item.tvOperate.setText("扫描签到");
+        }
+
+        job_item.tvOperate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (status.equals("待评价")){
+                    Intent intent=new Intent(context,AssessActivity.class);
+                    intent.putExtra("jobcode",listsdefaultAListBeens.get(position).getJobcode());
+                    intent.putExtra("registerid",listsdefaultAListBeens.get(position).registerid);
+                    context.startActivity(intent);
+                }else if (status.equals("待签到")){
+                    listener.sign(position);
+                }
+            }
+        });
 
        // job_item.rbAssess.setEnabled(false);
 
@@ -144,5 +194,6 @@ public class JobAdapter extends BaseAdapter {
         TextView tvAppy;
         RatingBar rbAssess;
         TextView tvJobname, tvPrice, tvUint, tvTime ,tvLucency,  tvAdress, tvStatus;
+        TextView tvOperate;
     }
 }

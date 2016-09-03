@@ -167,7 +167,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_999"
                     android:layout_centerVertical="true"
-                    android:text="滨湖"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:drawableLeft="@mipmap/ico_lucency"
@@ -177,6 +176,22 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvOperate"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:text="评价"
+            android:gravity="center"
+            android:textSize="@dimen/tar"
+            android:textColor="@color/blue"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="70dp"
+            android:visibility="gone"
+            android:background="@drawable/blue_border"/>
 
     </RelativeLayout>
 

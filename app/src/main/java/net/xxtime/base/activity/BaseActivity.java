@@ -59,6 +59,7 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
     public static final int SelecctLanguge=8;
     public static final int SelecctPAY=9;
     public static final int PAY=10;
+    public static final int ADDASSESS=11;
 
     public ImageView ivBack;
     private TextView tvTitle;
@@ -117,7 +118,7 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
      * @param title
      */
     public void setTitle(String title){
-//        if (tvTitle!=null)
+        if (tvTitle!=null)
         tvTitle.setText(title);
     }
 

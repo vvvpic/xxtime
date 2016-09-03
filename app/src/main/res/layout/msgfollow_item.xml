@@ -18,15 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginRight="5dp"/>
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/txt_333"
-            android:textSize="@dimen/content"
-            android:text="关注消息"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ivChoose"/>
+
 
         <TextView
             android:id="@+id/tvTime"
@@ -38,6 +30,17 @@
             android:layout_centerVertical="true"
             android:text="2016 08:30"
             />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_333"
+            android:textSize="@dimen/content"
+            android:text="关注消息"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tvTime"
+            android:layout_toRightOf="@id/ivChoose"/>
 
     </RelativeLayout>
 

@@ -18,6 +18,7 @@ import net.xxtime.activity.MsgSalaryActivity;
 import net.xxtime.activity.MsgSystemActivity;
 import net.xxtime.activity.MsgWithdrawActivity;
 import net.xxtime.base.fragment.BaseFragment;
+import net.xxtime.bean.MsgStatusBean;
 import net.xxtime.bean.StuMsgNumDivideBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.SharedUtils;
@@ -32,6 +33,7 @@ public class MsgFragment extends BaseFragment {
 
     private Message msg;
     private StuMsgNumDivideBean stuMsgNumDivideBean;
+    private MsgStatusBean msgStatusBean;
 
     private Handler handler=new Handler(){
         @Override
@@ -40,6 +42,12 @@ public class MsgFragment extends BaseFragment {
                 case 1:
                     stuMsgNumDivideBean= JSONObject.parseObject(msg.obj.toString(),StuMsgNumDivideBean.class);
                     if (stuMsgNumDivideBean!=null&&stuMsgNumDivideBean.getBflag().equals("1")){
+
+                    }
+                    break;
+                case 2:
+                    msgStatusBean=JSONObject.parseObject(msg.obj.toString(),MsgStatusBean.class);
+                    if (msgStatusBean!=null&&msgStatusBean.getBflag().equals("1")){
                         setMsg();
                     }
                     break;
@@ -48,35 +56,55 @@ public class MsgFragment extends BaseFragment {
     };
 
     private void setMsg(){
-        if (stuMsgNumDivideBean.getDefaultAList().get(0).getGzmsgNum()==0){
-            ivMsgFollow.setVisibility(View.VISIBLE);
-        }else {
-            ivMsgFollow.setVisibility(View.GONE);
+
+        if (msgStatusBean.getDefaultAList()!=null&&msgStatusBean.getDefaultAList().size()>0){
+            for (int i=0;i<msgStatusBean.getDefaultAList().size();i++){
+               switch (msgStatusBean.getDefaultAList().get(i).getMsgtype()){
+                   case 1:
+
+                       if (msgStatusBean.getDefaultAList().get(i).getUnread()==1){
+                           ivMsgFollow.setVisibility(View.VISIBLE);
+                       }else {
+                           ivMsgFollow.setVisibility(View.GONE);
+                       }
+
+                       break;
+                   case 2:
+                       if (msgStatusBean.getDefaultAList().get(i).getUnread()==1){
+                           ivMsgApply.setVisibility(View.VISIBLE);
+                       }else {
+                           ivMsgApply.setVisibility(View.GONE);
+                       }
+                       break;
+                   case 3:
+
+                       if (msgStatusBean.getDefaultAList().get(i).getUnread()==1){
+                           ivMsgSalary.setVisibility(View.VISIBLE);
+                       }else {
+                           ivMsgSalary.setVisibility(View.GONE);
+                       }
+
+                       break;
+                   case 4:
+                       if (msgStatusBean.getDefaultAList().get(i).getUnread()==1){
+                           ivMsgWithdraw.setVisibility(View.VISIBLE);
+                       }else {
+                           ivMsgWithdraw.setVisibility(View.GONE);
+                       }
+
+                       break;
+                   case 5:
+                       if (msgStatusBean.getDefaultAList().get(i).getUnread()==1){
+                           ivMsgSystem.setVisibility(View.VISIBLE);
+                       }else {
+                           ivMsgSystem.setVisibility(View.GONE);
+                       }
+                       break;
+
+               }
+            }
         }
 
-        if (stuMsgNumDivideBean.getDefaultAList().get(0).getSalarymsgNum()==0){
-            ivMsgSalary.setVisibility(View.VISIBLE);
-        }else {
-            ivMsgSalary.setVisibility(View.GONE);
-        }
-
-        if (stuMsgNumDivideBean.getDefaultAList().get(0).getSystemmsgNum()==0){
-            ivMsgSystem.setVisibility(View.VISIBLE);
-        }else {
-            ivMsgSystem.setVisibility(View.GONE);
-        }
-
-        if (stuMsgNumDivideBean.getDefaultAList().get(0).getTxmsgNum()==0){
-            ivMsgWithdraw.setVisibility(View.VISIBLE);
-        }else {
-            ivMsgWithdraw.setVisibility(View.GONE);
-        }
-
-        if (stuMsgNumDivideBean.getDefaultAList().get(0).getSqmsgNum()==0){
-            ivMsgApply.setVisibility(View.VISIBLE);
-        }else {
-            ivMsgApply.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -119,9 +147,9 @@ public class MsgFragment extends BaseFragment {
 
     public void Refresh(){
         params=new RequestParams();
-        params.put("reqCode","getStuMsgNumDivideByType");
+        params.put("reqCode","getAllMsgStatus");
         params.put("userid", SharedUtils.getUserId(getActivity()));
-        pullpost("studentUser",params,"getStuMsgNumDivideByType");
+        pullpost("studentUser",params,"getAllMsgStatus");
     }
 
     @Override
@@ -147,63 +175,30 @@ public class MsgFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rlFollow:
-                if (stuMsgNumDivideBean.getDefaultAList().get(0).getGzmsgNum()==0){
                     ivMsgFollow.setVisibility(View.GONE);
-                    params=new RequestParams();
-                    params.put("reqCode","setMsgRead");
-                    params.put("userid", SharedUtils.getUserId(getActivity()));
-                    params.put("msgtype",1);
-                    params.put("isread", 1);
-                    pullpost("studentUser",params,"setMsgRead");
-                }
                 homeActivity.Jump(MsgFollowActivity.class);
                 break;
             case R.id.rlSystem:
-                if (stuMsgNumDivideBean.getDefaultAList().get(0).getSystemmsgNum()==0){
                     ivMsgSystem.setVisibility(View.GONE);
-                    params=new RequestParams();
-                    params.put("reqCode","setMsgRead");
-                    params.put("userid", SharedUtils.getUserId(getActivity()));
-                    params.put("msgtype",5);
-                    params.put("isread", 1);
-                    pullpost("studentUser",params,"setMsgRead");
-                }
+
                 homeActivity.Jump(MsgSystemActivity.class);
                 break;
             case R.id.rlWithdraw:
-                if (stuMsgNumDivideBean.getDefaultAList().get(0).getTxmsgNum()==0){
                     ivMsgWithdraw.setVisibility(View.GONE);
-                    params=new RequestParams();
-                    params.put("reqCode","setMsgRead");
-                    params.put("userid", SharedUtils.getUserId(getActivity()));
-                    params.put("msgtype",4);
-                    params.put("isread", 1);
-                    pullpost("studentUser",params,"setMsgRead");
-                }
                 homeActivity.Jump(MsgWithdrawActivity.class);
                 break;
             case R.id.rlApply:
-                if (stuMsgNumDivideBean.getDefaultAList().get(0).getSqmsgNum()==0){
                     ivMsgApply.setVisibility(View.GONE);
-                    params=new RequestParams();
-                    params.put("reqCode","setMsgRead");
-                    params.put("userid", SharedUtils.getUserId(getActivity()));
-                    params.put("msgtype",2);
-                    params.put("isread", 1);
-                    pullpost("studentUser",params,"setMsgRead");
-                }
                 homeActivity.Jump(MsgApplyActivity.class);
                 break;
             case R.id.rlSalary:
-                if (stuMsgNumDivideBean.getDefaultAList().get(0).getSalarymsgNum()==0){
                     ivMsgSalary.setVisibility(View.GONE);
-                    params=new RequestParams();
+                 /*   params=new RequestParams();
                     params.put("reqCode","setMsgRead");
                     params.put("userid", SharedUtils.getUserId(getActivity()));
                     params.put("msgtype",3);
                     params.put("isread", 1);
-                    pullpost("studentUser",params,"setMsgRead");
-                }
+                    pullpost("studentUser",params,"setMsgRead");*/
                 homeActivity.Jump(MsgSalaryActivity.class);
                 break;
         }
@@ -214,6 +209,8 @@ public class MsgFragment extends BaseFragment {
         msg=new Message();
         if (requestname.equals("getStuMsgNumDivideByType")){
             msg.what=1;
+        }else if (requestname.equals("getAllMsgStatus")){
+            msg.what=2;
         }
         msg.obj=response;
         handler.sendMessage(msg);

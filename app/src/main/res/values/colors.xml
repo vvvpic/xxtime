@@ -15,7 +15,13 @@
     <color name="blue">#17B2EB</color>
     <color name="easyblue">#5fd0f9</color>
     <color name="balck">#000000</color>
+    <color name="yellow">#ffa13e</color>
 
     <color name="transparent">#00000000</color>
     <color name="red">#FF5C00</color>
+
+    <!--条码扫描-->
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
 </resources>

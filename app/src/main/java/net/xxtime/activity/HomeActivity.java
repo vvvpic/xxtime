@@ -170,6 +170,7 @@ public class HomeActivity extends BaseActivity implements AMapLocationListener {
             case 2:
                 if (jobFragment != null) {
                     transaction.show(jobFragment);
+                    jobFragment.Refresh();
                     // 否则是第一次切换则添加fragment1，注意添加后是会显示出来的，replace方法也是先remove后add
                 }
                 else {

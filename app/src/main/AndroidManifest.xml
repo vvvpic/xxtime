@@ -316,10 +316,20 @@
         <activity android:name=".activity.ShareActivity" />
         <activity android:name=".activity.InviteActivity" />
         <activity android:name=".activity.MsgFollowActivity" />
-        <activity android:name=".activity.MsgApplyActivity"></activity>
-        <activity android:name=".activity.MsgSalaryActivity"></activity>
-        <activity android:name=".activity.MsgWithdrawActivity"></activity>
-        <activity android:name=".activity.MsgSystemActivity"></activity>
+        <activity android:name=".activity.MsgApplyActivity" />
+        <activity android:name=".activity.MsgSalaryActivity" />
+        <activity android:name=".activity.MsgWithdrawActivity" />
+        <activity android:name=".activity.MsgSystemActivity" />
+        <activity android:name=".activity.ToemployedActivity" />
+        <activity android:name=".activity.ToaccountdActivity" />
+        <activity android:name=".activity.NoemployActivity" />
+        <activity android:name=".activity.AssessedActivity" />
+        <activity android:name=".activity.ToassessActivity" />
+        <activity android:name=".activity.ToSignActivity" />
+        <activity android:name=".activity.StoodActivity" />
+        <activity android:name=".activity.JobStatusActivity" />
+        <activity android:name=".activity.AssessActivity"></activity>
+        <activity android:name=".activity.ScanActivity"></activity>
     </application>
 
 </manifest>

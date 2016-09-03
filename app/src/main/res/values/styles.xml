@@ -12,6 +12,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="foodAssessRatingBar" parent="@android:style/Widget.RatingBar">
+        <!--指向star_rating_bar_full.xml文件 -->
+        <item name="android:progressDrawable">@drawable/star_a_rating_bar_full</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="my_radiobtn_style" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/custom_radionbtn</item>
         <item name="android:paddingLeft">4dp</item>

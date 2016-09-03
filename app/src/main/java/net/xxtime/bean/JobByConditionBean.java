@@ -96,6 +96,9 @@ public class JobByConditionBean implements Serializable {
         private String area;
         private String address;
         private int settlementtime;
+        public int registerid=0;
+        public int workid=0;
+        public int settlementid=0;
         private int salary;
         private String cityname;
         private String labelnames;

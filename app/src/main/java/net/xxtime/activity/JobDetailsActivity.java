@@ -60,6 +60,8 @@ public class JobDetailsActivity extends BaseActivity {
     private TextView tvCollect, tvApply;
     private CommonBean commonBean;
 
+    private int registerid;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -145,6 +147,8 @@ public class JobDetailsActivity extends BaseActivity {
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getLabelnames())){
             tvLucency.setText(jobByCodeBean.getDefaultAList().get(0).getLabelnames().replace(","," "));
+        }else {
+            tvLucency.setText("无附加说明");
         }
 
         rbAssess.setRating(jobByCodeBean.getDefaultAList().get(0).getStarNum());
@@ -326,6 +330,7 @@ public class JobDetailsActivity extends BaseActivity {
         setRightResource(R.mipmap.ic_share);
         tvTel.setText(Html.fromHtml(html));
         jobcode=getIntent().getStringExtra("jobcode");
+        registerid=getIntent().getIntExtra("registerid",0);
         params=new RequestParams();
         params.put("reqCode","getJobByCode");
         params.put("jobcode",jobcode);
