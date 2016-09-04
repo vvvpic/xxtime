@@ -11,6 +11,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import net.xxtime.R;
 
@@ -18,10 +20,21 @@ public class XxtimeApplication extends Application {
 
 	public static int width;
 	public static int height;
-
+	/***
+	 * 微信
+	 */
+	public static IWXAPI api;
 	@Override
 	public void onCreate() {
 		SystemCrashLog.init(getApplicationContext(), true, false, false);
+
+		/**
+		 * 微信
+		 */
+		api= WXAPIFactory.createWXAPI(getApplicationContext(), "wx943324d32966a1b0",true);
+
+		api.registerApp("wx943324d32966a1b0");
+
 
 		WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();

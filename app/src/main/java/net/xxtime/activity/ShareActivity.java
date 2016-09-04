@@ -22,9 +22,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
+import net.xxtime.bean.ShareBean;
 import net.xxtime.bean.ShareWayBean;
 import net.xxtime.utils.ImageUtils;
 import net.xxtime.utils.SharedUtils;
+import net.xxtime.view.ShareDialog;
 
 import java.io.File;
 
@@ -38,6 +40,9 @@ public class ShareActivity extends BaseActivity {
     private Message msg;
 
     private ShareWayBean shareWayBean;
+
+    private ShareDialog shareDialog;
+    private ShareBean shareBean;
 
     private Handler handler=new Handler(){
         @Override
@@ -72,6 +77,7 @@ public class ShareActivity extends BaseActivity {
         tvRight=(TextView)findViewById(R.id.tvRight);
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("邀请记录");
+        shareDialog=new ShareDialog(this,R.style.loadingDialog);
     }
 
     @Override
@@ -151,7 +157,15 @@ public class ShareActivity extends BaseActivity {
                 Jump(InviteActivity.class);
                 break;
             case R.id.btnShare:
-
+                if (shareDialog!=null){
+                    shareBean=new ShareBean();
+                    shareBean.title="闲暇时光好友邀请";
+                    shareBean.IMAGE_URL=shareWayBean.getDefaultAList().get(0).getQRcodeUrl();
+                    shareBean.SUMMARY="我在玩闲暇时光，里面很多岗位，一起来玩吧";
+                    shareBean.url=shareWayBean.getDefaultAList().get(0).getShareUrl();
+                    shareDialog.setShare(shareBean);
+                    shareDialog.show();
+                }
                 break;
         }
     }

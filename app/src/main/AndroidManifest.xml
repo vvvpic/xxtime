@@ -45,6 +45,20 @@
     <!-- 在sdcard中创建/删除文件的权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
+    <!-- QQ -->
+    <!-- SDK2.1新增获取用户位置信息 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- WEIXIN -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <application
         android:name=".base.activity.XxtimeApplication"
         android:allowBackup="true"
@@ -331,6 +345,41 @@
         <activity android:name=".activity.AssessActivity"></activity>
         <activity android:name=".activity.ScanActivity"></activity>
         <activity android:name=".activity.SchoolJobActivity"></activity>
+
+
+        <!-- QQ -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1105651308" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 微信 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:label="@string/app_name"
+            android:exported="true"
+            android:launchMode="singleTop">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="xxtime"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

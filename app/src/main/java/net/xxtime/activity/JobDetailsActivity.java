@@ -1,6 +1,8 @@
 package net.xxtime.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
@@ -19,14 +21,25 @@ import com.longtu.base.util.StringUtils;
 import com.longtu.base.util.ToastUtils;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tencent.connect.common.Constants;
+import com.tencent.mm.sdk.openapi.SendMessageToWX;
+import com.tencent.mm.sdk.openapi.WXMediaMessage;
+import com.tencent.mm.sdk.openapi.WXWebpageObject;
+import com.tencent.tauth.Tencent;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
+import net.xxtime.base.activity.XxtimeApplication;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.JobByCodeBean;
+import net.xxtime.bean.ShareBean;
 import net.xxtime.utils.Contact;
+import net.xxtime.utils.ImageUtils;
 import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.SharedUtils;
+import net.xxtime.view.ShareDialog;
+
+import java.net.URL;
 
 /**
  * 工作详情
@@ -62,6 +75,10 @@ public class JobDetailsActivity extends BaseActivity {
 
     private int registerid;
 
+    private ShareBean shareBean;
+
+    private ShareDialog shareDialog;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -79,6 +96,15 @@ public class JobDetailsActivity extends BaseActivity {
                         tvCollect.setText("已关注");
                         tvCollect.setTextColor(getResources().getColor(R.color.blue));
                         tvCollect.setEnabled(false);
+                    }
+                    ToastUtils.show(JobDetailsActivity.this,commonBean.getMsg());
+                    break;
+                case 3:
+                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                        tvApply.setText("已报名");
+                        tvAppy.setText("已报名");
+                        tvApply.setEnabled(false);
                     }
                     ToastUtils.show(JobDetailsActivity.this,commonBean.getMsg());
                     break;
@@ -265,7 +291,8 @@ public class JobDetailsActivity extends BaseActivity {
         }
 
         if (jobByCodeBean.getDefaultAList().get(0).isApply==1){
-            tvApply.setText("已申请");
+            tvApply.setText("已报名");
+            tvAppy.setText("已报名");
             tvApply.setEnabled(false);
         }else {
 
@@ -321,6 +348,8 @@ public class JobDetailsActivity extends BaseActivity {
         tvCollect  =(TextView) findViewById(R.id.tvCollect);
         tvApply =(TextView) findViewById(R.id.tvApply);
 
+        shareDialog=new ShareDialog(this,R.style.loadingDialog);
+
     }
 
     @Override
@@ -331,11 +360,7 @@ public class JobDetailsActivity extends BaseActivity {
         tvTel.setText(Html.fromHtml(html));
         jobcode=getIntent().getStringExtra("jobcode");
         registerid=getIntent().getIntExtra("registerid",0);
-        params=new RequestParams();
-        params.put("reqCode","getJobByCode");
-        params.put("jobcode",jobcode);
-        params.put("userid", SharedUtils.getUserId(this));
-        post("job",params,"getJobByCode");
+
     }
 
     @Override
@@ -353,6 +378,11 @@ public class JobDetailsActivity extends BaseActivity {
 
     @Override
     public void ResumeDatas() {
+        params=new RequestParams();
+        params.put("reqCode","getJobByCode");
+        params.put("jobcode",jobcode);
+        params.put("userid", SharedUtils.getUserId(this));
+        pullpost("job",params,"getJobByCode");
 
     }
 
@@ -381,6 +411,27 @@ public class JobDetailsActivity extends BaseActivity {
                 Jump(intent);
                 break;
             case R.id.tvApply:
+
+                if (jobByCodeBean!=null){
+                    if (StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobstartdate())||
+                            StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobenddate())){
+                        params=new RequestParams();
+                        params.put("reqCode","registerJob");
+                        params.put("userid", SharedUtils.getUserId(this));
+                        params.put("jobcode",jobcode);
+                        post("userJob",params,"registerJob");
+                        return;
+                    }
+
+                    if (jobByCodeBean.getDefaultAList().get(0).getJobcontinuous()==1){
+                        params=new RequestParams();
+                        params.put("reqCode","registerJob");
+                        params.put("userid", SharedUtils.getUserId(this));
+                        params.put("jobcode",jobcode);
+                        post("userJob",params,"registerJob");
+                    }
+                }
+
                 intent=new Intent(this,ApplyActivity.class);
                 if (jobByCodeBean!=null) {
                     intent.putExtra("jobcode", jobByCodeBean.getDefaultAList().get(0).getJobcode());
@@ -395,6 +446,17 @@ public class JobDetailsActivity extends BaseActivity {
                 }
                 Jump(intent);
                 break;
+            case R.id.ivRight:
+                shareBean=new ShareBean();
+                shareBean.title=jobByCodeBean.getDefaultAList().get(0).getJobname();
+                shareBean.SUMMARY=tvAdress.getText().toString()+"#"+tvWorkTime.getText().toString();
+                shareBean.url="www.xxtime.net";
+                shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?"http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();
+                shareDialog.setShare(shareBean);
+                if (shareDialog!=null){
+                    shareDialog.show();
+                }
+                break;
         }
     }
 
@@ -405,9 +467,24 @@ public class JobDetailsActivity extends BaseActivity {
             msg.what=1;
         }else if (requestname.equals("focusPosition")){
             msg.what=2;
+        }else if (requestname.equals("registerJob")){
+            msg.what=3;
         }
 
         msg.obj=response;
         handler.sendMessage(msg);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        /***
+         * QQ
+         */
+        if (requestCode == Constants.REQUEST_QQ_SHARE) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, shareDialog);
+        }
+    }
+
 }
