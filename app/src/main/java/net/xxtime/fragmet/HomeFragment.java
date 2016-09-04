@@ -1,5 +1,6 @@
 package net.xxtime.fragmet;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,15 +24,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.longtu.base.util.StringUtils;
+import com.longtu.base.util.ToastUtils;
 import com.longtu.base.view.ScrollGridView;
 import com.longtu.base.view.ScrollListView;
 import com.loopj.android.http.RequestParams;
 
 import net.xxtime.R;
+import net.xxtime.activity.AuthenticationActivity;
 import net.xxtime.activity.CityChooseActivity;
 import net.xxtime.activity.JobDetailsActivity;
 import net.xxtime.activity.JobSearchActivity;
 import net.xxtime.activity.OnlineJobActivity;
+import net.xxtime.activity.PerfectInfoActivity;
+import net.xxtime.activity.SchoolJobActivity;
 import net.xxtime.activity.SocialActivity;
 import net.xxtime.activity.WelfareActivity;
 import net.xxtime.adapter.AccountAdapter;
@@ -40,11 +46,14 @@ import net.xxtime.adapter.JobAdapter;
 import net.xxtime.adapter.SortAdapter;
 import net.xxtime.base.fragment.BaseFragment;
 import net.xxtime.bean.AccountBean;
+import net.xxtime.bean.CheckStudentBean;
+import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.GetHomeLbtBean;
 import net.xxtime.bean.JobByConditionBean;
 import net.xxtime.bean.SortBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.DataUtils;
+import net.xxtime.utils.SharedUtils;
 import net.xxtime.view.TopGallery;
 
 import java.text.SimpleDateFormat;
@@ -107,6 +116,10 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
 
     private JobAdapter jobAdapter;
 
+    private Dialog personaldialog;
+
+    private CommonBean commonBean;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -155,6 +168,28 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                     gyBanner.setSelection(curpos);
                     handler.sendEmptyMessageDelayed(3,4000);
                     break;
+
+                case 4:
+                    Contact.checkStudentBean=JSONObject.parseObject(msg.obj.toString(), CheckStudentBean.class);
+                    if (Contact.checkStudentBean!=null) {
+                        if (Contact.checkStudentBean.isSuccess()) {
+                            params.put("reqCode","isOpenSchool");
+                            params.put("userid", SharedUtils.getUserId(getActivity()));
+                            Log.e("param==>",params.toString());
+                            HomeFragment.this.post("studentUser",params,"isOpenSchool");
+                        } else {
+                            personaldialog.show();
+                        }
+                    }
+                    break;
+                case 5:
+                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                        homeActivity.Jump(SchoolJobActivity.class);
+                    }else {
+                        ToastUtils.show(getActivity(), commonBean.getMsg());
+                    }
+                    break;
             }
         }
     };
@@ -189,6 +224,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         lvHome.addFooterView(FooterView);
 
         loading(ivLoading);
+        initPerson();
 
     }
 
@@ -202,7 +238,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         currttime=System.currentTimeMillis();
         Contact.CurTime=formatter.format(new Date(currttime));
         Log.e("Week==>", DataUtils.getWeek()+"");
-        int week=DataUtils.getWeek()-1>1?DataUtils.getWeek()-1:6;
+        int week=DataUtils.getWeek()-1>1?DataUtils.getWeek()-1:7;
         for (int i=0;i<week-1;i++){
             listdates.add((long) 0);
         }
@@ -406,6 +442,8 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 homeActivity.Jump(intent);
             }
         });
+        btnCancel.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
     }
 
 
@@ -442,6 +480,18 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 homeActivity.Jump(OnlineJobActivity.class);
                 break;
             case R.id.llSchool:
+                params=new RequestParams();
+                params.put("reqCode","checkStudentUserInfo");
+                params.put("userid", SharedUtils.getUserId(getActivity()));
+                Log.e("param==>",params.toString());
+                pullpost("studentUser",params,"checkStudentUserInfo");
+                break;
+            case R.id.btnCancel:
+                personaldialog.dismiss();
+                break;
+            case R.id.btnOk:
+                homeActivity.Jump(PerfectInfoActivity.class);
+                personaldialog.dismiss();
                 break;
         }
     }
@@ -454,6 +504,10 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
             msg.what=1;
         }else if (requestname.equals("getJobByCondition")){
             msg.what=2;
+        }else if (requestname.equals("checkStudentUserInfo")){
+            msg.what=4;
+        }else if (requestname.equals("isOpenSchool")){
+            msg.what=5;
         }
         msg.obj=response;
         handler.sendMessage(msg);
@@ -597,5 +651,21 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+    }
+
+    private Button btnOk, btnCancel;
+    private void initPerson() {
+        personaldialog = new Dialog(getActivity(), R.style.loadingDialog);
+        LinearLayout layout = new LinearLayout(getActivity());
+
+        layout.setBackgroundColor(getActivity().getResources().getColor(
+                R.color.transparent));
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.personal_dialog, null);
+        layout.addView(view);
+        personaldialog.setContentView(layout);
+        personaldialog.setCanceledOnTouchOutside(false);
+        personaldialog.setCancelable(false);
+        btnOk =(Button)view.findViewById(R.id.btnOk);
+        btnCancel=(Button)view.findViewById(R.id.btnCancel);
     }
 }

@@ -135,7 +135,7 @@ public class MyFragment extends BaseFragment {
         params.put("reqCode","checkStudentUserInfo");
         params.put("userid", SharedUtils.getUserId(getActivity()));
         Log.e("param==>",params.toString());
-        post("studentUser",params,"checkStudentUserInfo");
+        pullpost("studentUser",params,"checkStudentUserInfo");
     }
 
     @Override

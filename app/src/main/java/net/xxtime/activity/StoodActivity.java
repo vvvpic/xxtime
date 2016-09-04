@@ -1,5 +1,6 @@
 package net.xxtime.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -101,9 +102,9 @@ public class StoodActivity extends BaseActivity implements AdapterView.OnItemCli
         listdates=new ArrayList<>();
         currttime=System.currentTimeMillis();
         Contact.CurTime=formatter.format(new Date(currttime));
-        getRegisterJobByCondition(Contact.CurTime.substring(0,10));
+        getRegisterJobByCondition( Contact.CurTime.substring(0,10));
         Log.e("Week==>", DataUtils.getWeek()+"");
-        int week=DataUtils.getWeek()-1>1?DataUtils.getWeek()-1:6;
+        int week=DataUtils.getWeek()-1>1?DataUtils.getWeek()-1:7;
         for (int i=0;i<week-1;i++){
             listdates.add((long) 0);
         }
@@ -135,6 +136,7 @@ public class StoodActivity extends BaseActivity implements AdapterView.OnItemCli
     public void setListener() {
         ivDel.setOnClickListener(this);
         gvDates.setOnItemClickListener(this);
+        lvJobs.setOnItemClickListener(this);
     }
 
     @Override
@@ -171,6 +173,12 @@ public class StoodActivity extends BaseActivity implements AdapterView.OnItemCli
                 datecurpos=position;
                 dateAdapter.setCur(position);
                 getRegisterJobByCondition(formatter.format(new Date(listdates.get(position))).substring(0,10));
+                break;
+            case R.id.lvJobs:
+                intent=new Intent(this,JobStatusActivity.class);
+                intent.putExtra("postStatus",6);
+                intent.putExtra("codeid",jobByConditionBean.getDefaultAList().get(position).workid);
+                Jump(intent);
                 break;
         }
     }

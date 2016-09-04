@@ -292,6 +292,12 @@ public class JobStatusActivity extends BaseActivity {
             tvAppy.setText("待签到");
             rlQd.setVisibility(View.VISIBLE);
             tvDStatus.setText("扫描签到");
+        }else if (postStatus==6){
+            llDjs.setVisibility(View.VISIBLE);
+            tvAppy.setText("待签到");
+            rlQd.setVisibility(View.VISIBLE);
+            tvDStatus.setText("扫描签到");
+            tvDStatus.setVisibility(View.GONE);
         }
         Log.e("param==>",params.toString());
         post("userJob",params,"getRegisterJobDetail");

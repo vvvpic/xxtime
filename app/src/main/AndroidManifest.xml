@@ -330,6 +330,7 @@
         <activity android:name=".activity.JobStatusActivity" />
         <activity android:name=".activity.AssessActivity"></activity>
         <activity android:name=".activity.ScanActivity"></activity>
+        <activity android:name=".activity.SchoolJobActivity"></activity>
     </application>
 
 </manifest>

@@ -168,7 +168,7 @@ public class SocialActivity extends BaseActivity implements AdapterView.OnItemCl
         currttime=System.currentTimeMillis();
         Contact.CurTime=formatter.format(new Date(currttime));
         Log.e("Week==>", DataUtils.getWeek()+"");
-        int week=DataUtils.getWeek()-1>1?DataUtils.getWeek()-1:6;
+        int week=DataUtils.getWeek()-1>1?DataUtils.getWeek()-1:7;
         for (int i=0;i<week-1;i++){
             listdates.add((long) 0);
         }

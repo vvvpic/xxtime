@@ -1,7 +1,6 @@
 package net.xxtime.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateUtils;
@@ -26,6 +25,7 @@ import net.xxtime.adapter.JobAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.JobByConditionBean;
 import net.xxtime.utils.Contact;
+import net.xxtime.utils.SharedUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * 在线兼职
  */
-public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScrollListener{
+public class SchoolJobActivity extends BaseActivity implements AbsListView.OnScrollListener{
 
     private PullToRefreshListView plJobs;
     private ListView lvJobs;
@@ -98,7 +98,7 @@ public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScr
 
     @Override
     public void setContentView() {
-        setContentView(R.layout.activity_online_job);
+        setContentView(R.layout.activity_school_job);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScr
 
     @Override
     public void initDatas() {
-        setTitle("在线兼职");
+        setTitle("校内兼职");
         if (!StringUtils.isEmpty(Contact.ChooseCityCode)){
             CityCode=Contact.ChooseCityCode;
         }else {
@@ -140,7 +140,7 @@ public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScr
         plJobs.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                String label = DateUtils.formatDateTime(OnlineJobActivity.this, System.currentTimeMillis(),
+                String label = DateUtils.formatDateTime(SchoolJobActivity.this, System.currentTimeMillis(),
                         DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
 
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
@@ -163,7 +163,7 @@ public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScr
                 if (position==0||position==listDefaults.size()+1){
                     return;
                 }
-                intent=new Intent(OnlineJobActivity.this,JobDetailsActivity.class);
+                intent=new Intent(SchoolJobActivity.this,JobDetailsActivity.class);
                 intent.putExtra("jobcode",listDefaults.get(position-1).getJobcode());
                 Jump(intent);
             }
@@ -184,8 +184,8 @@ public class OnlineJobActivity extends BaseActivity implements AbsListView.OnScr
         params=new RequestParams();
         params.put("reqCode","getJobByCondition");
         params.put("indexPage",indexPage);
-        params.put("city",CityCode);
-        params.put("publisher",3);
+        params.put("publisher",1);
+        params.put("userid", SharedUtils.getUserId(this));
         Log.e("param==>",params.toString());
         pullpost("job",params,"getJobByCondition");
     }
