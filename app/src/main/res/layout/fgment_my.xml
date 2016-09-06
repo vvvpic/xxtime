@@ -157,7 +157,7 @@
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/title"
                 android:text="分享好友"
-                android:drawableTop="@mipmap/ic_share"
+                android:drawableTop="@mipmap/ico_share"
                 android:textColor="@color/txt_333"/>
         </LinearLayout>
             <View

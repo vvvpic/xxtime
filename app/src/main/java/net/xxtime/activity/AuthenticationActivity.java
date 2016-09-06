@@ -1,5 +1,6 @@
 package net.xxtime.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -59,6 +60,14 @@ public class AuthenticationActivity extends BaseActivity {
     private ImageView ivDelstudent, ivDelback, ivDeljust;
 
     private String isstudent;
+    private String cardobverse;
+    private String cardreverse;
+    private String studentcard;
+    private int certification;
+    private String name;
+    private String cardcode;
+    private String studentcardcode;
+
 
     private RelativeLayout rlStudent;
 
@@ -112,7 +121,7 @@ public class AuthenticationActivity extends BaseActivity {
                                     params=new RequestParams();
                                     params.put("reqCode","uploadImages");
                                     params.put("userid", SharedUtils.getUserId(AuthenticationActivity.this));
-                                    params.put("type",5);
+                                    params.put("type",6);
                                     File myFile = new File(addstudent);
                                     try {
                                         params.put("file1", myFile);
@@ -185,6 +194,13 @@ public class AuthenticationActivity extends BaseActivity {
         ivAddstudent.setLayoutParams(params);*/
 
         isstudent=getIntent().getStringExtra("isstudent");
+        cardobverse=getIntent().getStringExtra("cardobverse");
+        cardreverse=getIntent().getStringExtra("cardreverse");
+        studentcard=getIntent().getStringExtra("studentcard");
+        certification=getIntent().getIntExtra("certification",0);
+        name=getIntent().getStringExtra("name");
+        cardcode=getIntent().getStringExtra("cardcode");
+        studentcardcode=getIntent().getStringExtra("studentcardcode");
 
         if (!isstudent.equals("1")){
             llSutent.setVisibility(View.INVISIBLE);
@@ -197,7 +213,67 @@ public class AuthenticationActivity extends BaseActivity {
 
     @Override
     public void setDatas() {
+        if(!StringUtils.isEmpty(cardobverse)){
+            addjust=cardobverse;
+            if (certification==0||certification==3) {
+                ivDeljust.setVisibility(View.VISIBLE);
+            }
+            ivAddjust.setEnabled(false);
+            btnSubmit.setText("修改");
+            ImageLoader.getInstance().displayImage(cardobverse,ivAddjust);
+        }
 
+        if(!StringUtils.isEmpty(cardreverse)){
+            addback=cardreverse;
+            if (certification==0||certification==3) {
+                ivDelback.setVisibility(View.VISIBLE);
+            }
+            ivAddback.setEnabled(false);
+            ImageLoader.getInstance().displayImage(cardreverse,ivAddback);
+        }
+
+        if(!StringUtils.isEmpty(studentcard)){
+            addstudent=studentcard;
+            if (certification==0||certification==3) {
+                ivDelstudent.setVisibility(View.VISIBLE);
+            }
+            ivAddstudent.setEnabled(false);
+            ImageLoader.getInstance().displayImage(studentcard,ivAddstudent);
+        }
+
+        if (!StringUtils.isEmpty(name)){
+            etName.setText(name);
+        }
+
+        if (!StringUtils.isEmpty(cardcode)){
+            etId.setText(cardcode);
+        }
+
+        if (!StringUtils.isEmpty(studentcardcode)){
+            etStudentId.setText(studentcardcode);
+        }
+
+        if (certification==0){
+            tvStatus.setText("未认证");
+        }else if (certification==1){
+            setEnadle();
+            tvStatus.setText("待认证");
+        }else if (certification==2){
+            setEnadle();
+            tvStatus.setText("已认证");
+        }else if (certification==3){
+            tvStatus.setText("认证未通过");
+        }
+
+    }
+
+    private void setEnadle(){
+        ivAddstudent.setEnabled(false);
+        ivAddjust.setEnabled(false);
+        ivAddback.setEnabled(false);
+        etName.setEnabled(false);
+        etStudentId.setEnabled(false);
+        etId.setEnabled(false);
     }
 
     @Override
@@ -251,10 +327,13 @@ public class AuthenticationActivity extends BaseActivity {
 
                 break;
             case R.id.btnCh:
+                intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+             /*   startActivityForResult(intent, IMAGE);
                 intent = new Intent();
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image*//*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);*/
                 startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
                 if (choosePhotoWindow!=null)
                     choosePhotoWindow.dismiss();
@@ -347,12 +426,13 @@ public class AuthenticationActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_PICK_IMAGE) {
+        if (requestCode == REQUEST_CODE_PICK_IMAGE&& resultCode == Activity.RESULT_OK) {
             if (data == null)
                 return;
             if (data != null) {
                 Uri uri = data.getData();
-                    Cursor cursor = getContentResolver().query(uri, null, null, null,null);
+                String[] proj = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(uri, proj, null, null,null);
                     if (cursor != null && cursor.moveToFirst()) {
                         String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
                        if (addtype==0){

@@ -122,6 +122,10 @@ public class JobAdapter extends BaseAdapter {
             job_item.tvAdress.append(listsdefaultAListBeens.get(position).getAddress());
         }
 
+        if (!StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
+            Contact.get(job_item.tvAdress.getText().toString(),context,job_item.tvAdress);
+        }
+
         if (StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
             job_item.tvAdress.setText("地址不限");
         }

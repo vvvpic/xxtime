@@ -61,7 +61,15 @@ public class FirmHomeActivity extends BaseActivity implements AdapterView.OnItem
                     commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
                     if (commonBean!=null&&commonBean.getBflag().equals("1")){
                         ivRight.setImageResource(R.mipmap.ico_collect_p);
-                        ivRight.setEnabled(false);
+                        busInfoBean.getDefaultAList().get(0).setIsFocus(1);
+                    }
+                    ToastUtils.show(FirmHomeActivity.this,commonBean.getMsg());
+                    break;
+                case 3:
+                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                        ivRight.setImageResource(R.mipmap.ico_collect_n);
+                        busInfoBean.getDefaultAList().get(0).setIsFocus(0);
                     }
                     ToastUtils.show(FirmHomeActivity.this,commonBean.getMsg());
                     break;
@@ -88,7 +96,6 @@ public class FirmHomeActivity extends BaseActivity implements AdapterView.OnItem
 
         if (busInfoBean.getDefaultAList().get(0).getIsFocus()==1){
             ivRight.setImageResource(R.mipmap.ico_collect_p);
-            ivRight.setEnabled(false);
         }
 
         svFirm.smoothScrollTo(0,0);
@@ -173,13 +180,21 @@ public class FirmHomeActivity extends BaseActivity implements AdapterView.OnItem
                 break;
             case R.id.ivRight:
                 params=new RequestParams();
-                params.put("reqCode","focusPosition");
+
                 params.put("userid",SharedUtils.getUserId(this));
                 params.put("type",1);
                 if(busInfoBean!=null) {
                     params.put("code", busInfoBean.getDefaultAList().get(0).getBuscode());
                 }
-                post("userJob",params,"focusPosition");
+
+                if (busInfoBean.getDefaultAList().get(0).getIsFocus()==0) {
+                    params.put("reqCode", "focusPosition");
+                    post("userJob",params,"focusPosition");
+                }else {
+                    params.put("reqCode", "deleteFocusPosition");
+                    post("userJob",params,"deleteFocusPosition");
+                }
+
                 break;
             case R.id.flAsses:
                 intent=new Intent(this,CommentActivity.class);
@@ -198,6 +213,8 @@ public class FirmHomeActivity extends BaseActivity implements AdapterView.OnItem
             msg.what=1;
         }else if (requestname.equals("focusPosition")){
             msg.what=2;
+        }else if (requestname.equals("deleteFocusPosition")){
+            msg.what=3;
         }
         msg.obj=response;
         handler.sendMessage(msg);

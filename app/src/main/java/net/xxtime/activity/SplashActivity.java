@@ -128,6 +128,13 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                                             Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName()
                                     ).toUpperCase();
 
+                                    if ( Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName().indexOf("长治市")>-1||
+                                            Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName().indexOf("长沙市")>-1||
+                                            Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName().indexOf("重庆市")>-1||
+                                            Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName().indexOf("长春市")>-1){
+                                        Contact.citysBean.getProvince().get(i).getCity().get(j).Pinyin="C"+Contact.citysBean.getProvince().get(i).getCity().get(j).Pinyin.substring(1);
+                                    }
+
                                     listAreas.add( Contact.citysBean.getProvince().get(i).getCity().get(j));
                                    /* if (Contact.citysBean.getProvince().get(i).getCity().get(j).getArea()!=null){
                                         for (int z=0;z<Contact.citysBean.getProvince().get(i).getCity().get(j).getArea().size();z++){
@@ -143,7 +150,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 for (int i=0;i<26;i++){
                     for (int j=0;j<listAreas.size();j++){
                         if (listAreas.get(j).Pinyin.charAt(0)=='A'+i){
-//                            Log.e("Areas==>",listAreas.get(j).getAddName()+"--"+listAreas.get(j).Pinyin);
+                          //  Log.e("Areas==>",listAreas.get(j).getAddName()+"--"+listAreas.get(j).Pinyin);
                             Contact.listAreas.add(listAreas.get(j));
                             listAreas.remove(j);
                             j--;

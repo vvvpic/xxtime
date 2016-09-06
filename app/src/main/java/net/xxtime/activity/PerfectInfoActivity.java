@@ -1,5 +1,6 @@
 package net.xxtime.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -359,10 +360,12 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
                 break;
             case R.id.btnCh:
-                intent = new Intent();
+                intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+             /*   intent = new Intent();
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image*//*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);*/
                 startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
                 if (choosePhotoWindow!=null)
                     choosePhotoWindow.dismiss();
@@ -534,7 +537,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_PICK_IMAGE) {
+        if (requestCode == REQUEST_CODE_PICK_IMAGE&& resultCode == Activity.RESULT_OK) {
             if (data == null)
                 return;
 
@@ -543,7 +546,8 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 if (choosephoto==0) {
                     startPhotoZoom(uri);
                 }else {
-                    Cursor cursor = getContentResolver().query(uri, null, null, null,null);
+                    String[] proj = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(uri, proj, null, null,null);
                     if (cursor != null && cursor.moveToFirst()) {
                         String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
                         listphotos.add(path);

@@ -57,6 +57,7 @@ public class MsgFollowActivity extends BaseActivity {
                             lvFollows.setAdapter(msgFollowAdapter);
                             rlEmpty.setVisibility(View.GONE);
                             plFollows.setVisibility(View.VISIBLE);
+                            setYes();
                         }else {
                             rlEmpty.setVisibility(View.VISIBLE);
                             plFollows.setVisibility(View.GONE);
@@ -78,6 +79,23 @@ public class MsgFollowActivity extends BaseActivity {
             }
         }
     };
+
+    private void setYes(){
+        String msgids="";
+        for (int i=0;i<studentUserMsgBean.getDefaultAList().size();i++){
+            if (studentUserMsgBean.getDefaultAList().get(i).getIsread()==0){
+                msgids=msgids+studentUserMsgBean.getDefaultAList().get(i).getMsgid()+",";
+            }
+        }
+        if (!StringUtils.isEmpty(msgids)){
+            msgids=msgids.substring(0,msgids.length()-1);
+            params = new RequestParams();
+            params.put("reqCode", "setMsgRead");
+            params.put("msgids", msgids);
+            Log.e("params==>",params.toString());
+            pullpost("studentUser", params, "setMsgRead");
+        }
+    }
 
     @Override
     public void setContentView() {

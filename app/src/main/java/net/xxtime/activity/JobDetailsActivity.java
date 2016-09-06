@@ -22,9 +22,6 @@ import com.longtu.base.util.ToastUtils;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tencent.connect.common.Constants;
-import com.tencent.mm.sdk.openapi.SendMessageToWX;
-import com.tencent.mm.sdk.openapi.WXMediaMessage;
-import com.tencent.mm.sdk.openapi.WXWebpageObject;
 import com.tencent.tauth.Tencent;
 
 import net.xxtime.R;
@@ -96,6 +93,7 @@ public class JobDetailsActivity extends BaseActivity {
                         tvCollect.setText("已关注");
                         tvCollect.setTextColor(getResources().getColor(R.color.blue));
                         tvCollect.setEnabled(false);
+                        rlCollect.setEnabled(false);
                     }
                     ToastUtils.show(JobDetailsActivity.this,commonBean.getMsg());
                     break;
@@ -276,13 +274,14 @@ public class JobDetailsActivity extends BaseActivity {
             tvCollect.setText("已关注");
             tvCollect.setTextColor(getResources().getColor(R.color.blue));
             tvCollect.setEnabled(false);
+            rlCollect.setEnabled(false);
         }else {
             ivCollect.setImageResource(R.mipmap.ico_collect_n);
             tvCollect.setText("关注");
             tvCollect.setTextColor(getResources().getColor(R.color.txt_666));
         }
 
-        if (jobByCodeBean.getDefaultAList().get(0).getIsEmploy()==0){
+        if (jobByCodeBean.getDefaultAList().get(0).getIsEmploy()==1){
             if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getContactmphone())) {
                 tvWorkContact.setText(jobByCodeBean.getDefaultAList().get(0).getContactmphone());
             }
@@ -296,6 +295,13 @@ public class JobDetailsActivity extends BaseActivity {
             tvApply.setEnabled(false);
         }else {
 
+        }
+
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplyenddate())){
+            if (Contact.getDateCha(Contact.CurTime.substring(0,10),jobByCodeBean.getDefaultAList().get(0).getApplyenddate().substring(0,10))<0){
+                tvApply.setText("已结束");
+                tvApply.setEnabled(false);
+            }
         }
 
         if (jobByCodeBean.getDefaultAList().get(0).getJobcontinuous()==1){

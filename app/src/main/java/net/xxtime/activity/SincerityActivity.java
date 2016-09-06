@@ -71,7 +71,7 @@ public class SincerityActivity extends BaseActivity {
 
     @Override
     public void setDatas() {
-        tvPrice.setText("诚意金："+Double.valueOf(earnestmoney));
+        tvPrice.setText("诚意金："+Double.valueOf(earnestmoney>0?earnestmoney:0));
     }
 
     @Override

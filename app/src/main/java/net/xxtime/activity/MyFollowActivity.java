@@ -76,7 +76,6 @@ public class MyFollowActivity extends BaseActivity implements AdapterView.OnItem
                         plFollows.setVisibility(View.GONE);
                         rlEmpty.setVisibility(View.VISIBLE);
                     }
-                    jobAdapter.notifyDataSetChanged();
                     break;
                 case 3:
                     focusBusBean=JSONObject.parseObject(msg.obj.toString(),FocusBusBean.class);

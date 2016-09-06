@@ -147,9 +147,17 @@ public class MyFragment extends BaseFragment {
                         intent=new Intent(getActivity(),AuthenticationActivity.class);
                         if (studentUserInfoBean!=null) {
                             intent.putExtra("isstudent",studentUserInfoBean.getDefaultAList().get(0).getIsstudent());
+                            intent.putExtra("cardobverse",studentUserInfoBean.getDefaultAList().get(0).getCardobverse());
+                            intent.putExtra("cardreverse",studentUserInfoBean.getDefaultAList().get(0).getCardreverse());
+                            intent.putExtra("studentcard",studentUserInfoBean.getDefaultAList().get(0).getStudentcard());
+                            intent.putExtra("certification",studentUserInfoBean.getDefaultAList().get(0).getCertification());
+                            intent.putExtra("name",studentUserInfoBean.getDefaultAList().get(0).getName());
+                            intent.putExtra("cardcode",studentUserInfoBean.getDefaultAList().get(0).getCardcode());
+                            intent.putExtra("studentcardcode",studentUserInfoBean.getDefaultAList().get(0).getStudentcardcode());
                         }
                         homeActivity.Jump(intent);
                     } else {
+                        tvDialogContent.setText("您的信息资料还没完善，不能进行实名认证,请先去完善个人信息后再来查看！");
                         personaldialog.show();
                     }
                 }
@@ -160,6 +168,7 @@ public class MyFragment extends BaseFragment {
                         intent=new Intent(getActivity(),WalksActivity.class);
                         homeActivity.Jump(intent);
                     } else {
+                        tvDialogContent.setText("您的信息资料还没完善，不能申请保送,请先去完善个人信息后再来查看！");
                         personaldialog.show();
                     }
                 }
@@ -172,6 +181,7 @@ public class MyFragment extends BaseFragment {
                     if (Contact.checkStudentBean.isSuccess()) {
                         homeActivity.Jump(PersoninfoActivity.class);
                     } else {
+                        tvDialogContent.setText("您的信息资料还没完善，不能查看个人信息,请先去完善个人信息后再来查看！");
                         personaldialog.show();
                     }
                 }
@@ -186,6 +196,7 @@ public class MyFragment extends BaseFragment {
                         }
                         homeActivity.Jump(intent);
                     } else {
+                        tvDialogContent.setText("您的信息资料还没完善，不能进入我的钱包,请先去完善个人信息后再来查看！");
                         personaldialog.show();
                     }
                 }
@@ -194,14 +205,8 @@ public class MyFragment extends BaseFragment {
                 homeActivity.Jump(ShareActivity.class);
                 break;
             case R.id.tvFollow://关注
-                if (Contact.checkStudentBean!=null) {
-                    if (Contact.checkStudentBean.isSuccess()) {
                         intent=new Intent(getActivity(),MyFollowActivity.class);
                         homeActivity.Jump(intent);
-                    } else {
-                        personaldialog.show();
-                    }
-                }
                 break;
             case R.id.tvSetting://设置
                 homeActivity.Jump(SettingActivity.class);
@@ -229,6 +234,7 @@ public class MyFragment extends BaseFragment {
     }
 
     private Button  btnOk, btnCancel;
+    private TextView tvDialogContent;
     private void initPerson() {
         personaldialog = new Dialog(getActivity(), R.style.loadingDialog);
         LinearLayout layout = new LinearLayout(getActivity());
@@ -242,5 +248,6 @@ public class MyFragment extends BaseFragment {
         personaldialog.setCancelable(false);
         btnOk =(Button)view.findViewById(R.id.btnOk);
         btnCancel=(Button)view.findViewById(R.id.btnCancel);
+        tvDialogContent=(TextView)view.findViewById(R.id.tvDialogContent);
     }
 }

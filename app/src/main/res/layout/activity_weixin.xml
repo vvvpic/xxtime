@@ -20,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/content"
-            android:text="支付宝号"
+            android:text="微信账号"
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"

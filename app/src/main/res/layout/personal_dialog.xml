@@ -32,7 +32,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"
-            android:text="您的信息资料还没完善，不能查看个人信息,请先去完善个人信息后再来查看！."
+            android:text="您的信息资料还没完善，不能查看个人信息,请先去完善个人信息后再来查看！"
             android:gravity="center"
             android:lineSpacingExtra="3dp"
             android:layout_gravity="center_horizontal"

@@ -1,6 +1,10 @@
 package net.xxtime.utils;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
+import android.widget.TextView;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -13,10 +17,12 @@ import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.CitysBean;
 import net.xxtime.bean.StudentUserInfoBean;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -130,9 +136,9 @@ public class Contact {
         if (Contact.citysBean!=null){
             if (Contact.citysBean.getProvince()!=null) {
                 for (int i = 0; i < Contact.citysBean.getProvince().size(); i++) {
-                    if (Contact.citysBean.getProvince().get(i).getAddName().equals(city)){
+                   /* if (Contact.citysBean.getProvince().get(i).getAddName().equals(city)){
                         return Contact.citysBean.getProvince().get(i).getCode();
-                    }
+                    }*/
                     if (Contact.citysBean.getProvince().get(i).getCity()!=null){
                         for (int j=0;j<Contact.citysBean.getProvince().get(i).getCity().size();j++){
                             if (Contact.citysBean.getProvince().get(i).getCity().get(j).getAddName().equals(city)){
@@ -175,5 +181,44 @@ public class Contact {
         return listphotos;
     }
 
+
+    public static void get(final String locationName, final Context context, final TextView textView){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
+                    if (addressList != null && addressList.size() > 0) {
+                        Log.e("lat-lng->", addressList.get(0).getLatitude()+"-"+addressList.get(0).getLongitude())  ;
+                        int lng = (int) (addressList.get(0).getLongitude() * 1E6);
+                        textView.append(" 相距"+getDistance(addressList.get(0).getLongitude(),addressList.get(0).getLatitude(),Longitude,Latitude)+"km");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private static final double EARTH_RADIUS = 6378137.0;
+    public static String getDistance(double longitude1, double latitude1,
+                                     double longitude2, double latitude2) {
+        double Lat1 = rad(latitude1);
+        double Lat2 = rad(latitude2);
+        double a = Lat1 - Lat2;
+        double b = rad(longitude1) - rad(longitude2);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+                + Math.cos(Lat1) * Math.cos(Lat2)
+                * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000.0/1000.0;
+        DecimalFormat df=new DecimalFormat("#.00");
+
+        return df.format(s);
+    }
+    private static double rad(double d) {
+        return d * Math.PI / 180.0;
+    }
 
 }

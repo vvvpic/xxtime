@@ -334,15 +334,16 @@ public class JobStatusActivity extends BaseActivity {
                     params.put("jobcode",jobByCodeBean.getDefaultAList().get(0).getJobcode());
                     params.put("userid", SharedUtils.getUserId(this));
                     post("userJob",params,"registerJob");*/
-                    intent=new Intent(this,JobDetailsActivity.class);
-                    intent.putExtra("jobcode",jobByCodeBean.getDefaultAList().get(0).getJobcode());
-                    intent.putExtra("registerid",codeid);
-                    Jump(intent);
-                }else if (postStatus==5){
                     intent=new Intent(this,AssessActivity.class);
                     intent.putExtra("jobcode",jobByCodeBean.getDefaultAList().get(0).getJobcode());
                     intent.putExtra("registerid",codeid);
                     Jump(intent,ADDASSESS);
+
+                }else if (postStatus==5){
+                    intent=new Intent(this,JobDetailsActivity.class);
+                    intent.putExtra("jobcode",jobByCodeBean.getDefaultAList().get(0).getJobcode());
+                    intent.putExtra("registerid",codeid);
+                    Jump(intent);
                 }else if(postStatus==2){
                     if (curtime.indexOf(formatter.format(new Date(System.currentTimeMillis())))<0){
                         ToastUtils.show(this,"只能签到当天工作！");
