@@ -147,6 +147,18 @@ public class JobStatusActivity extends BaseActivity {
             tvDjsAddress.append(jobByCodeBean.getDefaultAList().get(0).getAddress());
         }
 
+        if (StringUtils.isEmpty(tvDjsAddress.getText().toString())){
+            tvDjsAddress.setText("地址不限");
+        }
+
+        if (StringUtils.isEmpty(tvAddress.getText().toString())){
+            tvAddress.setText("地址不限");
+        }
+
+        if (StringUtils.isEmpty(tvAdress.getText().toString())){
+            tvAdress.setText("地址不限");
+        }
+
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getContacts())){
             tvDjsName.append(jobByCodeBean.getDefaultAList().get(0).getContacts());
         }else {
@@ -158,8 +170,8 @@ public class JobStatusActivity extends BaseActivity {
             tvDjsPhone.setText("无");
         }
 
-        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).email)){
-            tvDjsEmail.append(jobByCodeBean.getDefaultAList().get(0).email);
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getContactmail())){
+            tvDjsEmail.append(jobByCodeBean.getDefaultAList().get(0).getContactmail());
         }else {
             tvDjsEmail.setText("无");
         }
@@ -174,25 +186,23 @@ public class JobStatusActivity extends BaseActivity {
         }else if (jobByCodeBean.getDefaultAList().get(0).getSettlementtime()==4){
             tvStatus.setText("完工结算");
         }
-
         tvTime.setText("");
-        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplystartdate())&&
-                !StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplyenddate())){
-            tvTime.append(jobByCodeBean.getDefaultAList().get(0).getApplystartdate().substring(0,10)+"~"+
-                    jobByCodeBean.getDefaultAList().get(0).getApplyenddate().substring(0,10));
-
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobstartdate())&&
+                !StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobenddate())  ){
+            tvTime.append(jobByCodeBean.getDefaultAList().get(0).getJobstartdate().substring(0,10)+"~"+
+                    jobByCodeBean.getDefaultAList().get(0).getJobenddate().substring(0,10));
         }else {
-            tvTime.setText("报名日期不限");
+            tvTime.setText("工作日期不限");
         }
 
-        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobstartdate())&&
-                !StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobenddate())){
+
+    /*    if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).dates)){
             tvDetails.append(jobByCodeBean.getDefaultAList().get(0).getJobstartdate().substring(0,10)+"~"+
                     jobByCodeBean.getDefaultAList().get(0).getJobenddate().substring(0,10));
 
         }else {
             tvDetails.setText("具体工作时间由商家跟您协商");
-        }
+        }*/
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getLabelnames())){
             tvLucency.setText(jobByCodeBean.getDefaultAList().get(0).getLabelnames().replace(","," "));
@@ -208,7 +218,9 @@ public class JobStatusActivity extends BaseActivity {
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).dates)){
             tvQdDetails.setText(jobByCodeBean.getDefaultAList().get(0).dates.replace(",","\n"));
+            tvDetails.setText(jobByCodeBean.getDefaultAList().get(0).dates.replace(",","\n"));
         }else {
+            tvDetails.setText("日期不限");
             tvQdDetails.setText("日期不限");
         }
 

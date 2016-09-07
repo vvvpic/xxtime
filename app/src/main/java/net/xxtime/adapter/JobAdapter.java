@@ -129,6 +129,10 @@ public class JobAdapter extends BaseAdapter {
         if (StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
             job_item.tvAdress.setText("地址不限");
         }
+
+        if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getAreaname())){
+            job_item.tvAdress.setText(listsdefaultAListBeens.get(position).getAreaname());
+        }
         if (listsdefaultAListBeens.get(position).getSettlementtime()==1){
             job_item.tvStatus.setText("日结");
         }else if (listsdefaultAListBeens.get(position).getSettlementtime()==2){
@@ -140,18 +144,21 @@ public class JobAdapter extends BaseAdapter {
         }
 
         job_item.tvTime.setText("");
-        if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getApplystartdate())&&!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getApplyenddate())){
-            job_item.tvTime.append(listsdefaultAListBeens.get(position).getApplystartdate()+"~"+listsdefaultAListBeens.get(position).getApplyenddate());
-            int status=Contact.getStatus(listsdefaultAListBeens.get(position).getApplystartdate(),Contact.CurTime,listsdefaultAListBeens.get(position).getApplyenddate());
-
-            if (status==1){
-                job_item.tvAppy.setText("报名中");
-            }else if (status==-1){
-                job_item.tvAppy.setText("已结束");
-            }
+        if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).jobstartdate)&&!StringUtils.isEmpty(listsdefaultAListBeens.get(position).jobenddate)){
+            job_item.tvTime.append(listsdefaultAListBeens.get(position).jobstartdate+"~"+listsdefaultAListBeens.get(position).jobenddate);
         }else {
-            job_item.tvTime.setText("报名日期不限");
+            job_item.tvTime.setText("工作日期不限");
         }
+
+       if (!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getApplystartdate())&&!StringUtils.isEmpty(listsdefaultAListBeens.get(position).getApplyenddate())){
+           int status=Contact.getStatus(listsdefaultAListBeens.get(position).getApplystartdate(),Contact.CurTime,listsdefaultAListBeens.get(position).getApplyenddate());
+
+           if (status==1){
+               job_item.tvAppy.setText("报名中");
+           }else if (status==-1){
+               job_item.tvAppy.setText("已结束");
+           }
+       }
 
         if (!StringUtils.isEmpty(status)){
             job_item.tvAppy.setText(status);

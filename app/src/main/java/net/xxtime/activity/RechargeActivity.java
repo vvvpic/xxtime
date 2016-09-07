@@ -68,7 +68,8 @@ public class RechargeActivity extends BaseActivity {
                         params.put("order_type","studentOrder");
                         params.put("body", "诚意金充值");
                         params.put("subject", "诚意金充值"+SharedUtils.getUserId(RechargeActivity.this));
-                        params.put("amount", 50);
+                        params.put("amount", 5000);
+                       // params.put("price", 50);
                         if (pay==1) {
                             params.put("channel", "alipay");
                         }

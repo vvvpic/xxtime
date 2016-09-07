@@ -232,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/content"
                         android:text="报名详情："
-                        android:layout_centerVertical="true"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:textColor="@color/txt_999"/>
                     <TextView

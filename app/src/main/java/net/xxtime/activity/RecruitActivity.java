@@ -189,6 +189,7 @@ public class RecruitActivity extends BaseActivity implements AbsListView.OnScrol
                 }
                 intent=new Intent(RecruitActivity.this,JobDetailsActivity.class);
                 intent.putExtra("jobcode",listDefaults.get(position-1).getJobcode());
+                intent.putExtra("bus",1);
                 Jump(intent);
             }
         });

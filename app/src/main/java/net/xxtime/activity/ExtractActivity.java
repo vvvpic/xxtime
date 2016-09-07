@@ -32,6 +32,8 @@ public class ExtractActivity extends BaseActivity {
     private CommonBean commonBean;
     private Message msg;
 
+    private int balance;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -65,6 +67,7 @@ public class ExtractActivity extends BaseActivity {
     @Override
     public void initDatas() {
         setTitle("提现");
+        balance=getIntent().getIntExtra("balance",0);
     }
 
     @Override
@@ -107,6 +110,11 @@ public class ExtractActivity extends BaseActivity {
                     channel=1;
                 }else {
                     channel=2;
+                }
+
+                if (Integer.valueOf(etAccount.getText().toString())>balance){
+                    ToastUtils.show(this,"提现方式金额不足，账号余额"+balance+"元");
+                    return;
                 }
 
                 params=new RequestParams();

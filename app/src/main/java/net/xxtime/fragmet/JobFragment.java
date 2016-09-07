@@ -128,10 +128,7 @@ public class JobFragment extends BaseFragment {
     }
 
     public void Refresh(){
-        params=new RequestParams();
-        params.put("reqCode","getRegisterJobNum");
-        params.put("userid", SharedUtils.getUserId(getActivity()));
-        pullpost("userJob",params,"getRegisterJobNum");
+
     }
 
     @Override
@@ -152,7 +149,10 @@ public class JobFragment extends BaseFragment {
 
     @Override
     public void ResumeDatas() {
-
+        params=new RequestParams();
+        params.put("reqCode","getRegisterJobNum");
+        params.put("userid", SharedUtils.getUserId(getActivity()));
+        pullpost("userJob",params,"getRegisterJobNum");
     }
 
     @Override

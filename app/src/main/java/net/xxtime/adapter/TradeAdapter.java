@@ -69,7 +69,7 @@ public class TradeAdapter extends BaseAdapter {
 
         if (listBeens.get(position).getTradestate()==0){
             trade_item.tvTradestate.setText("状态:未完成");
-        }else if (listBeens.get(position).getTradestate()==0){
+        }else if (listBeens.get(position).getTradestate()==1){
             trade_item.tvTradestate.setText("状态:交易完成");
         }else {
             trade_item.tvTradestate.setText("状态:交易失败");

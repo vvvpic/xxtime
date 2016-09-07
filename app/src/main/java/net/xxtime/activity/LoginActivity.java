@@ -122,6 +122,11 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
 
+                if (!Contact.isNetworkAvailable(this)){
+                    ToastUtils.show(this,"请检查你的网络状况");
+                    return;
+                }
+
                 params=new RequestParams();
                 params.put("reqCode","login");
                 params.put("telephone",etPhone.getText().toString());

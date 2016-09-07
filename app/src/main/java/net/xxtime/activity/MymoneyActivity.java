@@ -80,7 +80,9 @@ public class MymoneyActivity extends BaseActivity {
                 break;
             case R.id.btnCash:
                 if (balance>0) {
-                    Jump(ExtractActivity.class);
+                    intent=new Intent(this,ExtractActivity.class);
+                    intent.putExtra("balance",balance);
+                    Jump(intent);
                 }else {
                     ToastUtils.show(this,"余额不足");
                 }

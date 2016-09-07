@@ -76,6 +76,8 @@ public class JobDetailsActivity extends BaseActivity {
 
     private ShareDialog shareDialog;
 
+    private int bus;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -155,8 +157,7 @@ public class JobDetailsActivity extends BaseActivity {
         tvTime.setText("");
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplystartdate())&&
                 !StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplyenddate())){
-            tvTime.append(jobByCodeBean.getDefaultAList().get(0).getApplystartdate().substring(0,10)+"~"+
-                    jobByCodeBean.getDefaultAList().get(0).getApplyenddate().substring(0,10));
+
             tvApplyTime.setText(jobByCodeBean.getDefaultAList().get(0).getApplyenddate());
             int status= Contact.getStatus(jobByCodeBean.getDefaultAList().get(0).getApplystartdate(),Contact.CurTime,jobByCodeBean.getDefaultAList().get(0).getApplyenddate());
             if (status==1){
@@ -165,8 +166,16 @@ public class JobDetailsActivity extends BaseActivity {
                 tvAppy.setText("已结束");
             }
         }else {
-            tvTime.setText("报名日期不限");
+
             tvApplyTime.setText("不限");
+        }
+
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobstartdate())&&
+                !StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobenddate())  ){
+            tvTime.append(jobByCodeBean.getDefaultAList().get(0).getJobstartdate().substring(0,10)+"~"+
+                    jobByCodeBean.getDefaultAList().get(0).getJobenddate().substring(0,10));
+        }else {
+            tvTime.setText("工作日期不限");
         }
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getLabelnames())){
@@ -231,6 +240,14 @@ public class JobDetailsActivity extends BaseActivity {
         }
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getAreaname())){
             tvWorkAddress.append(jobByCodeBean.getDefaultAList().get(0).getAreaname());
+        }
+
+        if (StringUtils.isEmpty(tvWorkAddress.getText().toString())){
+            tvWorkAddress.setText("地址不限");
+        }
+
+        if (StringUtils.isEmpty(tvAdress.getText().toString())){
+            tvAdress.setText("地址不限");
         }
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getDegreename())){
@@ -366,6 +383,7 @@ public class JobDetailsActivity extends BaseActivity {
         tvTel.setText(Html.fromHtml(html));
         jobcode=getIntent().getStringExtra("jobcode");
         registerid=getIntent().getIntExtra("registerid",0);
+        bus=getIntent().getIntExtra("bus",0);
 
     }
 
@@ -408,6 +426,9 @@ public class JobDetailsActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.tvComMane:
+                if (bus==1){
+                    return;
+                }
                 intent=new Intent(this,FirmHomeActivity.class);
                 if (jobByCodeBean!=null) {
                     intent.putExtra("buscode", jobByCodeBean.getDefaultAList().get(0).getBuscode());

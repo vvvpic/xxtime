@@ -169,11 +169,26 @@ public class MsgSystemActivity extends BaseActivity {
                /* intent=new Intent(SocialActivity.this,JobDetailsActivity.class);
                 intent.putExtra("jobcode",listDefaults.get(position-1).getJobcode());
                 Jump(intent);*/
+                setStatus();
             }
         });
 
         tvChoose.setOnClickListener(this);
         tvDel.setOnClickListener(this);
+    }
+    private void setStatus(){
+        int len=studentUserMsgBean.getDefaultAList().size();
+        int select=0;
+        for (int i=0;i<len ;i++){
+            if (studentUserMsgBean.getDefaultAList().get(i).del){
+                select++;
+            }
+        }
+        if (select==len){
+            tvChoose.setText("取消全选");
+        }else {
+            tvChoose.setText("全选");
+        }
     }
 
     @Override

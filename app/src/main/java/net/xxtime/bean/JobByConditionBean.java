@@ -103,6 +103,8 @@ public class JobByConditionBean implements Serializable {
         private String cityname;
         private String labelnames;
         private String jobcode;
+        public String jobstartdate;
+        public String jobenddate;
 
         public String getBuslogo() {
             return buslogo;
