@@ -396,6 +396,7 @@ public class AuthenticationActivity extends BaseActivity {
                 params.put("name",etName.getText().toString());
                 params.put("cardcode",etId.getText().toString());
                 params.put("studentcardcode",etStudentId.getText().toString());
+                params.put("certification",1);
                 post("studentUser",params,"modifyStudentUserInfo");
                 break;
         }

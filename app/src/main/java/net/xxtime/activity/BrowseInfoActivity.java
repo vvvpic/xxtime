@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -37,6 +38,7 @@ import net.xxtime.adapter.PhotoRAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.listener.DeleteListener;
+import net.xxtime.utils.Contact;
 import net.xxtime.utils.ImageUtils;
 import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.ParseFilePath;
@@ -74,6 +76,10 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
     private TextView tvSex, tvStudent, tvLanguageType;
     private String title;
 
+    private LinearLayout llSchool;
+    private TextView tvEnrollmentyear , tvSchool, tvDegree;
+    private EditText etSchoolType, etMajorname;
+
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_browse_info);
@@ -101,6 +107,13 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
         tvStudent =(TextView)findViewById(R.id.tvStudent);
         tvLanguageType=(TextView)findViewById(R.id.tvLanguageType);
 
+        llSchool =(LinearLayout) findViewById(R.id.llSchool);
+        tvEnrollmentyear  =(TextView) findViewById(R.id.tvEnrollmentyear);
+        tvSchool =(TextView) findViewById(R.id.tvSchool);
+        tvDegree =(TextView) findViewById(R.id.tvDegree);
+        etSchoolType =(EditText) findViewById(R.id.etSchoolType);
+        etMajorname=(EditText) findViewById(R.id.etMajorname);
+
     }
 
     private String nickname;
@@ -116,9 +129,19 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
     private String foreignlevel;
     private String self_appraisalids;
     private String avatar;
+    private String degreename;
+    private String schoolname;
+    private String enrollmentyear;
+    private String majorname;
+    private String departmentname;
 
     @Override
     public void initDatas() {
+        departmentname=getIntent().getStringExtra("departmentname");
+        majorname=getIntent().getStringExtra("majorname");
+        enrollmentyear=getIntent().getStringExtra("enrollmentyear");
+        schoolname=getIntent().getStringExtra("schoolname");
+        degreename=getIntent().getStringExtra("degreename");
         title=getIntent().getStringExtra("title");
         nickname=getIntent().getStringExtra("nickname");
         name=getIntent().getStringExtra("name");
@@ -159,9 +182,39 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
             tvSex.setText(gender+"");
         }
 
+
+
         if (!StringUtils.isEmpty(isstudent)){
             tvStudent.setText(isstudent);
+
+            if (isstudent.equals("是")){
+                llSchool.setVisibility(View.VISIBLE);
+            }else {
+                llSchool.setVisibility(View.GONE);
+            }
         }
+
+        if (!StringUtils.isEmpty(majorname)){
+            etMajorname.setText(majorname);
+        }
+
+        if (!StringUtils.isEmpty(departmentname)){
+            etSchoolType.setText(departmentname);
+        }
+
+        if (!StringUtils.isEmpty(enrollmentyear)){
+            tvEnrollmentyear.setText(enrollmentyear);
+        }
+
+        if (!StringUtils.isEmpty(schoolname)){
+            tvSchool.setText(schoolname);
+        }
+
+        if (!StringUtils.isEmpty(degreename)){
+            tvDegree.setText(degreename);
+        }
+
+
 
         if (!StringUtils.isEmpty(city)){
             tvCity.setText(city);
@@ -185,6 +238,8 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
 
         if (!StringUtils.isEmpty(foreignname)){
             tvLanguage.setText(foreignname);
+        }else {
+            tvLanguage.setText("其他");
         }
 
         if (!StringUtils.isEmpty(foreignlevel)){
@@ -192,7 +247,7 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
         }
 
         if (!StringUtils.isEmpty(self_appraisalids)){
-            etBrift.setText(self_appraisalids);
+            etBrift.setText(Contact.getLables(self_appraisalids));
         }
 
         if (!StringUtils.isEmpty(avatar)){

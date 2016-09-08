@@ -390,6 +390,187 @@
                 android:layout_height="@dimen/line"
                 android:background="@color/line_color"/>
 
+            <LinearLayout
+                android:id="@+id/llSchool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:id="@+id/tv18"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:text="学校"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/txt_333"/>
+
+                    <TextView
+                        android:id="@+id/tvSchool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_333"
+                        android:textSize="@dimen/content"
+                        android:layout_toRightOf="@id/tv18"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/hint_color"
+                        android:hint="请选择所在学校"
+                        android:background="@null"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line"
+                    android:background="@color/line_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:id="@+id/tv19"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:text="院系"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/txt_333"/>
+
+                    <EditText
+                        android:id="@+id/etSchoolType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_333"
+                        android:textSize="@dimen/content"
+                        android:layout_toRightOf="@id/tv19"
+                        android:layout_centerVertical="true"
+                        android:enabled="false"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/hint_color"
+                        android:hint="请输入院系"
+                        android:singleLine="true"
+                        android:background="@null"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line"
+                    android:background="@color/line_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:id="@+id/tv17"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:text="学历"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/txt_333"/>
+
+                    <TextView
+                        android:id="@+id/tvDegree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_333"
+                        android:textSize="@dimen/content"
+                        android:layout_toRightOf="@id/tv17"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/hint_color"
+                        android:hint="请选择学历"
+                        android:background="@null"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line"
+                    android:background="@color/line_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:id="@+id/tv16"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:text="专业"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/txt_333"/>
+
+                    <EditText
+                        android:id="@+id/etMajorname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_333"
+                        android:textSize="@dimen/content"
+                        android:layout_toRightOf="@id/tv16"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:enabled="false"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/hint_color"
+                        android:hint="请输入专业"
+                        android:singleLine="true"
+                        android:background="@null"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line"
+                    android:background="@color/line_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:id="@+id/tv25"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:text="入学年份"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/txt_333"/>
+
+                    <TextView
+                        android:id="@+id/tvEnrollmentyear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_333"
+                        android:textSize="@dimen/content"
+                        android:layout_toRightOf="@id/tv25"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/hint_color"
+                        android:hint="请选择入学年份"
+                        android:background="@null"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line"
+                    android:background="@color/line_color"/>
+            </LinearLayout>
+
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

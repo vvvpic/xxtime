@@ -8,12 +8,15 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.longtu.base.util.StringUtils;
+
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import net.xxtime.bean.AppraisalLabelsBean;
 import net.xxtime.bean.AreaBean;
 import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.CitysBean;
@@ -48,6 +51,8 @@ public class Contact {
 
     public static CitysBean choosecitysBean;
 
+    public static AppraisalLabelsBean appraisalLabelsBean;
+
     public static StudentUserInfoBean studentUserInfoBean;
 
     public static CheckStudentBean checkStudentBean;
@@ -77,6 +82,28 @@ public class Contact {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    /**
+     * 获取用户标签
+     * @param str
+     * @return
+     */
+    public static String getLables(String str){
+        String lables="";
+        str=","+str+",";
+        if (appraisalLabelsBean!=null&&appraisalLabelsBean.getDefaultAList()!=null) {
+            for (int i = 0; i < appraisalLabelsBean.getDefaultAList().size(); i++) {
+                if (str.indexOf("," + appraisalLabelsBean.getDefaultAList().get(i).getLabelid() + ",") > -1) {
+                    lables = lables + appraisalLabelsBean.getDefaultAList().get(i).getLabelcontent() + ",";
+                }
+            }
+        }
+
+        if (!StringUtils.isEmpty(lables)){
+            lables=lables.substring(0,lables.length()-1);
+        }
+        return lables;
     }
 
     /**

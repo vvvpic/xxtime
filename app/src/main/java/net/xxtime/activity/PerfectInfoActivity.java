@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -40,6 +41,7 @@ import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.StudentUserInfoBean;
 import net.xxtime.bean.StudentUserPictureBean;
 import net.xxtime.listener.DeleteListener;
+import net.xxtime.utils.Contact;
 import net.xxtime.utils.ImageUtils;
 import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.ParseFilePath;
@@ -78,7 +80,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private RadioButton  rbtnStudentYes, rbtnStudentNo;
     private TextView tvCity , tvLanguage;
     private RadioButton rbtnLanC, rbtnLanWork, rbtnLanS;
-    private EditText etBrift;
+    private TextView etBrift;
 
     private int choosephoto=0;//0头像 1照片
     private String avatar="";
@@ -89,6 +91,12 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private Message msg;
     private CommonBean commonBean;
     private int uploadint=0,up=0;
+
+    private String lables="";
+
+    private LinearLayout llSchool;
+    private TextView tvEnrollmentyear , tvSchool, tvDegree;
+    private EditText etSchoolType, etMajorname;
 
 
     private Handler handler=new Handler(){
@@ -189,7 +197,14 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         rbtnLanC =(RadioButton) findViewById(R.id.rbtnLanC);
         rbtnLanWork =(RadioButton) findViewById(R.id.rbtnLanWork);
         rbtnLanS =(RadioButton) findViewById(R.id.rbtnLanS);
-        etBrift=(EditText) findViewById(R.id.etBrift);
+        etBrift=(TextView) findViewById(R.id.etBrift);
+
+        llSchool =(LinearLayout) findViewById(R.id.llSchool);
+        tvEnrollmentyear  =(TextView) findViewById(R.id.tvEnrollmentyear);
+        tvSchool =(TextView) findViewById(R.id.tvSchool);
+        tvDegree =(TextView) findViewById(R.id.tvDegree);
+        etSchoolType =(EditText) findViewById(R.id.etSchoolType);
+        etMajorname=(EditText) findViewById(R.id.etMajorname);
 
         tvRight=(TextView)findViewById(R.id.tvRight);
         tvRight.setVisibility(View.VISIBLE);
@@ -243,10 +258,37 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
             gender=Integer.valueOf(studentUserInfoBean.getDefaultAList().get(0).getGender());
             if (studentUserInfoBean.getDefaultAList().get(0).getGender().equals("1")) {
                rbtn_male.setChecked(true);
+
+                llSchool.setVisibility(View.VISIBLE);
             }else {
                 rbtn_female.setChecked(false);
+                llSchool.setVisibility(View.GONE);
             }
         }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSchoolname())){
+            tvSchool.setText(studentUserInfoBean.getDefaultAList().get(0).getSchoolname());
+            schoolname=studentUserInfoBean.getDefaultAList().get(0).getSchoolname();
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getDegreename())){
+            tvDegree.setText(studentUserInfoBean.getDefaultAList().get(0).getDegreename());
+            degreeid=Integer.valueOf(studentUserInfoBean.getDefaultAList().get(0).getDegreeid());
+            degreename=studentUserInfoBean.getDefaultAList().get(0).getDegreename();
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEnrollmentyear())){
+            tvEnrollmentyear.setText(studentUserInfoBean.getDefaultAList().get(0).getEnrollmentyear());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getDepartmentname())){
+            etSchoolType.setText(studentUserInfoBean.getDefaultAList().get(0).getDepartmentname());
+        }
+
+        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getMajorname())){
+            etMajorname.setText(studentUserInfoBean.getDefaultAList().get(0).getMajorname());
+        }
+
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getBirthday())){
             tvBrith.setText(studentUserInfoBean.getDefaultAList().get(0).getBirthday());
@@ -285,6 +327,8 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignname())){
             tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getForeignname());
+        }else {
+            tvLanguage.setText("其他");
         }
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignlevel())){
@@ -298,7 +342,8 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         }
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids())){
-            etBrift.setText(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids());
+            etBrift.setText(Contact.getLables(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids()));
+            lables=studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids();
         }
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getLogo())){
@@ -330,6 +375,13 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         tvCity.setOnClickListener(this);
         tvLanguage.setOnClickListener(this);
         btnBrowse.setOnClickListener(this);
+        etBrift.setOnClickListener(this);
+        rbtnStudentNo.setOnClickListener(this);
+        rbtnStudentYes.setOnClickListener(this);
+
+        tvSchool.setOnClickListener(this);
+        tvDegree.setOnClickListener(this);
+        tvEnrollmentyear.setOnClickListener(this);
     }
 
     @Override
@@ -343,6 +395,19 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.tvEnrollmentyear:
+                dateTimePickDialog = new DateTimePickDialog(this, "2016-9-1");
+                dateTimePickDialog.setTimePicker(View.GONE);
+                dateTimePickDialog.dateTimePicKDialog(tvEnrollmentyear);
+                break;
+            case R.id.tvDegree:
+                intent=new Intent(this,SelectDegreeActivity.class);
+                Jump(intent,DEGREE);
+                break;
+            case R.id.tvSchool:
+                intent=new Intent(this,SelectSchoolActivity.class);
+                Jump(intent,SCHOOL);
+                break;
             case R.id.rlAvatar:
                 choosephoto=0;
                 choosePhotoWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
@@ -400,8 +465,15 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 }
 
                 if (StringUtils.isEmpty(tvCity.getText().toString())){
-                    ToastUtils.show(this,"请选择所在学校");
+                    ToastUtils.show(this,"请选择所在城市");
                     return;
+                }
+
+                if (isstudent==1){
+                    if (StringUtils.isEmpty(tvSchool.getText().toString())){
+                        ToastUtils.show(this,"请选择所在学校");
+                        return;
+                    }
                 }
 
                 params=new RequestParams();
@@ -414,6 +486,27 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 params.put("province",provinecode);
                 params.put("city",citycode);
                 params.put("area",areacode);
+
+                if (degreeid>-1){
+                    params.put("degreeid",degreeid);
+                }
+
+                if (!StringUtils.isEmpty(tvSchool.getText().toString())){
+                    params.put("schoolname",tvSchool.getText().toString());
+                }
+
+                if (!StringUtils.isEmpty(etMajorname.getText().toString())){
+                    params.put("majorname",etMajorname.getText().toString());
+                }
+
+                if (!StringUtils.isEmpty(etSchoolType.getText().toString())){
+                    params.put("departmentname",etSchoolType.getText().toString());
+                }
+
+                if (!StringUtils.isEmpty(tvEnrollmentyear.getText().toString())){
+                    params.put("enrollmentyear",tvEnrollmentyear.getText().toString().substring(0,4));
+                }
+
                 if (!StringUtils.isEmpty(tvBrith.getText().toString())){
                     params.put("birthday",tvBrith.getText().toString());
                 }
@@ -443,7 +536,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 }
 
                 if (!StringUtils.isEmpty(etBrift.getText().toString())){
-                    params.put("self_appraisalids",etBrift.getText().toString());
+                    params.put("self_appraisalids",lables);
                 }
 
                 Log.e("param==>",params.toString());
@@ -491,6 +584,16 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
                 intent.putExtra("foreignname",foreignname);
 
+                intent.putExtra("degreename",degreename);
+
+                intent.putExtra("schoolname",schoolname);
+
+                intent.putExtra("enrollmentyear",tvEnrollmentyear.getText().toString());
+
+                intent.putExtra("majorname",etMajorname.getText().toString());
+
+                intent.putExtra("departmentname",etSchoolType.getText().toString());
+
                 if (rbtnLanC.isChecked()){
                     intent.putExtra("foreignlevel","日常交流");
                 }else if (rbtnLanWork.isChecked()){
@@ -499,7 +602,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                     intent.putExtra("foreignlevel","学术交流");
                 }
 
-                intent.putExtra("self_appraisalids",etBrift.getText().toString());
+                intent.putExtra("self_appraisalids",lables);
 
                 intent.putStringArrayListExtra("photos", (ArrayList<String>) listphotos);
 
@@ -509,6 +612,20 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
                 Jump(intent);
 
+                break;
+            case R.id.etBrift:
+                intent=new Intent(this,LablesActivity.class);
+                Jump(intent,LABLE);
+                break;
+            case R.id.rbtnStudentNo:
+                if (rbtnStudentNo.isChecked()){
+                    llSchool.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.rbtnStudentYes:
+                if (rbtnStudentYes.isChecked()){
+                    llSchool.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }
@@ -603,9 +720,22 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
             foreignname=data.getStringExtra("foreignname");
             foreignid=data.getStringExtra("foreignid");
             tvLanguage.setText(foreignname);
+        }else if (requestCode==LABLE&&resultCode==LABLE){
+            lables=data.getStringExtra("lables");
+            etBrift.setText(Contact.getLables(lables));
+        }else if (requestCode==SCHOOL&&resultCode==SCHOOL){
+            schoolname=data.getStringExtra("schoolname");
+            tvSchool.setText(schoolname);
+        }else if (requestCode==DEGREE&&resultCode==DEGREE){
+            degreename=data.getStringExtra("degreename");
+            degreeid=data.getIntExtra("degreeid",0);
+            tvDegree.setText(degreename);
         }
     }
 
+    private int degreeid=-1;
+    private String degreename;
+    private String schoolname;
     private String city;
     private String provinecode;
     private String citycode;

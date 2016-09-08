@@ -1,7 +1,6 @@
 package net.xxtime.base.activity;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -26,7 +25,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.tencent.mm.sdk.openapi.IWXAPI;
 
 import net.xxtime.R;
 
@@ -61,6 +59,9 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
     public static final int SelecctPAY=9;
     public static final int PAY=10;
     public static final int ADDASSESS=11;
+    public static final int LABLE=12;
+    public static final int SCHOOL=13;
+    public static final int DEGREE=14;
 
     public ImageView ivBack;
     private TextView tvTitle;

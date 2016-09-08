@@ -13,9 +13,11 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.longtu.base.util.StringUtils;
+import com.loopj.android.http.RequestParams;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
+import net.xxtime.bean.AppraisalLabelsBean;
 import net.xxtime.bean.AreaBean;
 import net.xxtime.bean.CitysBean;
 import net.xxtime.utils.Contact;
@@ -50,6 +52,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     }
                     finish();
                     break;
+                case 2:
+                    Contact.appraisalLabelsBean=JSONObject.parseObject(msg.obj.toString(), AppraisalLabelsBean.class);
+                    break;
             }
         }
     };
@@ -66,6 +71,10 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
 
     @Override
     public void initDatas() {
+
+        params=new RequestParams();
+        params.put("reqCode","loadAppraisalLabels");
+        pullpost("studentUser",params,"loadAppraisalLabels");
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
@@ -213,5 +222,15 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
     protected void onDestroy() {
 
         super.onDestroy();
+    }
+
+    @Override
+    public void OnReceive(String requestname, String response) {
+        msg=new Message();
+        if (requestname.equals("loadAppraisalLabels")){
+            msg.what=2;
+        }
+        msg.obj=response;
+        handler.sendMessage(msg);
     }
 }

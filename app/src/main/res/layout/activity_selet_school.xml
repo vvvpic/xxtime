@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activity.SelectSchoolActivity">
+
+    <include layout="@layout/header"/>
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/search_border_white"
+        android:drawableLeft="@mipmap/search_ico"
+        android:hint="请查询你所在的学校"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:paddingLeft="8dp"
+        android:textColor="@color/txt_666"
+        android:textColorHint="@color/line_color"
+        android:textSize="@dimen/content" />
+
+    <ListView
+        android:id="@+id/lvSchools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"></ListView>
+
+</LinearLayout>

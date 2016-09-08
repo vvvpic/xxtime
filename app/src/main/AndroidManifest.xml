@@ -32,7 +32,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
 
-
     <uses-permission-sdk-23 android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.NFC" />
 
@@ -59,7 +58,7 @@
 
     <!-- WEIXIN -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".base.activity.XxtimeApplication"
@@ -344,16 +343,15 @@
         <activity android:name=".activity.ToSignActivity" />
         <activity android:name=".activity.StoodActivity" />
         <activity android:name=".activity.JobStatusActivity" />
-        <activity android:name=".activity.AssessActivity"></activity>
-        <activity android:name=".activity.ScanActivity"></activity>
-        <activity android:name=".activity.SchoolJobActivity"></activity>
-
+        <activity android:name=".activity.AssessActivity" />
+        <activity android:name=".activity.ScanActivity" />
+        <activity android:name=".activity.SchoolJobActivity" />
 
         <!-- QQ -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -371,17 +369,20 @@
         <!-- 微信 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:label="@string/app_name"
             android:exported="true"
+            android:label="@string/app_name"
             android:launchMode="singleTop">
-
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="xxtime"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="xxtime" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".activity.LablesActivity" />
+        <activity android:name=".activity.SelectSchoolActivity"></activity>
+        <activity android:name=".activity.SelectDegreeActivity"></activity>
     </application>
 
 </manifest>
