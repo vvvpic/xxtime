@@ -321,6 +321,13 @@ public class JobDetailsActivity extends BaseActivity {
             }
         }
 
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobenddate())){
+            if (Contact.getDateCha(Contact.CurTime.substring(0,10),jobByCodeBean.getDefaultAList().get(0).getJobenddate().substring(0,10))<0){
+                tvApply.setText("已结束");
+                tvApply.setEnabled(false);
+            }
+        }
+
         if (jobByCodeBean.getDefaultAList().get(0).getJobcontinuous()==1){
             tvWorkTime.append("\n必须持续工作");
         }else {
@@ -456,6 +463,7 @@ public class JobDetailsActivity extends BaseActivity {
                         params.put("userid", SharedUtils.getUserId(this));
                         params.put("jobcode",jobcode);
                         post("userJob",params,"registerJob");
+                        return;
                     }
                 }
 
@@ -476,9 +484,15 @@ public class JobDetailsActivity extends BaseActivity {
             case R.id.ivRight:
                 shareBean=new ShareBean();
                 shareBean.title=jobByCodeBean.getDefaultAList().get(0).getJobname();
+                shareBean.IMAGE_URL="http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png";
+              /*  shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?
+                        "http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();*/
+                shareBean.SUMMARY=tvAdress.getText().toString()+"-"+tvTime.getText().toString();
+                shareBean.url="http://www.xxtime.net";
+               /* shareBean.title=jobByCodeBean.getDefaultAList().get(0).getJobname();
                 shareBean.SUMMARY=tvAdress.getText().toString()+"#"+tvWorkTime.getText().toString();
                 shareBean.url="www.xxtime.net";
-                shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?"http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();
+                shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?"http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();*/
                 shareDialog.setShare(shareBean);
                 if (shareDialog!=null){
                     shareDialog.show();

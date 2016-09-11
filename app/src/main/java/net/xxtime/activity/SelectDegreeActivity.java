@@ -16,6 +16,9 @@ import net.xxtime.adapter.SchoolAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.DegreeBean;
 
+/**
+ * 选择学历
+ */
 public class SelectDegreeActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
     private ListView lvDegrees;

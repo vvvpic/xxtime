@@ -14,7 +14,7 @@ import net.xxtime.base.activity.BaseActivity;
 
 public class MymoneyActivity extends BaseActivity {
 
-    private int balance,earnestmoney;
+    public static int balance=0,earnestmoney=0;
     private TextView tvMoney, tvAlipay, tvWeixin ,tvCyj, tvTrade;
     private Button btnCash;
 
@@ -42,7 +42,7 @@ public class MymoneyActivity extends BaseActivity {
 
     @Override
     public void setDatas() {
-        tvMoney.setText(Double.valueOf(balance)+"0");
+
 
     }
 
@@ -57,7 +57,7 @@ public class MymoneyActivity extends BaseActivity {
 
     @Override
     public void ResumeDatas() {
-
+        tvMoney.setText(Double.valueOf(balance)+"0");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MymoneyActivity extends BaseActivity {
                 break;
             case R.id.tvCyj:
                 intent=new Intent(this,SincerityActivity.class);
-                intent.putExtra("earnestmoney",earnestmoney);
+//                intent.putExtra("earnestmoney",earnestmoney);
                 Jump(intent);
 
                 break;
@@ -81,7 +81,7 @@ public class MymoneyActivity extends BaseActivity {
             case R.id.btnCash:
                 if (balance>0) {
                     intent=new Intent(this,ExtractActivity.class);
-                    intent.putExtra("balance",balance);
+//                    intent.putExtra("balance",balance);
                     Jump(intent);
                 }else {
                     ToastUtils.show(this,"余额不足");

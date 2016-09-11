@@ -216,10 +216,11 @@ public class AuthenticationActivity extends BaseActivity {
         if(!StringUtils.isEmpty(cardobverse)){
             addjust=cardobverse;
             if (certification==0||certification==3) {
+                btnSubmit.setText("修改");
                 ivDeljust.setVisibility(View.VISIBLE);
             }
             ivAddjust.setEnabled(false);
-            btnSubmit.setText("修改");
+
             ImageLoader.getInstance().displayImage(cardobverse,ivAddjust);
         }
 
@@ -257,9 +258,11 @@ public class AuthenticationActivity extends BaseActivity {
             tvStatus.setText("未认证");
         }else if (certification==1){
             setEnadle();
+            btnSubmit.setText("待认证");
             tvStatus.setText("待认证");
         }else if (certification==2){
             setEnadle();
+            btnSubmit.setText("已认证");
             tvStatus.setText("已认证");
         }else if (certification==3){
             tvStatus.setText("认证未通过");
@@ -274,6 +277,8 @@ public class AuthenticationActivity extends BaseActivity {
         etName.setEnabled(false);
         etStudentId.setEnabled(false);
         etId.setEnabled(false);
+        btnSubmit.setEnabled(false);
+        btnSubmit.setBackgroundResource(R.drawable.btn_garey);
     }
 
     @Override

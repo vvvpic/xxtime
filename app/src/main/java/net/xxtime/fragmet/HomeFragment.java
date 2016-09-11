@@ -87,6 +87,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
     private LinearLayout  llWelfare, llSocial, llSchool, llOnline;
     private List<ImageView> listimageviews;
     private ImageView imageView;
+    private TextView tvSort, tvDate, tvAccount;
 
     private int curpos=0;
 
@@ -134,6 +135,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                             handler.sendEmptyMessageDelayed(3,4000);
                         }
                     }
+                    getgetJobByCondition();
                     break;
                 case 2:
                     if (indexPage==1){
@@ -216,6 +218,9 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         rlDate  =(RelativeLayout) headView.findViewById(R.id.rlDate);
         rlSort =(RelativeLayout) headView.findViewById(R.id.rlSort);
         view_line=(View)headView.findViewById(R.id.view_line);
+        tvSort =(TextView) headView.findViewById(R.id.tvSort);
+        tvDate  =(TextView) headView.findViewById(R.id.tvDate);
+        tvAccount =(TextView) headView.findViewById(R.id.tvAccount);
         lvHome.addHeaderView(headView);
 
         FooterView= LayoutInflater.from(getActivity()).inflate(R.layout.list_footer,null);
@@ -369,7 +374,6 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         choosesort=-1;
         chooseaccount=-1;
 
-        getgetJobByCondition();
     }
 
     private void getgetJobByCondition(){
@@ -601,14 +605,21 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()){
             case R.id.gvDates:
-                if (listdates.get(position)==0){
-                    return;
-                }
+
                 datecurpos=position;
                 dateAdapter.setCur(position);
                 dateWindow.dismiss();
-                choosedate=formatter.format(new Date(listdates.get(position)));
                 indexPage=1;
+                if (position==listdates.size()){
+                    choosedate="";
+                    tvDate.setText("全部日期");
+                }else {
+                    if (listdates.get(position)==0){
+                        return;
+                    }
+                    choosedate=formatter.format(new Date(listdates.get(position)));
+                    tvDate.setText(formatter.format(new Date(listdates.get(position))).substring(0,10));
+                }
                 getgetJobByCondition();
                 break;
             case R.id.lvAccount:
@@ -616,6 +627,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 accountAdapter.setCur(position);
                 accountWindow.dismiss();
                 chooseaccount=listAccounts.get(position).settlementtime;
+                tvAccount.setText(listAccounts.get(position).name);
                 indexPage=1;
                 getgetJobByCondition();
                 break;
@@ -624,6 +636,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 sortAdapter.setCur(position);
                 sortWindow.dismiss();
                 choosesort=listsorts.get(position).sortType;
+                tvSort.setText(listsorts.get(position).name);
                 indexPage=1;
                 getgetJobByCondition();
                 break;

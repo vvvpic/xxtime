@@ -22,7 +22,6 @@ import net.xxtime.utils.SharedUtils;
 
 public class SincerityActivity extends BaseActivity {
 
-    private int earnestmoney;
     private TextView  tvPrice;
     private Button btnTq, btnRecharge;
 
@@ -66,12 +65,11 @@ public class SincerityActivity extends BaseActivity {
     @Override
     public void initDatas() {
         setTitle("诚意金");
-        earnestmoney=getIntent().getIntExtra("earnestmoney",0);
     }
 
     @Override
     public void setDatas() {
-        tvPrice.setText("诚意金："+Double.valueOf(earnestmoney>0?earnestmoney:0));
+
     }
 
     @Override
@@ -84,7 +82,7 @@ public class SincerityActivity extends BaseActivity {
 
     @Override
     public void ResumeDatas() {
-
+        tvPrice.setText("诚意金："+Double.valueOf(MymoneyActivity.earnestmoney>0?MymoneyActivity.earnestmoney:0));
     }
 
     @Override
@@ -95,7 +93,7 @@ public class SincerityActivity extends BaseActivity {
                 break;
             case R.id.btnRecharge:
                 intent=new Intent(this,RechargeActivity.class);
-                intent.putExtra("earnestmoney",earnestmoney);
+//                intent.putExtra("earnestmoney",earnestmoney);
                 Jump(intent);
 
                 break;
@@ -104,11 +102,11 @@ public class SincerityActivity extends BaseActivity {
                 break;
             case R.id.btnOk:
 
-                if (earnestmoney>0) {
+                if (MymoneyActivity.earnestmoney>0) {
                     params = new RequestParams();
                     params.put("reqCode", "etob");
                     params.put("userid", SharedUtils.getUserId(this));
-                    params.put("amount", earnestmoney);
+                    params.put("amount", MymoneyActivity.earnestmoney);
                     post("studentWithdraw", params, "etob");
                 }else {
                     ToastUtils.show(this,"诚意金余额不足，无法提现");

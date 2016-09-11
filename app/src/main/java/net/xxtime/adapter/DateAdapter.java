@@ -38,7 +38,7 @@ public class DateAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return listdates.size();
+        return listdates.size()+1;
     }
 
     @Override
@@ -62,11 +62,14 @@ public class DateAdapter extends BaseAdapter {
         }else {
             date_item= (Date_item) convertView.getTag();
         }
-
-        if (listdates.get(position)==0){
-            date_item.tvDate.setText("");
+        if (position==listdates.size()){
+            date_item.tvDate.setText("全部");
         }else {
-            date_item.tvDate.setText(formatter.format(new Date(listdates.get(position))));
+            if (listdates.get(position) == 0) {
+                date_item.tvDate.setText("");
+            } else {
+                date_item.tvDate.setText(formatter.format(new Date(listdates.get(position))));
+            }
         }
 
         if (cur==position){

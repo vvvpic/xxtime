@@ -13,30 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.handmark.pulltorefresh.library.PullToRefreshListView
-            android:id="@+id/plFollows"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:overScrollMode="never"
-            ></com.handmark.pulltorefresh.library.PullToRefreshListView>
-
-        <RelativeLayout
-            android:id="@+id/rlEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="350dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/content"
-                android:textColor="@color/txt_999"
-                android:drawableTop="@mipmap/ico_empty"
-                android:text="很遗憾，暂无数据"
-                android:gravity="center"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
-
         <LinearLayout
             android:id="@+id/llChoose"
             android:layout_width="match_parent"
@@ -65,6 +41,31 @@
                 android:textSize="@dimen/content"
                 android:textColor="@color/white"/>
         </LinearLayout>
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/plFollows"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:overScrollMode="never"
+            android:layout_above="@id/llChoose"
+            ></com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+        <RelativeLayout
+            android:id="@+id/rlEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/content"
+                android:textColor="@color/txt_999"
+                android:drawableTop="@mipmap/ico_empty"
+                android:text="很遗憾，暂无数据"
+                android:gravity="center"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 

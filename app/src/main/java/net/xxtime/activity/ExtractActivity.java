@@ -29,10 +29,11 @@ public class ExtractActivity extends BaseActivity {
     private TextView tvTpye;
     private Button btnOk;
 
+    private StudentAccountBean studentAccountBean;
     private CommonBean commonBean;
     private Message msg;
 
-    private int balance;
+//    private int balance;
 
     private Handler handler=new Handler(){
         @Override
@@ -43,10 +44,32 @@ public class ExtractActivity extends BaseActivity {
                     commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
 
                     if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                        MymoneyActivity.balance=MymoneyActivity.balance-Integer.valueOf(etAccount.getText().toString());
                         finish();
                     }
 
                     ToastUtils.show(ExtractActivity.this,commonBean.getMsg());
+                    break;
+                case 2:
+                    studentAccountBean= JSONObject.parseObject(msg.obj.toString(),StudentAccountBean.class);
+                    if (studentAccountBean!=null&&studentAccountBean.getBflag().equals("1")){
+                        int p=studentAccountBean.getDefaultAList().size()-1;
+                        if (StringUtils.isEmpty(studentAccountBean.getDefaultAList().get(p).getAccountid())){
+                            if(channel==1){
+                                ToastUtils.show(ExtractActivity.this,"请先绑定支付宝账号");
+                            }else if (channel==2){
+                                ToastUtils.show(ExtractActivity.this,"请先绑定微信账号");
+                            }
+                        }else {
+                            params=new RequestParams();
+                            params.put("reqCode","save");
+                            params.put("userid", SharedUtils.getUserId(ExtractActivity.this));
+                            params.put("amount",etAccount.getText().toString());
+                            params.put("channel",channel);
+                            Log.e("param==>",params.toString());
+                            ExtractActivity.this.post("studentWithdraw",params,"save");
+                        }
+                    }
                     break;
             }
         }
@@ -67,7 +90,7 @@ public class ExtractActivity extends BaseActivity {
     @Override
     public void initDatas() {
         setTitle("提现");
-        balance=getIntent().getIntExtra("balance",0);
+//        balance=getIntent().getIntExtra("balance",0);
     }
 
     @Override
@@ -85,6 +108,8 @@ public class ExtractActivity extends BaseActivity {
     public void ResumeDatas() {
 
     }
+
+    private   int channel=1;
 
     @Override
     public void onClick(View v) {
@@ -104,26 +129,24 @@ public class ExtractActivity extends BaseActivity {
                     return;
                 }
 
-                int channel=1;
-
                 if (tvTpye.getText().toString().equals("支付宝")){
                     channel=1;
                 }else {
                     channel=2;
                 }
 
-                if (Integer.valueOf(etAccount.getText().toString())>balance){
-                    ToastUtils.show(this,"提现方式金额不足，账号余额"+balance+"元");
+                if (Integer.valueOf(etAccount.getText().toString())>MymoneyActivity.balance){
+                    ToastUtils.show(this,"提现方式金额不足，账号余额"+MymoneyActivity.balance+"元");
                     return;
                 }
 
-                params=new RequestParams();
-                params.put("reqCode","save");
-                params.put("userid", SharedUtils.getUserId(this));
-                params.put("amount",etAccount.getText().toString());
-                params.put("channel",channel);
-                Log.e("param==>",params.toString());
-                post("studentWithdraw",params,"save");
+                    params=new RequestParams();
+                    params.put("reqCode","getAccount");
+                    params.put("userid", SharedUtils.getUserId(this));
+                    params.put("type",channel);
+                    Log.e("param==>",params.toString());
+                    post("studentAccount",params,"getAccount");
+
 
                 break;
         }
@@ -141,6 +164,8 @@ public class ExtractActivity extends BaseActivity {
         msg=new Message();
         if (requestname.equals("save")){
             msg.what=1;
+        }else if (requestname.equals("getAccount")){
+            msg.what=2;
         }
         msg.obj=response;
         handler.sendMessage(msg);

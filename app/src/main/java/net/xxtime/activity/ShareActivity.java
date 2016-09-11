@@ -19,6 +19,8 @@ import com.longtu.base.util.StringUtils;
 import com.longtu.base.util.ToastUtils;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.Tencent;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
@@ -178,5 +180,17 @@ public class ShareActivity extends BaseActivity {
         }
         msg.obj=response;
         handler.sendMessage(msg);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        /***
+         * QQ
+         */
+        if (requestCode == Constants.REQUEST_QQ_SHARE) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, shareDialog);
+        }
     }
 }

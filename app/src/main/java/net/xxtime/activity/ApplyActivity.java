@@ -139,8 +139,11 @@ public class ApplyActivity extends BaseActivity implements AdapterView.OnItemCli
             tvDayNumber.setText(Html.fromHtml(html));
 
             if (!StringUtils.isEmpty(jobstartdate)&&!StringUtils.isEmpty(jobenddate)){
-
+                if (Contact.getDateCha(dformatter.format(new Date(System.currentTimeMillis())),jobstartdate)>=0) {
                     cha = Contact.getDateCha(jobstartdate, jobenddate);
+                }else {
+                    cha = Contact.getDateCha(dformatter.format(new Date(System.currentTimeMillis())), jobenddate);
+                }
             }else {
                 cha=60;
             }

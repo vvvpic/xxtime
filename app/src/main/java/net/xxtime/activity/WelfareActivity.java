@@ -46,6 +46,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 公益活动
+ */
 public class WelfareActivity extends BaseActivity implements AdapterView.OnItemClickListener,AbsListView.OnScrollListener {
 
     private PopupWindow dateWindow,accountWindow, sortWindow;
@@ -83,6 +86,7 @@ public class WelfareActivity extends BaseActivity implements AdapterView.OnItemC
     private View FooterView;
     private ImageView ivLoading ;
     private TextView tvLoading;
+    private TextView tvSort, tvDate, tvAccount;
     private String CityCode;
 
     private Message msg;
@@ -147,6 +151,9 @@ public class WelfareActivity extends BaseActivity implements AdapterView.OnItemC
         plJobs=(PullToRefreshListView)findViewById(R.id.plJobs);
         lvJobs=plJobs.getRefreshableView();
         rlEmpty=(RelativeLayout)findViewById(R.id.rlEmpty);
+        tvSort =(TextView)  findViewById(R.id.tvSort);
+        tvDate  =(TextView)  findViewById(R.id.tvDate);
+        tvAccount =(TextView) findViewById(R.id.tvAccount);
 
         FooterView= LayoutInflater.from(this).inflate(R.layout.list_footer,null);
         ivLoading =(ImageView) FooterView.findViewById(R.id.ivLoading);
@@ -373,13 +380,20 @@ public class WelfareActivity extends BaseActivity implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()){
             case R.id.gvDates:
-                if (listdates.get(position)==0){
-                    return;
-                }
+
                 datecurpos=position;
                 dateAdapter.setCur(position);
                 dateWindow.dismiss();
-                choosedate=formatter.format(new Date(listdates.get(position)));
+                if (position==listdates.size()){
+                    choosedate="";
+                    tvDate.setText("全部日期");
+                }else {
+                    if (listdates.get(position)==0){
+                        return;
+                    }
+                    choosedate=formatter.format(new Date(listdates.get(position)));
+                    tvDate.setText(formatter.format(new Date(listdates.get(position))).substring(0,10));
+                }
                 indexPage=1;
                 getgetJobByCondition();
                 break;
@@ -388,6 +402,7 @@ public class WelfareActivity extends BaseActivity implements AdapterView.OnItemC
                 accountAdapter.setCur(position);
                 accountWindow.dismiss();
                 chooseaccount=listAccounts.get(position).settlementtime;
+                tvAccount.setText(listAccounts.get(position).name);
                 indexPage=1;
                 getgetJobByCondition();
                 break;
@@ -396,6 +411,7 @@ public class WelfareActivity extends BaseActivity implements AdapterView.OnItemC
                 sortAdapter.setCur(position);
                 sortWindow.dismiss();
                 choosesort=listsorts.get(position).sortType;
+                tvSort.setText(listsorts.get(position).name);
                 indexPage=1;
                 getgetJobByCondition();
                 break;

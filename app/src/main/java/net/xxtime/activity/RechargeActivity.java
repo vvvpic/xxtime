@@ -44,7 +44,7 @@ public class RechargeActivity extends BaseActivity {
     private Button btnOk;
 
     private int pay=1;
-    private int earnestmoney;
+//    private int earnestmoney;
 
     private Message msg;
 
@@ -116,7 +116,7 @@ public class RechargeActivity extends BaseActivity {
     @Override
     public void initDatas() {
         setTitle("支付");
-        earnestmoney=getIntent().getIntExtra("earnestmoney",0);
+//        earnestmoney=getIntent().getIntExtra("earnestmoney",0);
 
     }
 
@@ -213,6 +213,7 @@ public class RechargeActivity extends BaseActivity {
         }
 
         if (title.equals("success")){
+            MymoneyActivity.earnestmoney=MymoneyActivity.earnestmoney+50;
             ToastUtils.show(this,"支付成功");
            finish();
         }else {

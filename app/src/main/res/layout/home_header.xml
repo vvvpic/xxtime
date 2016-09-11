@@ -181,6 +181,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tvAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
@@ -206,6 +207,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tvDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
@@ -231,6 +233,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tvSort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"

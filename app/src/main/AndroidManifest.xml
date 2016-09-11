@@ -134,6 +134,28 @@
         <activity android:name=".activity.SincerityActivity" />
         <activity android:name=".activity.RechargeActivity" />
 
+        <activity android:name=".activity.ShareActivity" />
+        <activity android:name=".activity.InviteActivity" />
+        <activity android:name=".activity.MsgFollowActivity" />
+        <activity android:name=".activity.MsgApplyActivity" />
+        <activity android:name=".activity.MsgSalaryActivity" />
+        <activity android:name=".activity.MsgWithdrawActivity" />
+        <activity android:name=".activity.MsgSystemActivity" />
+        <activity android:name=".activity.ToemployedActivity" />
+        <activity android:name=".activity.ToaccountdActivity" />
+        <activity android:name=".activity.NoemployActivity" />
+        <activity android:name=".activity.AssessedActivity" />
+        <activity android:name=".activity.ToassessActivity" />
+        <activity android:name=".activity.ToSignActivity" />
+        <activity android:name=".activity.StoodActivity" />
+        <activity android:name=".activity.JobStatusActivity" />
+        <activity android:name=".activity.AssessActivity" />
+        <activity android:name=".activity.ScanActivity" />
+        <activity android:name=".activity.SchoolJobActivity" />
+        <activity android:name=".activity.LablesActivity" />
+        <activity android:name=".activity.SelectSchoolActivity"></activity>
+        <activity android:name=".activity.SelectDegreeActivity"></activity>
+
         <!-- Ping++ sdk -->
         <activity
             android:name="com.pingplusplus.android.PaymentActivity"
@@ -328,24 +350,7 @@
             android:name="com.pingplusplus.libone.PaySuccessActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/pingpp_title_activity_pay_sucessed" />
-        <activity android:name=".activity.ShareActivity" />
-        <activity android:name=".activity.InviteActivity" />
-        <activity android:name=".activity.MsgFollowActivity" />
-        <activity android:name=".activity.MsgApplyActivity" />
-        <activity android:name=".activity.MsgSalaryActivity" />
-        <activity android:name=".activity.MsgWithdrawActivity" />
-        <activity android:name=".activity.MsgSystemActivity" />
-        <activity android:name=".activity.ToemployedActivity" />
-        <activity android:name=".activity.ToaccountdActivity" />
-        <activity android:name=".activity.NoemployActivity" />
-        <activity android:name=".activity.AssessedActivity" />
-        <activity android:name=".activity.ToassessActivity" />
-        <activity android:name=".activity.ToSignActivity" />
-        <activity android:name=".activity.StoodActivity" />
-        <activity android:name=".activity.JobStatusActivity" />
-        <activity android:name=".activity.AssessActivity" />
-        <activity android:name=".activity.ScanActivity" />
-        <activity android:name=".activity.SchoolJobActivity" />
+
 
         <!-- QQ -->
         <activity
@@ -380,9 +385,7 @@
                 <data android:scheme="xxtime" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LablesActivity" />
-        <activity android:name=".activity.SelectSchoolActivity"></activity>
-        <activity android:name=".activity.SelectDegreeActivity"></activity>
+
     </application>
 
 </manifest>

@@ -40,7 +40,7 @@
             android:textColor="@color/txt_333"
             android:textSize="@dimen/content"
             android:layout_gravity="center_vertical"
-            android:text="平分："/>
+            android:text="评分："/>
         <RatingBar
             android:id="@+id/rbAssess"
             android:layout_width="wrap_content"

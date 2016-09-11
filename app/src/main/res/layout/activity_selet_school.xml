@@ -18,6 +18,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:background="@drawable/search_border_white"
         android:drawableLeft="@mipmap/search_ico"
