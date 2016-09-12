@@ -46,7 +46,7 @@ public class SelectDegreeActivity extends BaseActivity implements AdapterView.On
 
     @Override
     public void setContentView() {
-        setContentView(R.layout.activity_selet_school);
+        setContentView(R.layout.activity_selet_drgree);
     }
 
     @Override

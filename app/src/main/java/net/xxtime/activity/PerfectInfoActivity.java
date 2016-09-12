@@ -309,8 +309,11 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getIsstudent())){
             if (studentUserInfoBean.getDefaultAList().get(0).getIsstudent().equals("1")) {
                 rbtnStudentYes.setChecked(true);
+
+                llSchool.setVisibility(View.VISIBLE);
             }else {
                 rbtnStudentNo.setChecked(true);
+                llSchool.setVisibility(View.GONE);
             }
         }
 

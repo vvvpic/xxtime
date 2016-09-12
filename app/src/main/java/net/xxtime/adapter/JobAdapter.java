@@ -122,9 +122,9 @@ public class JobAdapter extends BaseAdapter {
             job_item.tvAdress.append(listsdefaultAListBeens.get(position).getAddress());
         }
 
-        if (!StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
-            Contact.get(job_item.tvAdress.getText().toString(),context,job_item.tvAdress);
-        }
+//        if (!StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
+//            Contact.get(job_item.tvAdress.getText().toString(),context,job_item.tvAdress);
+//        }
 
         if (StringUtils.isEmpty(job_item.tvAdress.getText().toString())){
             job_item.tvAdress.setText("地址不限");
@@ -155,9 +155,10 @@ public class JobAdapter extends BaseAdapter {
 
            if (status==1){
                job_item.tvAppy.setText("报名中");
-           }else if (status==-1){
-               job_item.tvAppy.setText("已结束");
            }
+         /*  else if (status==-1){
+               job_item.tvAppy.setText("已结束");
+           }*/
        }
 
         if (!StringUtils.isEmpty(status)){

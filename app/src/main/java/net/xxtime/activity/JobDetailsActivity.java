@@ -1,5 +1,6 @@
 package net.xxtime.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,9 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -242,6 +245,10 @@ public class JobDetailsActivity extends BaseActivity {
             tvWorkAddress.append(jobByCodeBean.getDefaultAList().get(0).getAreaname());
         }
 
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getAddress())){
+            tvWorkAddress.append(jobByCodeBean.getDefaultAList().get(0).getAddress());
+        }
+
         if (StringUtils.isEmpty(tvWorkAddress.getText().toString())){
             tvWorkAddress.setText("地址不限");
         }
@@ -429,8 +436,7 @@ public class JobDetailsActivity extends BaseActivity {
                 post("userJob",params,"focusPosition");
                 break;
             case R.id.tvTel:
-                intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:021-80376968"));
-                startActivity(intent);
+                dialog();
                 break;
             case R.id.tvComMane:
                 if (bus==1){
@@ -499,6 +505,20 @@ public class JobDetailsActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("保存图片到相册");  builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {   @Override
+        public void onClick(DialogInterface dialog, int which) {
+            intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:021-80376968"));
+            startActivity(intent);
+            dialog.dismiss();
+        }
+        });  builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {   @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+        });  builder.create().show();
     }
 
     @Override

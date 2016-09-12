@@ -60,6 +60,9 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!--二维码扫描权限-->
+    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+
     <application
         android:name=".base.activity.XxtimeApplication"
         android:allowBackup="true"
@@ -363,7 +366,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1105651308" />
+                <data android:scheme="tencent1105580420" />
             </intent-filter>
         </activity>
         <activity

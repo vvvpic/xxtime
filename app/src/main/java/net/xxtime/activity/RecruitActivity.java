@@ -30,6 +30,9 @@ import net.xxtime.utils.Contact;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 累计招聘岗位
+ */
 public class RecruitActivity extends BaseActivity implements AbsListView.OnScrollListener{
 
     private TextView  tvWelfare ,tvSocial, tvSchool;
@@ -144,9 +147,9 @@ public class RecruitActivity extends BaseActivity implements AbsListView.OnScrol
         params=new RequestParams();
         params.put("reqCode","getJobByCondition");
         params.put("indexPage",indexPage);
-        params.put("city",CityCode);
         params.put("jobtype", jobtype);
         params.put("buscode",buscode);
+        params.put("isRecord",1);
         Log.e("param==>",params.toString());
         pullpost("job",params,"getJobByCondition");
     }

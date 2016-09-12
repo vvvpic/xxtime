@@ -74,7 +74,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener,IUiListe
         /***
          * QQ
          */
-        tencent = Tencent.createInstance("1105651308", context);
+        tencent = Tencent.createInstance("1105580420", context);
 
 
         btnCancel.setOnClickListener(this);

@@ -125,13 +125,13 @@ public class JobStatusActivity extends BaseActivity {
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getProvicename())){
             tvAddress.append(jobByCodeBean.getDefaultAList().get(0).getProvicename());
-            tvAdress.append(jobByCodeBean.getDefaultAList().get(0).getProvicename());
+//            tvAdress.append(jobByCodeBean.getDefaultAList().get(0).getProvicename());
             tvDjsAddress.append(jobByCodeBean.getDefaultAList().get(0).getProvicename());
         }
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getCityname())){
             tvAddress.append(jobByCodeBean.getDefaultAList().get(0).getCityname());
-            tvAdress.append(jobByCodeBean.getDefaultAList().get(0).getCityname());
+//            tvAdress.append(jobByCodeBean.getDefaultAList().get(0).getCityname());
             tvDjsAddress.append(jobByCodeBean.getDefaultAList().get(0).getCityname());
         }
 
@@ -143,7 +143,7 @@ public class JobStatusActivity extends BaseActivity {
 
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getAddress())){
             tvAddress.append(jobByCodeBean.getDefaultAList().get(0).getAddress());
-            tvAdress.append(jobByCodeBean.getDefaultAList().get(0).getAddress());
+//            tvAdress.append(jobByCodeBean.getDefaultAList().get(0).getAddress());
             tvDjsAddress.append(jobByCodeBean.getDefaultAList().get(0).getAddress());
         }
 

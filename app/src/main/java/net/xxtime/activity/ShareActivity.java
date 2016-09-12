@@ -1,11 +1,13 @@
 package net.xxtime.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,35 +105,8 @@ public class ShareActivity extends BaseActivity {
         ivQr.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                dialog();
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            if (!StringUtils.isEmpty(shareWayBean.getDefaultAList().get(0).getQRcodeUrl())) {
-                                Bitmap bitmap = ImageUtils.getImage(shareWayBean.getDefaultAList().get(0).getQRcodeUrl());
-
-                                ImageUtils.saveFile(bitmap,
-                                        shareWayBean.getDefaultAList().get(0).getQRcodeUrl().substring(
-                                                shareWayBean.getDefaultAList().get(0).getQRcodeUrl()
-                                                        .lastIndexOf("/") + 1),ShareActivity.this);
-                                Log.e("load==>", "保存成功2！");
-
-                                handler.post(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        ToastUtils.show(ShareActivity.this,
-                                                "已经保存到手机");
-                                        sdScan();
-                                    }
-                                });
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
                 return false;
             }
         });
@@ -192,5 +167,46 @@ public class ShareActivity extends BaseActivity {
         if (requestCode == Constants.REQUEST_QQ_SHARE) {
             Tencent.onActivityResultData(requestCode, resultCode, data, shareDialog);
         }
+    }
+
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         builder.setTitle("保存图片到相册");  builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {   @Override
+        public void onClick(DialogInterface dialog, int which) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (!StringUtils.isEmpty(shareWayBean.getDefaultAList().get(0).getQRcodeUrl())) {
+                            Bitmap bitmap = ImageUtils.getImage(shareWayBean.getDefaultAList().get(0).getQRcodeUrl());
+
+                            ImageUtils.saveFile(bitmap,
+                                    shareWayBean.getDefaultAList().get(0).getQRcodeUrl().substring(
+                                            shareWayBean.getDefaultAList().get(0).getQRcodeUrl()
+                                                    .lastIndexOf("/") + 1),ShareActivity.this);
+                            Log.e("load==>", "保存成功2！");
+
+                            handler.post(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    ToastUtils.show(ShareActivity.this,
+                                            "已经保存到手机");
+                                    sdScan();
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+            dialog.dismiss();
+        }
+        });  builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {   @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+        });  builder.create().show();
     }
 }

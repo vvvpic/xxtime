@@ -55,7 +55,7 @@ public class ForgetActivity extends BaseActivity {
                     break;
                 case 2:
                     commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
-                    if (commonBean!=null&&commonBean.getMsg().indexOf("手机号已存在")>-1){
+                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
                         params=new RequestParams();
                         params.put("reqCode","sendMsgCode");
                         params.put("telephone",etPhone.getText().toString());

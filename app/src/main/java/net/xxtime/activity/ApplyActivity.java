@@ -157,7 +157,13 @@ public class ApplyActivity extends BaseActivity implements AdapterView.OnItemCli
         listtimes=new ArrayList<>();
 
         if (!StringUtils.isEmpty(jobstartdate)&&!StringUtils.isEmpty(jobenddate)){
-            Long startTime= DataUtils.getStringToDate(jobstartdate.substring(0,10));
+            Long startTime= Long.valueOf(0);
+            if (Contact.getDateCha(dformatter.format(new Date(System.currentTimeMillis())),jobstartdate)>=0) {
+                startTime= DataUtils.getStringToDate(jobstartdate.substring(0,10));
+            }else {
+                startTime=System.currentTimeMillis();
+            }
+
             if (cha>0){
                 for (int i=0;i<cha;i++){
                     applyTimeBean=new ApplyTimeBean();

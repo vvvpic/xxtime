@@ -22,6 +22,7 @@
         android:background="@drawable/search_border_white"
         android:drawableLeft="@mipmap/search_ico"
         android:hint="请查询你所在的学校"
+        android:visibility="gone"
         android:imeOptions="actionSearch"
         android:singleLine="true"
         android:paddingLeft="8dp"

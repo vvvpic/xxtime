@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:layout_centerVertical="true"
-                    android:text="100"
+                    android:text=" "
                     android:layout_marginLeft="3dp"
                     android:textColor="@color/red"
                     android:layout_toLeftOf="@id/tvUint"
@@ -136,7 +136,7 @@
                     android:layout_alignParentRight="true"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_999"
-                    android:text="完工结算"
+                    android:text=" "
                     android:layout_marginRight="5dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"/>
@@ -148,7 +148,7 @@
                     android:layout_toLeftOf="@id/tvStatus"
                     android:textColor="@color/txt_999"
                     android:layout_centerVertical="true"
-                    android:text="滨湖"
+                    android:text=" "
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:drawableLeft="@mipmap/location_ico"
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_999"
                     android:layout_centerVertical="true"
-                    android:text="滨湖"
+                    android:text=" "
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:drawableLeft="@mipmap/ico_time"
@@ -183,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_999"
                     android:layout_centerVertical="true"
-                    android:text="滨湖"
+                    android:text=" "
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:drawableLeft="@mipmap/ico_lucency"
@@ -244,7 +244,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="30人"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv0"/>
             </RelativeLayout>
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="线上结算"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv1"/>
             </RelativeLayout>
@@ -297,7 +297,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="10元/单"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv2"/>
             </RelativeLayout>
@@ -324,7 +324,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="2016-08-16"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv3"/>
             </RelativeLayout>
@@ -366,7 +366,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="2016-08-16"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv4"/>
             </RelativeLayout>
@@ -393,7 +393,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="滨湖区530"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv5"/>
             </RelativeLayout>
@@ -420,7 +420,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="需企业录用后才会显示"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv6"/>
             </RelativeLayout>
@@ -462,7 +462,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="高中"
+                    android:text=""
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv7"/>
             </RelativeLayout>
@@ -489,7 +489,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="英语"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv8"/>
             </RelativeLayout>
@@ -516,7 +516,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="有耐心"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv9"/>
             </RelativeLayout>
@@ -584,7 +584,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="公司长期诚聘在家手工制作人员"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv11"/>
             </RelativeLayout>
@@ -611,7 +611,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/content"
                     android:textColor="@color/txt_333"
-                    android:text="无"
+                    android:text=" "
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv12"/>
             </RelativeLayout>
