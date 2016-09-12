@@ -22,6 +22,8 @@ public class DateAdapter extends BaseAdapter {
     private Context context;
     private int cur=0;
     private int curday;
+
+    private int all=1;
     SimpleDateFormat formatter = new SimpleDateFormat ("dd");
 
     public DateAdapter(Context context,List<Long> listdates,int cur){
@@ -31,6 +33,10 @@ public class DateAdapter extends BaseAdapter {
         curday=cur;
     }
 
+    public void setAll(int all){
+        this.all=all;
+    }
+
     public void setCur(int cur){
         this.cur=cur;
         notifyDataSetChanged();
@@ -38,7 +44,11 @@ public class DateAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return listdates.size()+1;
+        if (all==1) {
+            return listdates.size() + 1;
+        }else {
+            return listdates.size();
+        }
     }
 
     @Override

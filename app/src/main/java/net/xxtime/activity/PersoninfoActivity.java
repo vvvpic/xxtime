@@ -179,7 +179,11 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignname())){
             tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getForeignname());
         }else {
-            tvLanguage.setText("其他");
+            if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign())){
+                tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign());
+            }else {
+                tvLanguage.setText("其他");
+            }
         }
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignlevel())){

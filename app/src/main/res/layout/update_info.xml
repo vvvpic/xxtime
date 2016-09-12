@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp" >
+
+    <EditText
+        android:id="@+id/info_text"
+        style="@style/my_edittext_style"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:padding="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:ems="10" 
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:singleLine="true" >
+    </EditText>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"
+        android:layout_marginRight="15dp"
+        android:layout_below="@id/info_text"
+        android:layout_marginLeft="15dp"/>
+
+</RelativeLayout>

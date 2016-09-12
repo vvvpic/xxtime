@@ -94,7 +94,7 @@ public class JobAdapter extends BaseAdapter {
 
         Drawable drawable = context.getResources().getDrawable(R.mipmap.ico_cheng);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
-        if (listsdefaultAListBeens.get(position).getScreenmsg1()>0){
+        if (listsdefaultAListBeens.get(position).isCheng>0){
             job_item.tvJobname.setCompoundDrawables(null, null, drawable, null); //分别对应 左上右下
         }else {
             job_item.tvJobname.setCompoundDrawables(null, null, null, null); //分别对应 左上右下

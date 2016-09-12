@@ -134,6 +134,7 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
     private String enrollmentyear;
     private String majorname;
     private String departmentname;
+    private String otherforeign;
 
     @Override
     public void initDatas() {
@@ -157,6 +158,7 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
         self_appraisalids=getIntent().getStringExtra("self_appraisalids");
         avatar=getIntent().getStringExtra("avatar");
         listphotos=getIntent().getStringArrayListExtra("photos");
+        otherforeign=getIntent().getStringExtra("otherforeign");
 
         if (!StringUtils.isEmpty(title)){
             setTitle(title);
@@ -239,7 +241,11 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
         if (!StringUtils.isEmpty(foreignname)){
             tvLanguage.setText(foreignname);
         }else {
-            tvLanguage.setText("其他");
+            if (!StringUtils.isEmpty(otherforeign)){
+                tvLanguage.setText(otherforeign);
+            }else {
+                tvLanguage.setText("其他");
+            }
         }
 
         if (!StringUtils.isEmpty(foreignlevel)){

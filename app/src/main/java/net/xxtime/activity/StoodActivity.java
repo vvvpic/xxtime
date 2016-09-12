@@ -109,11 +109,12 @@ public class StoodActivity extends BaseActivity implements AdapterView.OnItemCli
             listdates.add((long) 0);
         }
 
-        for (int i=0;i<15;i++){
-            listdates.add(currttime+(i*24*60*60*1000));
+        for (int i=15;i>0;i--){
+            listdates.add(currttime-(i*24*60*60*1000));
         }
-        datecurpos=week-1;
-        dateAdapter=new DateAdapter(this,listdates,week-1);
+        datecurpos=listdates.size()-1;
+        dateAdapter=new DateAdapter(this,listdates,datecurpos);
+        dateAdapter.setAll(2);
         gvDates.setAdapter(dateAdapter);
     }
 

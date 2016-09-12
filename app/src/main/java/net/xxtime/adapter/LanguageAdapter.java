@@ -28,7 +28,7 @@ public class LanguageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() { 
-        return listDefaults.size();
+        return listDefaults.size()+1;
     }
 
     @Override
@@ -56,10 +56,15 @@ public class LanguageAdapter extends BaseAdapter {
         
         area_item.iv_a.setVisibility(View.GONE);
 
-
-        if (!StringUtils.isEmpty(listDefaults.get(position).getForeignname())){
-            area_item.tv_name.setText(listDefaults.get(position).getForeignname());
+        if (listDefaults.size()==position){
+            area_item.tv_name.setText("其他");
+        }else {
+            if (!StringUtils.isEmpty(listDefaults.get(position).getForeignname())) {
+                area_item.tv_name.setText(listDefaults.get(position).getForeignname());
+            }
         }
+
+
 
         return convertView;
     }

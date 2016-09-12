@@ -1,19 +1,27 @@
 package net.xxtime.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.longtu.base.util.StringUtils;
+import com.longtu.base.util.ToastUtils;
 import com.loopj.android.http.RequestParams;
 
 import net.xxtime.R;
 import net.xxtime.adapter.LanguageAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.ForeignBean;
+
+import java.lang.reflect.Field;
 
 public class SelectLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
@@ -91,10 +99,62 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (foreignBean.getDefaultAList().size()==position){
+            setEdit();
+            return;
+        }
         intent=new Intent();
         intent.putExtra("foreignname",foreignBean.getDefaultAList().get(position).getForeignname());
         intent.putExtra("foreignid",foreignBean.getDefaultAList().get(position).getForeignid()+"");
         setResult(SelecctLanguge,intent);
         finish();
     }
+
+    /**
+     * 输入提示框
+     *
+     */
+    private void setEdit() {
+        LayoutInflater factory = LayoutInflater.from(this);// 提示框
+        final View view = factory.inflate(R.layout.update_info, null);// 这里必须是final的
+        final EditText editcontent = (EditText) view.findViewById(R.id.info_text); // 获得输入框对象
+        new AlertDialog.Builder(this).setTitle("请填写外语").setView(view)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (StringUtils.isEmpty(editcontent.getText().toString())) {
+                            ToastUtils.show(SelectLanguageActivity.this,"请填写外语");
+                            try {
+                                Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+                                field.setAccessible(true);
+                                field.set(dialog, false); // false -
+                                // 使之不能关闭(此为机关所在，其它语句相同)
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return;
+                        } else {
+                            intent=new Intent();
+                            intent.putExtra("otherforeign",editcontent.getText().toString());
+                            intent.putExtra("foreignid",0+"");
+                            setResult(SelecctLanguge,intent);
+                            finish();
+                        }
+
+                        dialog.dismiss();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+                    field.setAccessible(true);
+                    field.set(dialog, true); // false -
+                    // 使之不能关闭(此为机关所在，其它语句相同)
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).show();
+    }
+
 }

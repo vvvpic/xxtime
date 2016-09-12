@@ -327,8 +327,14 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignname())){
             tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getForeignname());
+            foreignname=studentUserInfoBean.getDefaultAList().get(0).getForeignname();
         }else {
-            tvLanguage.setText("其他");
+            if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign())){
+                tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign());
+                otherforeign=studentUserInfoBean.getDefaultAList().get(0).getOtherforeign();
+            }else {
+                tvLanguage.setText("其他");
+            }
         }
 
         if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignlevel())){
@@ -487,6 +493,10 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 params.put("city",citycode);
                 params.put("area",areacode);
 
+                if (!StringUtils.isEmpty(otherforeign)){
+                    params.put("otherforeign",otherforeign);
+                }
+
                 if (degreeid>-1){
                     params.put("degreeid",degreeid);
                 }
@@ -583,6 +593,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 intent.putExtra("email",etEmail.getText().toString());
 
                 intent.putExtra("foreignname",foreignname);
+                intent.putExtra("otherforeign",otherforeign);
 
                 intent.putExtra("degreename",degreename);
 
@@ -719,7 +730,12 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         }else if (requestCode==Languge&&resultCode==SelecctLanguge){
             foreignname=data.getStringExtra("foreignname");
             foreignid=data.getStringExtra("foreignid");
-            tvLanguage.setText(foreignname);
+            otherforeign=data.getStringExtra("otherforeign");
+            if (!StringUtils.isEmpty(foreignname)) {
+                tvLanguage.setText(foreignname);
+            }else if (!StringUtils.isEmpty(otherforeign)){
+                tvLanguage.setText(otherforeign);
+            }
         }else if (requestCode==LABLE&&resultCode==LABLE){
             lables=data.getStringExtra("lables");
             etBrift.setText(Contact.getLables(lables));
@@ -742,6 +758,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private String areacode;
     private String foreignname;
     private String foreignid;
+    private String otherforeign;
 
     /*
 	 * 裁剪头像

@@ -105,6 +105,7 @@ public class JobByConditionBean implements Serializable {
         private String jobcode;
         public String jobstartdate;
         public String jobenddate;
+        public int isCheng=0;
 
         public String getBuslogo() {
             return buslogo;

@@ -82,6 +82,16 @@
         android:layout_marginLeft="15dp"
         android:background="@color/line_color"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/txt_999"
+        android:layout_marginTop="15dp"
+        android:text="提示：\n此账号信息仅用于提现，请正确填写，以保证我们能及时给您汇款"
+        android:textSize="@dimen/txt_12"/>
+
     <Button
         android:id="@+id/btnOk"
         android:layout_width="match_parent"

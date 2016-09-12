@@ -199,6 +199,7 @@ public class JobByCodeBean implements Serializable {
         private String jobcode;
         public String email;
         public String dates;
+        public int isCheng=0;
 
         public String getBuslogo() {
             return buslogo;

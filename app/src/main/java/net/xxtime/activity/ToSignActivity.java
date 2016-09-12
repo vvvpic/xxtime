@@ -127,6 +127,7 @@ public class ToSignActivity extends BaseActivity implements AdapterView.OnItemCl
         }
         datecurpos=week-1;
         dateAdapter=new DateAdapter(this,listdates,week-1);
+        dateAdapter.setAll(2);
         gvDates.setAdapter(dateAdapter);
     }
 

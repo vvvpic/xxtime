@@ -119,7 +119,7 @@ public class JobDetailsActivity extends BaseActivity {
 
         Drawable drawable = getResources().getDrawable(R.mipmap.ico_cheng);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
-        if (jobByCodeBean.getDefaultAList().get(0).getScreenmsg1()>0){
+        if (jobByCodeBean.getDefaultAList().get(0).isCheng>0){
             tvJobname.setCompoundDrawables(null, null, drawable, null); //分别对应 左上右下
         }else {
             tvJobname.setCompoundDrawables(null, null, null, null); //分别对应 左上右下

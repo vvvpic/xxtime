@@ -23,4 +23,9 @@
         <item name="android:paddingLeft">4dp</item>
     </style>
 
+    <style name="my_edittext_style" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/edittext_linebackground</item>
+    </style>
+
+
 </resources>
