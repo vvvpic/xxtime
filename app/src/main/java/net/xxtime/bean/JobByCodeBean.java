@@ -200,6 +200,8 @@ public class JobByCodeBean implements Serializable {
         public String email;
         public String dates;
         public int isCheng=0;
+        public String missDates;
+        public List<CommentBean> commentList;
 
         public String getBuslogo() {
             return buslogo;

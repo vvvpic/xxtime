@@ -156,10 +156,15 @@ public class JobAdapter extends BaseAdapter {
            if (status==1){
                job_item.tvAppy.setText("报名中");
            }
-         /*  else if (status==-1){
-               job_item.tvAppy.setText("已结束");
-           }*/
+           else if (status==-1){
+               job_item.tvAppy.setText("报名结束");
+           } else if (status==2){
+               job_item.tvAppy.setText("未开始");
+           }
+       }else {
+           job_item.tvAppy.setText("报名中");
        }
+
 
         if (!StringUtils.isEmpty(status)){
             job_item.tvAppy.setText(status);

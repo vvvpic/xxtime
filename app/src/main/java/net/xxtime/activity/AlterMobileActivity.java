@@ -118,9 +118,13 @@ public class AlterMobileActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnSend:
+                if (StringUtils.isEmpty(etNewMobile.getText().toString())){
+                    ToastUtils.show(this,"请输入新手机号");
+                    return;
+                }
                 params=new RequestParams();
                 params.put("reqCode","sendMsgCode");
-                params.put("telephone",tvMoblie.getText().toString());
+                params.put("telephone",etNewMobile.getText().toString());
                 params.put("type",2);
                 post("studentUser",params,"sendMsgCode");
                 break;

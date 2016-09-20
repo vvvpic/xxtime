@@ -15,10 +15,13 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.longtu.base.util.StringUtils;
 import com.longtu.base.util.ToastUtils;
+import com.longtu.base.view.ScrollListView;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xxtime.R;
+import net.xxtime.adapter.CommentAdapter;
+import net.xxtime.adapter.JobCommentAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.JobByCodeBean;
@@ -36,6 +39,7 @@ public class JobStatusActivity extends BaseActivity {
     private RatingBar rbAssess;
     private TextView tvJobname, tvPrice, tvUint, tvTime ,tvLucency,  tvAdress, tvStatus;
     private TextView tvDetails, tvAddress, tvContact, tvDStatus;
+    private ScrollListView lvComments;
 
     public int postStatus;
     public int codeid;
@@ -50,12 +54,16 @@ public class JobStatusActivity extends BaseActivity {
 
     private RelativeLayout rlQd;
     private TextView tvQdDetails;
+    private RelativeLayout  rlStood;
+    private TextView tvStoodTime;
 
     /**
      * 待结算
      */
     private LinearLayout  llDjs;
     private TextView tvDjsAddress, tvDjsName, tvDjsTel ,tvDjsEmail,  tvDjsPhone;
+
+    private JobCommentAdapter commentAdapter;
 
     private Handler handler=new Handler(){
         @Override
@@ -224,6 +232,15 @@ public class JobStatusActivity extends BaseActivity {
             tvQdDetails.setText("日期不限");
         }
 
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).missDates)){
+            tvStoodTime.setText(jobByCodeBean.getDefaultAList().get(0).missDates.replace(",","\n"));
+        }
+
+        if (jobByCodeBean.getDefaultAList().get(0).commentList!=null){
+            commentAdapter=new JobCommentAdapter(jobByCodeBean.getDefaultAList().get(0).commentList,this);
+            lvComments.setAdapter(commentAdapter);
+        }
+
     }
 
 
@@ -260,6 +277,11 @@ public class JobStatusActivity extends BaseActivity {
 
         rlQd  =(RelativeLayout) findViewById(R.id.rlQd);
         tvQdDetails =(TextView) findViewById(R.id.tvQdDetails);
+
+        rlStood  =(RelativeLayout) findViewById(R.id.rlStood);
+        tvStoodTime =(TextView) findViewById(R.id.tvStoodTime);
+
+        lvComments=(ScrollListView)findViewById(R.id.lvComments);
     }
 
     @Override
@@ -298,6 +320,7 @@ public class JobStatusActivity extends BaseActivity {
         }else if (postStatus==7){
             llDjs.setVisibility(View.VISIBLE);
             tvAppy.setText("已评价");
+            lvComments.setVisibility(View.VISIBLE);
             tvDStatus.setVisibility(View.GONE);
         }else if (postStatus==2){
             llDjs.setVisibility(View.VISIBLE);
@@ -306,9 +329,9 @@ public class JobStatusActivity extends BaseActivity {
             tvDStatus.setText("扫描签到");
         }else if (postStatus==6){
             llDjs.setVisibility(View.VISIBLE);
-            tvAppy.setText("待签到");
+            tvAppy.setText("爽约");
+            rlStood.setVisibility(View.VISIBLE);
             rlQd.setVisibility(View.VISIBLE);
-            tvDStatus.setText("扫描签到");
             tvDStatus.setVisibility(View.GONE);
         }
         Log.e("param==>",params.toString());

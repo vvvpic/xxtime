@@ -136,9 +136,9 @@ public class ShareActivity extends BaseActivity {
             case R.id.btnShare:
                 if (shareDialog!=null){
                     shareBean=new ShareBean();
-                    shareBean.title="闲暇时光好友邀请";
+                    shareBean.title="闲暇时光—让时间更有价值";
                     shareBean.IMAGE_URL=shareWayBean.getDefaultAList().get(0).getQRcodeUrl();
-                    shareBean.SUMMARY="我在玩闲暇时光，里面很多岗位，一起来玩吧";
+                    shareBean.SUMMARY="我在玩闲暇时光，里面有自由职业、公益、兼职、实习、推广等等，我们一起来吧";
                     shareBean.url=shareWayBean.getDefaultAList().get(0).getShareUrl();
                     shareDialog.setShare(shareBean);
                     shareDialog.show();

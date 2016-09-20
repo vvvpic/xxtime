@@ -83,7 +83,7 @@ public class ToSignActivity extends BaseActivity implements AdapterView.OnItemCl
                 case 2:
                     commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
                     if (commonBean!=null&&commonBean.getBflag().equals("1")){
-                        jobByConditionBean.getDefaultAList().remove(qdpos);
+                        getRegisterJobByCondition(formatter.format(new Date(listdates.get(datecurpos))).substring(0,10));
                     }
                     jobAdapter.notifyDataSetChanged();
                     ToastUtils.show(ToSignActivity.this,commonBean.getMsg());

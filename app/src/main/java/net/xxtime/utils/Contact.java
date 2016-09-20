@@ -121,6 +121,8 @@ public class Contact {
                 return -1;
             }else if (middle.getTime()-begin.getTime()>=0&&end.getTime()-middle.getTime()>=0){
                 return 1;
+            }else if (middle.getTime()-begin.getTime()<0){
+                return 2;
             }else {
                 return 0;
             }

@@ -153,8 +153,8 @@ public class MyFollowActivity extends BaseActivity implements AdapterView.OnItem
                     Jump(intent);
                 }else {
                     intent=new Intent(MyFollowActivity.this,FirmHomeActivity.class);
-                    intent.putExtra("buscode", focusBusBean.getDefaultAList().get(0).getCode());
-                    intent.putExtra("busname", focusBusBean.getDefaultAList().get(0).getBusfullname());
+                    intent.putExtra("buscode", focusBusBean.getDefaultAList().get(position-1).getCode());
+                    intent.putExtra("busname", focusBusBean.getDefaultAList().get(position-1).getBusfullname());
                     Jump(intent);
                 }
 

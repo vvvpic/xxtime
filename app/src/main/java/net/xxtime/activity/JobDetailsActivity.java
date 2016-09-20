@@ -493,7 +493,7 @@ public class JobDetailsActivity extends BaseActivity {
                 shareBean.IMAGE_URL="http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png";
               /*  shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?
                         "http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();*/
-                shareBean.SUMMARY=tvAdress.getText().toString()+"-"+tvTime.getText().toString();
+                shareBean.SUMMARY="工作时间："+tvWorkTime.getText().toString()+"\n工作地址："+tvWorkAddress.getText().toString();
                 shareBean.url="http://www.xxtime.net";
                /* shareBean.title=jobByCodeBean.getDefaultAList().get(0).getJobname();
                 shareBean.SUMMARY=tvAdress.getText().toString()+"#"+tvWorkTime.getText().toString();
@@ -508,7 +508,7 @@ public class JobDetailsActivity extends BaseActivity {
     }
     protected void dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("保存图片到相册");  builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {   @Override
+        builder.setTitle("021-80376968");  builder.setPositiveButton("呼叫", new DialogInterface.OnClickListener() {   @Override
         public void onClick(DialogInterface dialog, int which) {
             intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:021-80376968"));
             startActivity(intent);

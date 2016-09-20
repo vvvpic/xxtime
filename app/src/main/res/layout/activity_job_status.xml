@@ -472,6 +472,42 @@
                         android:layout_toRightOf="@id/tv14"/>
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rlStood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="5dp">
+                    <TextView
+                        android:id="@+id/tv15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:text="爽约时间："
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/txt_999"/>
+                    <TextView
+                        android:id="@+id/tvStoodTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/content"
+                        android:textColor="@color/txt_333"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv15"/>
+                </RelativeLayout>
+
+                <com.longtu.base.view.ScrollListView
+                    android:id="@+id/lvComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    android:scrollbars="none"
+                    android:visibility="gone"></com.longtu.base.view.ScrollListView>
+
 
             </LinearLayout>
 
