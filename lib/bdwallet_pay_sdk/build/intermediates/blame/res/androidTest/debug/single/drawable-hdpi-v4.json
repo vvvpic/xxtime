@@ -152,12 +152,12 @@
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_toast_bg.9.png"
     },
     {
-        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_dialog_rightbtn_press.9.png",
-        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_dialog_rightbtn_press.9.png"
-    },
-    {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_dashed_shape_normal.png",
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_dashed_shape_normal.png"
+    },
+    {
+        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_dialog_rightbtn_press.9.png",
+        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_dialog_rightbtn_press.9.png"
     },
     {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_neg_btn_normal.9.png",
@@ -224,24 +224,24 @@
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_refresh_loading_img.png"
     },
     {
-        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\ebpay_title_v_line.9.png",
-        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ebpay_title_v_line.9.png"
-    },
-    {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_clear_normal.png",
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_clear_normal.png"
+    },
+    {
+        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\ebpay_title_v_line.9.png",
+        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ebpay_title_v_line.9.png"
     },
     {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_black_point_in_pwd.png",
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_black_point_in_pwd.png"
     },
     {
-        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_btn_default_off.png",
-        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_btn_default_off.png"
-    },
-    {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_pwdpay_close_normal.png",
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_pwdpay_close_normal.png"
+    },
+    {
+        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_btn_default_off.png",
+        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\wallet_base_btn_default_off.png"
     },
     {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\bdwallet_pay_sdk\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\wallet_base_dialog_bg.9.png",

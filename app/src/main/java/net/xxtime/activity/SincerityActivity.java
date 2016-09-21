@@ -1,9 +1,12 @@
 package net.xxtime.activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,7 +92,11 @@ public class SincerityActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnTq:
-                tqdialog.show();
+                if (MymoneyActivity.earnestmoney>0) {
+                    tqdialog.show();
+                }else {
+                    ToastUtils.show(this,"诚意金余额不足，无法提现");
+                }
                 break;
             case R.id.btnRecharge:
                 intent=new Intent(this,RechargeActivity.class);
@@ -115,6 +122,7 @@ public class SincerityActivity extends BaseActivity {
                 break;
         }
     }
+
 
     private Button  btnOk, btnCancel;
     private TextView tvDialogContent;

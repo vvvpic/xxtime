@@ -97,8 +97,7 @@ public class JobDetailsActivity extends BaseActivity {
                         ivCollect.setImageResource(R.mipmap.ico_collect_p);
                         tvCollect.setText("已关注");
                         tvCollect.setTextColor(getResources().getColor(R.color.blue));
-                        tvCollect.setEnabled(false);
-                        rlCollect.setEnabled(false);
+                        rlCollect.setTag(1);
                     }
                     ToastUtils.show(JobDetailsActivity.this,commonBean.getMsg());
                     break;
@@ -108,6 +107,16 @@ public class JobDetailsActivity extends BaseActivity {
                         tvApply.setText("已报名");
                         tvAppy.setText("已报名");
                         tvApply.setEnabled(false);
+                    }
+                    ToastUtils.show(JobDetailsActivity.this,commonBean.getMsg());
+                    break;
+                case 4:
+                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                        ivCollect.setImageResource(R.mipmap.ico_collect_n);
+                        tvCollect.setText("关注");
+                        tvCollect.setTextColor(getResources().getColor(R.color.txt_666));
+                        rlCollect.setTag(0);
                     }
                     ToastUtils.show(JobDetailsActivity.this,commonBean.getMsg());
                     break;
@@ -297,12 +306,12 @@ public class JobDetailsActivity extends BaseActivity {
             ivCollect.setImageResource(R.mipmap.ico_collect_p);
             tvCollect.setText("已关注");
             tvCollect.setTextColor(getResources().getColor(R.color.blue));
-            tvCollect.setEnabled(false);
-            rlCollect.setEnabled(false);
+            rlCollect.setTag(1);
         }else {
             ivCollect.setImageResource(R.mipmap.ico_collect_n);
             tvCollect.setText("关注");
             tvCollect.setTextColor(getResources().getColor(R.color.txt_666));
+            rlCollect.setTag(0);
         }
 
         if (jobByCodeBean.getDefaultAList().get(0).getIsEmploy()==1){
@@ -428,12 +437,22 @@ public class JobDetailsActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rlCollect:
-                params=new RequestParams();
-                params.put("reqCode","focusPosition");
-                params.put("userid",SharedUtils.getUserId(this));
-                params.put("type",0);
-                params.put("code",jobcode);
-                post("userJob",params,"focusPosition");
+                int fous= (int) rlCollect.getTag();
+                if (fous==0) {
+                    params = new RequestParams();
+                    params.put("reqCode", "focusPosition");
+                    params.put("userid", SharedUtils.getUserId(this));
+                    params.put("type", 0);
+                    params.put("code", jobcode);
+                    post("userJob", params, "focusPosition");
+                }else {
+                    params = new RequestParams();
+                    params.put("reqCode", "deleteFocusPosition");
+                    params.put("userid", SharedUtils.getUserId(this));
+                    params.put("type", 0);
+                    params.put("code", jobcode);
+                    post("userJob", params, "deleteFocusPosition");
+                }
                 break;
             case R.id.tvTel:
                 dialog();
@@ -494,7 +513,8 @@ public class JobDetailsActivity extends BaseActivity {
               /*  shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?
                         "http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();*/
                 shareBean.SUMMARY="工作时间："+tvWorkTime.getText().toString()+"\n工作地址："+tvWorkAddress.getText().toString();
-                shareBean.url="http://www.xxtime.net";
+                shareBean.url="http://www.xxtime.net/student/studentUser.h8?reqCode=toShareJob&userid="
+                        +SharedUtils.getUserId(this)+"&jobcode="+jobcode;
                /* shareBean.title=jobByCodeBean.getDefaultAList().get(0).getJobname();
                 shareBean.SUMMARY=tvAdress.getText().toString()+"#"+tvWorkTime.getText().toString();
                 shareBean.url="www.xxtime.net";
@@ -530,6 +550,8 @@ public class JobDetailsActivity extends BaseActivity {
             msg.what=2;
         }else if (requestname.equals("registerJob")){
             msg.what=3;
+        }else if (requestname.equals("deleteFocusPosition")){
+            msg.what=4;
         }
 
         msg.obj=response;

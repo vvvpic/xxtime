@@ -109,7 +109,7 @@ public class StoodActivity extends BaseActivity implements AdapterView.OnItemCli
             listdates.add((long) 0);
         }
 
-        for (int i=15;i>0;i--){
+        for (int i=14;i>=0;i--){
             listdates.add(currttime-(i*24*60*60*1000));
         }
         datecurpos=listdates.size()-1;

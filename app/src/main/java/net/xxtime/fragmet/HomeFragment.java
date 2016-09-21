@@ -286,7 +286,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
 
         listsorts=new ArrayList<>();
         sortBean=new SortBean();
-        sortBean.name="推荐排序";
+        sortBean.name="默认排序";
         sortBean.sortType=-1;
         listsorts.add(sortBean);
 
@@ -667,6 +667,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
     }
 
     private Button btnOk, btnCancel;
+    private TextView tvDialogContent;
     private void initPerson() {
         personaldialog = new Dialog(getActivity(), R.style.loadingDialog);
         LinearLayout layout = new LinearLayout(getActivity());
@@ -679,6 +680,8 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         personaldialog.setCanceledOnTouchOutside(false);
         personaldialog.setCancelable(false);
         btnOk =(Button)view.findViewById(R.id.btnOk);
+        tvDialogContent=(TextView)view.findViewById(R.id.tvDialogContent);
+        tvDialogContent.setText("您的信息资料还没完善，不能查看校内兼职,请先去完善个人信息后再来查看！");
         btnCancel=(Button)view.findViewById(R.id.btnCancel);
     }
 }

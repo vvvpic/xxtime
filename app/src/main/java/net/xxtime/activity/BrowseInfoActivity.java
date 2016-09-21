@@ -244,7 +244,7 @@ public class BrowseInfoActivity extends BaseActivity implements AdapterView.OnIt
             if (!StringUtils.isEmpty(otherforeign)){
                 tvLanguage.setText(otherforeign);
             }else {
-                tvLanguage.setText("其他");
+                tvLanguage.setText("");
             }
         }
 

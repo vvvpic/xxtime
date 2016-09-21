@@ -336,7 +336,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign());
                 otherforeign=studentUserInfoBean.getDefaultAList().get(0).getOtherforeign();
             }else {
-                tvLanguage.setText("其他");
+                tvLanguage.setText("");
             }
         }
 
@@ -407,7 +407,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
             case R.id.tvEnrollmentyear:
                 dateTimePickDialog = new DateTimePickDialog(this, "2016-9-1");
                 dateTimePickDialog.setTimePicker(View.GONE);
-                dateTimePickDialog.dateTimePicKDialog(tvEnrollmentyear);
+                dateTimePickDialog.dateTimePicKDialog(tvEnrollmentyear,1);
                 break;
             case R.id.tvDegree:
                 intent=new Intent(this,SelectDegreeActivity.class);
@@ -560,7 +560,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
             case R.id.tvBrith:
                 dateTimePickDialog = new DateTimePickDialog(this, "1990-1-1");
                 dateTimePickDialog.setTimePicker(View.GONE);
-                dateTimePickDialog.dateTimePicKDialog(tvBrith);
+                dateTimePickDialog.dateTimePicKDialog(tvBrith,1);
                 break;
             case R.id.tvCity:
                 intent=new Intent(this,SelectAreaActivity.class);

@@ -13,11 +13,14 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.longtu.base.util.StringUtils;
+import com.longtu.base.util.ToastUtils;
 
 import net.xxtime.R;
+import net.xxtime.utils.Contact;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 日期时间选择控件 使用方法： private EditText inputDate;//需要设置的日期时间文本编辑框 private String
@@ -100,7 +103,7 @@ public class DateTimePickDialog implements OnDateChangedListener,
      *            :为需要设置的日期时间文本编辑框
      * @return
      */
-    public AlertDialog dateTimePicKDialog(final TextView inputDate) {
+    public AlertDialog dateTimePicKDialog(final TextView inputDate, final int type) {
         
         init(datePicker, timePicker);
         timePicker.setIs24HourView(true);
@@ -112,8 +115,17 @@ public class DateTimePickDialog implements OnDateChangedListener,
                 .setView(dateTimeLayout)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        inputDate.setText(dateTime);
 
+                        if (type>0) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            if (Contact.getDateCha(dateTime, sdf.format(new Date(System.currentTimeMillis()))) >= 0) {
+                                inputDate.setText(dateTime);
+                            }else {
+                                ToastUtils.show(activity,"选择日期无效");
+                            }
+                        }else {
+                            inputDate.setText(dateTime);
+                        }
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

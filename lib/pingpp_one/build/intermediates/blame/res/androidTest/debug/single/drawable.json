@@ -40,12 +40,12 @@
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\bundles\\debug\\res\\drawable\\pingpp_common_pay_button_green.xml"
     },
     {
-        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\pingpp_shopping.png",
-        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\bundles\\debug\\res\\drawable\\pingpp_shopping.png"
-    },
-    {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\pingpp_common_pay_button_blue.xml",
         "source": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\bundles\\debug\\res\\drawable\\pingpp_common_pay_button_blue.xml"
+    },
+    {
+        "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\pingpp_shopping.png",
+        "source": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\bundles\\debug\\res\\drawable\\pingpp_shopping.png"
     },
     {
         "merged": "E:\\Androidstudio\\project\\xxtime\\lib\\pingpp_one\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\tips_bg.9.png",
