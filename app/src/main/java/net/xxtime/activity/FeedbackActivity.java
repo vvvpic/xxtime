@@ -17,6 +17,7 @@ import com.loopj.android.http.RequestParams;
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.SharedUtils;
 
 public class FeedbackActivity extends BaseActivity {
@@ -25,9 +26,7 @@ public class FeedbackActivity extends BaseActivity {
     private Button btnOk;
 
     private Message msg;
-
-
-    private CommonBean commonBean;
+    private XxtimeBean xxtimeBean;
 
     private Handler handler=new Handler(){
         @Override
@@ -35,12 +34,12 @@ public class FeedbackActivity extends BaseActivity {
             switch (msg.what){
 
                 case 1:
-                    commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    xxtimeBean= JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
 
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                    if (xxtimeBean!=null&&xxtimeBean.getStatus().equals("1")){
                        finish();
                     }
-                    ToastUtils.show(FeedbackActivity.this,commonBean.getMsg());
+                    ToastUtils.show(FeedbackActivity.this,xxtimeBean.getMsg());
 
                     break;
 
@@ -89,11 +88,16 @@ public class FeedbackActivity extends BaseActivity {
                     return;
                 }
 
-                params=new RequestParams();
+              /*  params=new RequestParams();
                 params.put("reqCode","addFeedbackInfo");
                 params.put("userid", SharedUtils.getUserId(this));
                 params.put("content",etContent.getText().toString());
-                post("studentUser",params,"addFeedbackInfo");
+                post("studentUser",params,"addFeedbackInfo");*/
+
+                params=new RequestParams();
+                params.put("accessToken",SharedUtils.getToken(this));
+                params.put("feedback.content",etContent.getText().toString());
+                post("feedback!save",params);
 
                 break;
         }
@@ -102,7 +106,7 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("addFeedbackInfo")){
+        if (requestname.equals("feedback!save")){
             msg.what=1;
         }
         msg.obj=response;

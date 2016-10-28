@@ -2,10 +2,8 @@ package net.xxtime.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +17,10 @@ import com.loopj.android.http.RequestParams;
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
+import net.xxtime.bean.RegisterBean;
 import net.xxtime.bean.SendMsgCodeBean;
-import net.xxtime.bean.UserBean;
+import net.xxtime.bean.UseBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.SharedUtils;
 
@@ -37,8 +37,8 @@ public class RegisterActivity extends BaseActivity {
     private Message msg;
 
     private CommonBean commonBean;
-    private SendMsgCodeBean sendMsgCodeBean;
-    private UserBean userBean;
+    private RegisterBean registerBean;
+    private XxtimeBean xxtimeBean;
 
     private int second=60;
 
@@ -47,28 +47,33 @@ public class RegisterActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
-                        params=new RequestParams();
-                        params.put("reqCode","sendMsgCode");
-                        params.put("telephone",etPhone.getText().toString());
-                        params.put("type",1);
-                        pullpost("studentUser",params,"sendMsgCode");
-                    }else{
-                        ToastUtils.show(RegisterActivity.this,commonBean.getMsg());
-                    }
-
-                    break;
-                case 2:
-                    sendMsgCodeBean=JSONObject.parseObject(msg.obj.toString(),SendMsgCodeBean.class);
-                    if (sendMsgCodeBean!=null){
-                         if (sendMsgCodeBean.getBflag().equals("1")){
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null){
+                         if (xxtimeBean.getStatus().equals("1")){
                              btnSend.setEnabled(false);
                              sendEmptyMessage(3);
                          }
-                        ToastUtils.show(RegisterActivity.this,sendMsgCodeBean.getMsg());
+                        ToastUtils.show(RegisterActivity.this,xxtimeBean.getMsg());
                     }
 
+                    break;
+
+                case 2:
+                    registerBean=JSONObject.parseObject(msg.obj.toString(),RegisterBean.class);
+                    if (registerBean!=null){
+                        if (registerBean.getStatus().equals("1")) {
+                            intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            /**
+                             * 顶部跳转结束之前所有Activity
+                             */
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Jump(intent);
+                            SharedUtils.setToken(RegisterActivity.this,registerBean.getAccessToken().getAccessToken());
+                            SharedUtils.setUserNamePwd(RegisterActivity.this, etPhone.getText().toString(), etPwd.getText().toString(), registerBean.getAccessToken().getUser().getId());
+                        }
+
+                    }
+                    ToastUtils.show(RegisterActivity.this,registerBean.getMsg());
                     break;
 
                 case 3:
@@ -82,20 +87,7 @@ public class RegisterActivity extends BaseActivity {
                     btnSend.setText(second+"s");
                     sendEmptyMessageDelayed(3,1000);
                     break;
-                case 4:
-                    userBean=JSONObject.parseObject(msg.obj.toString(),UserBean.class);
-                    if (userBean!=null&&userBean.getBflag().equals("1")){
-                        intent=new Intent(RegisterActivity.this,HomeActivity.class);
-                        /**
-                         * 顶部跳转结束之前所有Activity
-                         */
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Jump(intent);
-                        SharedUtils.setUserNamePwd(RegisterActivity.this,etPhone.getText().toString(),etPwd.getText().toString(),userBean.getDefaultAList().get(0).getUserid());
 
-                    }
-                    ToastUtils.show(RegisterActivity.this,userBean.getMsg());
-                    break;
             }
         }
     };
@@ -166,10 +158,14 @@ public class RegisterActivity extends BaseActivity {
                     return;
                 }
 
-                params=new RequestParams();
+               /* params=new RequestParams();
                 params.put("reqCode","checkStudentUserByPhone");
                 params.put("telephone",etPhone.getText().toString());
-                pullpost("studentUser",params,"checkStudentUserByPhone");
+                pullpost("studentUser",params,"checkStudentUserByPhone");*/
+                params=new RequestParams();
+                params.put("username",etPhone.getText().toString());
+                params.put("type","register");
+                post("code!save",params);
 
                 break;
             case R.id.btnRegister:
@@ -189,16 +185,6 @@ public class RegisterActivity extends BaseActivity {
                     return;
                 }
 
-                if (sendMsgCodeBean!=null&&sendMsgCodeBean.getDefaultAList()!=null&&sendMsgCodeBean.getDefaultAList().size()>0){
-                    if (!sendMsgCodeBean.getDefaultAList().get(0).getRandomCode().equals(etCode.getText().toString())){
-                        ToastUtils.show(this,"请输入正确验证码");
-                        return;
-                    }
-                }else {
-                    ToastUtils.show(this,"请输入正确验证码");
-                    return;
-                }
-
                 if (StringUtils.isEmpty(etPwd.getText().toString())){
                     ToastUtils.show(this,"请输入密码");
                     return;
@@ -210,11 +196,18 @@ public class RegisterActivity extends BaseActivity {
                     return;
                 }
 
-                params=new RequestParams();
+                /*params=new RequestParams();
                 params.put("reqCode","register");
                 params.put("telephone",etPhone.getText().toString());
                 params.put("password",etPwd.getText().toString());
-                pullpost("studentUser",params,"register");
+                pullpost("studentUser",params,"register");*/
+
+                params=new RequestParams();
+                params.put("user.username",etPhone.getText().toString());
+                params.put("code",etCode.getText().toString());
+                params.put("user.password",etPwd.getText().toString());
+                params.put("user.type",2);
+                post("user!register",params);
 
                 break;
             case R.id.tvAgreement:
@@ -235,12 +228,10 @@ public class RegisterActivity extends BaseActivity {
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("checkStudentUserByPhone")){
+        if (requestname.equals("code!save")){
             msg.what=1;
-        }else if (requestname.equals("sendMsgCode")){
+        }else if (requestname.equals("user!register")){
             msg.what=2;
-        }else if (requestname.equals("register")){
-            msg.what=4;
         }
         msg.obj=response;
         handler.sendMessage(msg);

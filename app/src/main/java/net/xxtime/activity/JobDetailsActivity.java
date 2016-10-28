@@ -3,18 +3,24 @@ package net.xxtime.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.webkit.DownloadListener;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,29 +28,30 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.longtu.base.util.StringUtils;
 import com.longtu.base.util.ToastUtils;
+import com.longtu.base.view.ScrollGridView;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.Tencent;
 
 import net.xxtime.R;
+import net.xxtime.adapter.JobImagesAdapter;
 import net.xxtime.base.activity.BaseActivity;
-import net.xxtime.base.activity.XxtimeApplication;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.JobByCodeBean;
 import net.xxtime.bean.ShareBean;
 import net.xxtime.utils.Contact;
-import net.xxtime.utils.ImageUtils;
 import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.SharedUtils;
 import net.xxtime.view.ShareDialog;
 
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 工作详情
  */
-public class JobDetailsActivity extends BaseActivity {
+public class JobDetailsActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
     private String html="若企业提出任何收费要求请一律拒绝，并向我们举报。举报电话：<font size=\"3\" color=\"#17B2EB\">021-80376968</font>";
 
@@ -68,6 +75,8 @@ public class JobDetailsActivity extends BaseActivity {
 
     private TextView tvWage, tvWorkIntro, tvAccount;
 
+    private ScrollGridView gvImages;
+
     private RelativeLayout rlCollect;
     private ImageView ivCollect;
     private TextView tvCollect, tvApply;
@@ -77,9 +86,15 @@ public class JobDetailsActivity extends BaseActivity {
 
     private ShareBean shareBean;
 
+    private JobImagesAdapter jobImagesAdapter;
+    private List<String> listimages,listims;
+
     private ShareDialog shareDialog;
 
     private int bus;
+
+    private WebView wvh5;
+    private ProgressBar pbCash;
 
     private Handler handler=new Handler(){
         @Override
@@ -89,6 +104,8 @@ public class JobDetailsActivity extends BaseActivity {
                     jobByCodeBean= JSONObject.parseObject(msg.obj.toString(),JobByCodeBean.class);
                     if (jobByCodeBean!=null&&jobByCodeBean.getBflag().equals("1")){
                         setJob();
+                    }else {
+                        loaddialog();
                     }
                     break;
                 case 2:
@@ -333,6 +350,7 @@ public class JobDetailsActivity extends BaseActivity {
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplyenddate())){
             if (Contact.getDateCha(Contact.CurTime.substring(0,10),jobByCodeBean.getDefaultAList().get(0).getApplyenddate().substring(0,10))<0){
                 tvApply.setText("已结束");
+                tvAppy.setText("已结束");
                 tvApply.setEnabled(false);
             }
         }
@@ -340,6 +358,7 @@ public class JobDetailsActivity extends BaseActivity {
         if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getJobenddate())){
             if (Contact.getDateCha(Contact.CurTime.substring(0,10),jobByCodeBean.getDefaultAList().get(0).getJobenddate().substring(0,10))<0){
                 tvApply.setText("已结束");
+                tvAppy.setText("已结束");
                 tvApply.setEnabled(false);
             }
         }
@@ -348,6 +367,27 @@ public class JobDetailsActivity extends BaseActivity {
             tvWorkTime.append("\n必须持续工作");
         }else {
             tvWorkTime.append("\n可自由选择工作日期");
+        }
+
+        if (jobByCodeBean.getDefaultAList().get(0).getPublisher()==3){
+            gvImages.setVisibility(View.VISIBLE);
+            if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).imgs)) {
+                listims=Contact.getPhotos(jobByCodeBean.getDefaultAList().get(0).imgs);
+                listimages=new ArrayList<>();
+                for (int i=0;i<listims.size();i++){
+                    listimages.add("http://www.xxtime.net"+listims.get(i));
+                }
+                jobImagesAdapter = new JobImagesAdapter(listimages,this);
+                gvImages.setAdapter(jobImagesAdapter);
+            }
+        }
+
+        if (!StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getApplystartdate())){
+            if (Contact.getDateCha(Contact.CurTime.substring(0,10),jobByCodeBean.getDefaultAList().get(0).getApplystartdate().substring(0,10))>0){
+                tvApply.setText("未开始");
+                tvAppy.setText("未开始");
+                tvApply.setEnabled(false);
+            }
         }
 
     }
@@ -394,10 +434,16 @@ public class JobDetailsActivity extends BaseActivity {
         tvCollect  =(TextView) findViewById(R.id.tvCollect);
         tvApply =(TextView) findViewById(R.id.tvApply);
 
+        gvImages=(ScrollGridView)findViewById(R.id.gvImages);
+
+        wvh5 =(WebView) findViewById(R.id.Wvh5);
+        pbCash =(ProgressBar) findViewById(R.id.pbCash);
+
         shareDialog=new ShareDialog(this,R.style.loadingDialog);
 
     }
 
+    private int join=0;
     @Override
     public void initDatas() {
         setTitle("岗位详情");
@@ -407,11 +453,123 @@ public class JobDetailsActivity extends BaseActivity {
         jobcode=getIntent().getStringExtra("jobcode");
         registerid=getIntent().getIntExtra("registerid",0);
         bus=getIntent().getIntExtra("bus",0);
+        params=new RequestParams();
+        params.put("reqCode","getJobByCode");
+        params.put("jobcode",jobcode);
+        params.put("userid", SharedUtils.getUserId(this));
+        post("job",params,"getJobByCode");
 
     }
 
     @Override
     public void setDatas() {
+        //支持javascript
+        wvh5.getSettings().setJavaScriptEnabled(true);
+        wvh5.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);// 支持通过JS打开新窗口
+        // 设置可以支持缩放
+        wvh5.getSettings().setSupportZoom(true);
+        // 设置出现缩放工具
+        wvh5.getSettings().setBuiltInZoomControls(true);
+        //扩大比例的缩放
+        wvh5.getSettings().setUseWideViewPort(true);
+        wvh5.getSettings().setAllowFileAccess(true);
+        wvh5.getSettings().setLoadsImagesAutomatically(true);// 支持自动加载图片
+        //自适应屏幕
+        wvh5.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        wvh5.getSettings().setLoadWithOverviewMode(true);
+
+        wvh5.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                Log.e("progress==>", progress + "");
+                pbCash.setProgress(progress);
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url,
+                                     String message, JsResult result) {
+                result.confirm();
+
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsConfirm(WebView view, String url,
+                                       String message, JsResult result) {
+                return super.onJsConfirm(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsBeforeUnload(WebView view, String url,
+                                            String message, JsResult result) {
+                return super.onJsBeforeUnload(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url,
+                                      String message, String defaultValue,
+                                      JsPromptResult result) {
+                return super.onJsPrompt(view, url, message, defaultValue, result);
+            }
+
+        });
+
+        wvh5.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                if (url.indexOf("tel:021-80376968")>-1){
+                    dialog();
+                    return true;
+                }else if (url.indexOf("xxsg:busdetails")>-1){
+                    if (bus==1){
+                        return true;
+                    }
+                    intent=new Intent(JobDetailsActivity.this,FirmHomeActivity.class);
+                    if (jobByCodeBean!=null) {
+                        intent.putExtra("buscode", jobByCodeBean.getDefaultAList().get(0).getBuscode());
+                        intent.putExtra("busname", jobByCodeBean.getDefaultAList().get(0).getBusfullname());
+
+                    }
+                    Jump(intent);
+                    return true;
+                }else {
+                    view.loadUrl(url);
+                }
+
+                Log.e("url==>",url);
+
+//              /*  if (url.startsWith("http:") || url.startsWith("https:")) {
+//                    return false;
+//                }
+//
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                startActivity(intent);*/
+                return false;
+            }
+
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+//                pbCash.setVisibility(View.VISIBLE);
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                pbCash.setVisibility(View.GONE);
+            }
+
+            public void onReceivedError(WebView view, int errorCode,
+                                        String description, String failingUrl) {
+                pbCash.setVisibility(View.GONE);
+
+            }
+        });
+
+        wvh5.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -421,15 +579,20 @@ public class JobDetailsActivity extends BaseActivity {
         tvTel.setOnClickListener(this);
         tvComMane.setOnClickListener(this);
         tvApply.setOnClickListener(this);
+        gvImages.setOnItemClickListener(this);
     }
 
     @Override
     public void ResumeDatas() {
-        params=new RequestParams();
-        params.put("reqCode","getJobByCode");
-        params.put("jobcode",jobcode);
-        params.put("userid", SharedUtils.getUserId(this));
-        pullpost("job",params,"getJobByCode");
+        wvh5.loadUrl("http://www.xxtime.net/student/studentUser.h8?reqCode=getJobDetailPage&jobcode="+jobcode);
+        if (join>0) {
+            params = new RequestParams();
+            params.put("reqCode", "getJobByCode");
+            params.put("jobcode", jobcode);
+            params.put("userid", SharedUtils.getUserId(this));
+            pullpost("job", params, "getJobByCode");
+        }
+        join=1;
 
     }
 
@@ -513,8 +676,8 @@ public class JobDetailsActivity extends BaseActivity {
               /*  shareBean.IMAGE_URL=StringUtils.isEmpty(jobByCodeBean.getDefaultAList().get(0).getBuslogo())?
                         "http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png":jobByCodeBean.getDefaultAList().get(0).getBuslogo();*/
                 shareBean.SUMMARY="工作时间："+tvWorkTime.getText().toString()+"\n工作地址："+tvWorkAddress.getText().toString();
-                shareBean.url="http://www.xxtime.net/student/studentUser.h8?reqCode=toShareJob&userid="
-                        +SharedUtils.getUserId(this)+"&jobcode="+jobcode;
+                shareBean.url="http://www.xxtime.net/student/studentUser.h8?reqCode=toShareJob&jobcode="+jobcode
+                        +"&userid="+SharedUtils.getUserId(this);
                /* shareBean.title=jobByCodeBean.getDefaultAList().get(0).getJobname();
                 shareBean.SUMMARY=tvAdress.getText().toString()+"#"+tvWorkTime.getText().toString();
                 shareBean.url="www.xxtime.net";
@@ -537,6 +700,15 @@ public class JobDetailsActivity extends BaseActivity {
         });  builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {   @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
+        }
+        });  builder.create().show();
+    }
+
+    protected void loaddialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示查询失败");  builder.setPositiveButton("返回", new DialogInterface.OnClickListener() {   @Override
+        public void onClick(DialogInterface dialog, int which) {
+           finish();
         }
         });  builder.create().show();
     }
@@ -570,4 +742,18 @@ public class JobDetailsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onFail(int statusCode) {
+        if (statusCode==0){
+            loaddialog();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        intent=new Intent(this,PhotosFullActivity.class);
+        intent.putStringArrayListExtra("urls", (ArrayList<String>) listimages);
+        intent.putExtra("position",position);
+        Jump(intent);
+    }
 }

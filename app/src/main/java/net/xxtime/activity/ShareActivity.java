@@ -137,7 +137,7 @@ public class ShareActivity extends BaseActivity {
                 if (shareDialog!=null){
                     shareBean=new ShareBean();
                     shareBean.title="闲暇时光—让时间更有价值";
-                    shareBean.IMAGE_URL=shareWayBean.getDefaultAList().get(0).getQRcodeUrl();
+                    shareBean.IMAGE_URL="http://7xocov.com2.z0.glb.qiniucdn.com/logo_512.png";
                     shareBean.SUMMARY="我在玩闲暇时光，里面有自由职业、公益、兼职、实习、推广等等，我们一起来吧";
                     shareBean.url=shareWayBean.getDefaultAList().get(0).getShareUrl();
                     shareDialog.setShare(shareBean);

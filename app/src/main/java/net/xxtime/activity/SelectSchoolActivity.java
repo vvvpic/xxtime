@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +22,7 @@ import net.xxtime.R;
 import net.xxtime.adapter.SchoolAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.AllSchoolsBean;
+import net.xxtime.utils.SharedUtils;
 
 public class SelectSchoolActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
@@ -39,8 +41,8 @@ public class SelectSchoolActivity extends BaseActivity implements AdapterView.On
             switch (msg.what){
                 case 1:
                     allSchoolsBean= JSONObject.parseObject(msg.obj.toString(),AllSchoolsBean.class);
-                    if (allSchoolsBean!=null&&allSchoolsBean.getBflag().equals("1")){
-                        schoolAdapter=new SchoolAdapter(allSchoolsBean.getDefaultAList(),SelectSchoolActivity.this);
+                    if (allSchoolsBean!=null&&allSchoolsBean.getStatus().equals("1")){
+                        schoolAdapter=new SchoolAdapter(allSchoolsBean.getColleges(),SelectSchoolActivity.this);
                         lvSchools.setAdapter(schoolAdapter);
                     }
                     break;
@@ -67,9 +69,12 @@ public class SelectSchoolActivity extends BaseActivity implements AdapterView.On
 
     private void getSearch(String search){
         params=new RequestParams();
-        params.put("reqCode","getAllSchools");
-        params.put("schoolname",search);
-        pullpost("studentUser",params,"getAllSchools");
+        params.put("accessToken", SharedUtils.getToken(this));
+        if (!StringUtils.isEmpty(search)){
+            params.put("query.name",search);
+        }
+        Log.e("param==>",params.toString());
+        pullpost("college!list",params);
     }
 
     @Override
@@ -92,7 +97,8 @@ public class SelectSchoolActivity extends BaseActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         intent=new Intent();
-        intent.putExtra("schoolname",allSchoolsBean.getDefaultAList().get(position).getSchoolname());
+        intent.putExtra("schoolname",allSchoolsBean.getColleges().get(position).getName());
+        intent.putExtra("schoolCode",allSchoolsBean.getColleges().get(position).getId());
         setResult(SCHOOL,intent);
         finish();
     }
@@ -145,7 +151,7 @@ public class SelectSchoolActivity extends BaseActivity implements AdapterView.On
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("getAllSchools")){
+        if (requestname.equals("college!list")){
             msg.what=1;
         }
         msg.obj=response;

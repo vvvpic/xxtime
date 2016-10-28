@@ -21,6 +21,7 @@ import net.xxtime.bean.AreaBean;
 import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.CitysBean;
 import net.xxtime.bean.StudentUserInfoBean;
+import net.xxtime.bean.UserViewBean;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -56,6 +57,7 @@ public class Contact {
     public static StudentUserInfoBean studentUserInfoBean;
 
     public static CheckStudentBean checkStudentBean;
+    public static UserViewBean userViewBean;
 
     public static List<AreaBean> listAreas=new ArrayList<>();
     /**
@@ -213,32 +215,12 @@ public class Contact {
     }
 
 
-    public static void get(final String locationName, final Context context, final TextView textView){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
-                    if (addressList != null && addressList.size() > 0) {
-                        Log.e("lat-lng->", addressList.get(0).getLatitude()+"-"+addressList.get(0).getLongitude())  ;
-                        int lng = (int) (addressList.get(0).getLongitude() * 1E6);
-                        textView.append(" 相距"+getDistance(addressList.get(0).getLongitude(),addressList.get(0).getLatitude(),Longitude,Latitude)+"km");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
     private static final double EARTH_RADIUS = 6378137.0;
-    public static String getDistance(double longitude1, double latitude1,
-                                     double longitude2, double latitude2) {
+    public static String getDistance(double longitude1, double latitude1) {
         double Lat1 = rad(latitude1);
-        double Lat2 = rad(latitude2);
+        double Lat2 = rad(Latitude);
         double a = Lat1 - Lat2;
-        double b = rad(longitude1) - rad(longitude2);
+        double b = rad(longitude1) - rad(Longitude);
         double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
                 + Math.cos(Lat1) * Math.cos(Lat2)
                 * Math.pow(Math.sin(b / 2), 2)));
@@ -246,7 +228,7 @@ public class Contact {
         s = Math.round(s * 10000) / 10000.0/1000.0;
         DecimalFormat df=new DecimalFormat("#.00");
 
-        return df.format(s);
+        return df.format(s)+"km";
     }
     private static double rad(double d) {
         return d * Math.PI / 180.0;

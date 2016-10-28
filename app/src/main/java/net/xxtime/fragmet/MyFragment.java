@@ -31,6 +31,7 @@ import net.xxtime.activity.WalksActivity;
 import net.xxtime.base.fragment.BaseFragment;
 import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.StudentUserInfoBean;
+import net.xxtime.bean.UserViewBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.OptionsUtils;
 import net.xxtime.utils.SharedUtils;
@@ -42,7 +43,8 @@ public class MyFragment extends BaseFragment {
 
     private TextView tvMyMsg ,tvMyMon, tvRz, tvDz , tvBs, tvShare, tvFollow, tvSetting;
 
-    private StudentUserInfoBean studentUserInfoBean;
+    private ImageView  ivMsg, ivSet ;
+    private TextView tvWork;
     private Message msg;
 
     private ImageView ivAvatar;
@@ -55,9 +57,8 @@ public class MyFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    studentUserInfoBean= JSONObject.parseObject(msg.obj.toString(),StudentUserInfoBean.class);
-                    if (studentUserInfoBean!=null&&studentUserInfoBean.getBflag().equals("1")){
-                        Contact.studentUserInfoBean=studentUserInfoBean;
+                    Contact.userViewBean= JSONObject.parseObject(msg.obj.toString(),UserViewBean.class);
+                    if ( Contact.userViewBean!=null&& Contact.userViewBean.getStatus().equals("1")){
                         setIserInfo();
                     }
                     break;
@@ -69,14 +70,14 @@ public class MyFragment extends BaseFragment {
     };
 
     private void setIserInfo(){
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getNickname())){
-            tvName.setText(studentUserInfoBean.getDefaultAList().get(0).getNickname());
-        }else if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getTelephone())){
-            tvName.setText(studentUserInfoBean.getDefaultAList().get(0).getTelephone());
+        if (!StringUtils.isEmpty( Contact.userViewBean.getUser().getNickname())){
+            tvName.setText(Contact.userViewBean.getUser().getNickname());
+        }else if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getRealname())){
+            tvName.setText(Contact.userViewBean.getUser().getRealname());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getLogo())){
-            ImageLoader.getInstance().displayImage(studentUserInfoBean.getDefaultAList().get(0).getLogo(),ivAvatar, OptionsUtils.getSimpleOptions(100));
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getPhoto())){
+            ImageLoader.getInstance().displayImage(Contact.userViewBean.getUser().getPhoto(),ivAvatar, OptionsUtils.getSimpleOptions(100));
         }
     }
 
@@ -97,11 +98,18 @@ public class MyFragment extends BaseFragment {
         tvSetting=(TextView)view.findViewById(R.id.tvSetting);
         ivAvatar =(ImageView) view.findViewById(R.id.ivAvatar);
         tvName=(TextView)view.findViewById(R.id.tvName);
+        ivMsg =(ImageView) view.findViewById(R.id.ivMsg);
+        ivSet =(ImageView) view.findViewById(R.id.ivSet);
+        tvWork =(TextView) view.findViewById(R.id.tvWork);
     }
 
     @Override
     public void initDatas() {
         initPerson();
+        params=new RequestParams();
+        params.put("accessToken",SharedUtils.getToken(getActivity()));
+        params.put("id",SharedUtils.getUserId(getActivity()));
+        post("user!view",params);
     }
 
     @Override
@@ -121,15 +129,13 @@ public class MyFragment extends BaseFragment {
         tvRz.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
+        ivMsg.setOnClickListener(this);
+        ivSet.setOnClickListener(this);
+        tvWork.setOnClickListener(this);
     }
 
     @Override
     public void ResumeDatas() {
-        params=new RequestParams();
-        params.put("reqCode","getStudentUserInfo");
-        params.put("userid", SharedUtils.getUserId(getActivity()));
-        Log.e("param==>",params.toString());
-        pullpost("studentUser",params,"getStudentUserInfo");
 
         params=new RequestParams();
         params.put("reqCode","checkStudentUserInfo");
@@ -145,7 +151,7 @@ public class MyFragment extends BaseFragment {
                 if (Contact.checkStudentBean!=null) {
                     if (Contact.checkStudentBean.isSuccess()) {
                         intent=new Intent(getActivity(),AuthenticationActivity.class);
-                        if (studentUserInfoBean!=null) {
+                      /*  if (studentUserInfoBean!=null) {
                             intent.putExtra("isstudent",studentUserInfoBean.getDefaultAList().get(0).getIsstudent());
                             intent.putExtra("cardobverse",studentUserInfoBean.getDefaultAList().get(0).getCardobverse());
                             intent.putExtra("cardreverse",studentUserInfoBean.getDefaultAList().get(0).getCardreverse());
@@ -154,7 +160,7 @@ public class MyFragment extends BaseFragment {
                             intent.putExtra("name",studentUserInfoBean.getDefaultAList().get(0).getName());
                             intent.putExtra("cardcode",studentUserInfoBean.getDefaultAList().get(0).getCardcode());
                             intent.putExtra("studentcardcode",studentUserInfoBean.getDefaultAList().get(0).getStudentcardcode());
-                        }
+                        }*/
                         homeActivity.Jump(intent);
                     } else {
                         tvDialogContent.setText("您的信息资料还没完善，不能进行实名认证,请先去完善个人信息后再来查看！");
@@ -177,20 +183,24 @@ public class MyFragment extends BaseFragment {
 
                 break;
             case R.id.tvMyMsg://我的信息
-                if (Contact.checkStudentBean!=null) {
+
+                homeActivity.Jump(PersoninfoActivity.class);
+               /* if (Contact.checkStudentBean!=null) {
                     if (Contact.checkStudentBean.isSuccess()) {
                         homeActivity.Jump(PersoninfoActivity.class);
                     } else {
                         tvDialogContent.setText("您的信息资料还没完善，不能查看个人信息,请先去完善个人信息后再来查看！");
                         personaldialog.show();
                     }
-                }
+                }*/
                 break;
             case R.id.tvMyMon://我的钱包
-                if (Contact.checkStudentBean!=null) {
+                intent=new Intent(getActivity(),MymoneyActivity.class);
+                homeActivity.Jump(intent);
+              /*  if (Contact.checkStudentBean!=null) {
                     if (Contact.checkStudentBean.isSuccess()) {
                         intent=new Intent(getActivity(),MymoneyActivity.class);
-                        if (studentUserInfoBean!=null){
+                        if (Contact.userViewBean!=null){
                             intent.putExtra("balance",studentUserInfoBean.getDefaultAList().get(0).getBalance());
                             intent.putExtra("earnestmoney",studentUserInfoBean.getDefaultAList().get(0).getEarnestmoney());
                         }
@@ -199,7 +209,7 @@ public class MyFragment extends BaseFragment {
                         tvDialogContent.setText("您的信息资料还没完善，不能进入我的钱包,请先去完善个人信息后再来查看！");
                         personaldialog.show();
                     }
-                }
+                }*/
                 break;
             case R.id.tvShare://分享
                 homeActivity.Jump(ShareActivity.class);
@@ -208,7 +218,7 @@ public class MyFragment extends BaseFragment {
                         intent=new Intent(getActivity(),MyFollowActivity.class);
                         homeActivity.Jump(intent);
                 break;
-            case R.id.tvSetting://设置
+            case R.id.ivSet://设置
                 homeActivity.Jump(SettingActivity.class);
                 break;
             case R.id.btnCancel:
@@ -224,7 +234,7 @@ public class MyFragment extends BaseFragment {
     @Override
     public void Receive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("getStudentUserInfo")){
+        if (requestname.equals("user!view")){
             msg.what=1;
         }else if (requestname.equals("checkStudentUserInfo")){
             msg.what=2;

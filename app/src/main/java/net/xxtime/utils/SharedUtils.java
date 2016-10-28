@@ -129,4 +129,20 @@ public class SharedUtils {
         sharedPreferences=context.getSharedPreferences(Contact.USERINFO,  Context.MODE_APPEND);
         return sharedPreferences.getString("city","");
     }
+
+    /**
+     * 设置是否第一次启动
+     * @param context
+     */
+    public static void setToken(Context context, String token){
+        sharedPreferences=context.getSharedPreferences(Contact.USERINFO,  Context.MODE_APPEND);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("token",token);
+        editor.commit();
+    }
+
+    public static String getToken(Context context){
+        sharedPreferences=context.getSharedPreferences(Contact.USERINFO,  Context.MODE_APPEND);
+        return sharedPreferences.getString("token","");
+    }
 }

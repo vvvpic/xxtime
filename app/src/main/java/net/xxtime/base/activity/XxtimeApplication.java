@@ -31,9 +31,9 @@ public class XxtimeApplication extends Application {
 		/**
 		 * 微信
 		 */
-		api= WXAPIFactory.createWXAPI(getApplicationContext(), "wx943324d32966a1b0",true);
+		api= WXAPIFactory.createWXAPI(getApplicationContext(), "wx7bd063f60436dee1",true);
 
-		api.registerApp("wx943324d32966a1b0");
+		api.registerApp("wx7bd063f60436dee1");
 
 
 		WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);

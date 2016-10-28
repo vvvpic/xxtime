@@ -18,9 +18,9 @@ import java.util.List;
 public class SchoolAdapter extends BaseAdapter {
 
     private Context context;
-    private List<AllSchoolsBean.DefaultAListBean> listDefaults;
+    private List<AllSchoolsBean.CollegesBean> listDefaults;
 
-    public SchoolAdapter(List<AllSchoolsBean.DefaultAListBean> listDefaults, Context context) {
+    public SchoolAdapter(List<AllSchoolsBean.CollegesBean> listDefaults, Context context) {
         this.listDefaults=listDefaults;
         this.context=context;
     }
@@ -56,8 +56,8 @@ public class SchoolAdapter extends BaseAdapter {
         area_item.iv_a.setVisibility(View.GONE);
 
 
-        if (!StringUtils.isEmpty(listDefaults.get(position).getSchoolname())){
-            area_item.tv_name.setText(listDefaults.get(position).getSchoolname());
+        if (!StringUtils.isEmpty(listDefaults.get(position).getName())){
+            area_item.tv_name.setText(listDefaults.get(position).getName());
         }
 
         return convertView;

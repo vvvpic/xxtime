@@ -21,8 +21,12 @@ import com.loopj.android.http.RequestParams;
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.SharedUtils;
 
+/**
+ * 第二版本
+ */
 public class SincerityActivity extends BaseActivity {
 
     private TextView  tvPrice;
@@ -30,7 +34,8 @@ public class SincerityActivity extends BaseActivity {
 
     private Dialog tqdialog;
 
-    private CommonBean commonBean;
+    private XxtimeBean xxtimeBean;
+
     private Message msg;
 
     private Handler handler=new Handler(){
@@ -39,13 +44,13 @@ public class SincerityActivity extends BaseActivity {
             switch (msg.what){
 
                 case 1:
-                    commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    xxtimeBean= JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
 
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                    if (xxtimeBean!=null&&xxtimeBean.getStatus().equals("1")){
                         finish();
                     }
 
-                    ToastUtils.show(SincerityActivity.this,commonBean.getMsg());
+                    ToastUtils.show(SincerityActivity.this,xxtimeBean.getMsg());
                     break;
             }
         }
@@ -111,10 +116,9 @@ public class SincerityActivity extends BaseActivity {
 
                 if (MymoneyActivity.earnestmoney>0) {
                     params = new RequestParams();
-                    params.put("reqCode", "etob");
-                    params.put("userid", SharedUtils.getUserId(this));
+                    params.put("accessToken", SharedUtils.getToken(this));
                     params.put("amount", MymoneyActivity.earnestmoney);
-                    post("studentWithdraw", params, "etob");
+                    post("card!bailToBalance", params);
                 }else {
                     ToastUtils.show(this,"诚意金余额不足，无法提现");
                 }
@@ -146,7 +150,7 @@ public class SincerityActivity extends BaseActivity {
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("etob")){
+        if (requestname.equals("card!bailToBalance")){
             msg.what=1;
         }
         msg.obj=response;

@@ -616,6 +616,19 @@
                     android:layout_toRightOf="@id/tv12"/>
             </RelativeLayout>
 
+            <com.longtu.base.view.ScrollGridView
+                android:id="@+id/gvImages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:scrollbars="none"
+                android:visibility="gone"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                ></com.longtu.base.view.ScrollGridView>
+
+
             <TextView
                 android:id="@+id/tvTel"
                 android:layout_width="match_parent"
@@ -633,6 +646,7 @@
     </ScrollView>
 
         <LinearLayout
+            android:id="@+id/llBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -689,6 +703,27 @@
                 android:background="@color/blue"/>
         </LinearLayout>
        </LinearLayout>
+
+        <WebView
+            android:id="@+id/Wvh5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/llBottom"
+            android:scrollbars="none"
+            android:visibility="gone">
+        </WebView>
+
+        <ProgressBar
+            android:id="@+id/pbCash"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:max="100"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:progressDrawable="@drawable/progressbar_carch" >
+        </ProgressBar>
+
     </RelativeLayout>
 
 </LinearLayout>

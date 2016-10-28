@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -18,10 +20,12 @@ import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.StudentAccountBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.SharedUtils;
 
 /**
  * 提现
+ * 第二版本
  */
 public class ExtractActivity extends BaseActivity {
 
@@ -29,11 +33,11 @@ public class ExtractActivity extends BaseActivity {
     private TextView tvTpye;
     private Button btnOk;
 
-    private StudentAccountBean studentAccountBean;
-    private CommonBean commonBean;
-    private Message msg;
+    private EditText etName ,etNumber, etBank;
+    private LinearLayout rlBank;
 
-//    private int balance;
+    private XxtimeBean xxtimeBean;
+    private Message msg;
 
     private Handler handler=new Handler(){
         @Override
@@ -41,36 +45,16 @@ public class ExtractActivity extends BaseActivity {
             switch (msg.what){
 
                 case 1:
-                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
 
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                    if (xxtimeBean!=null&&xxtimeBean.getStatus().equals("1")){
                         MymoneyActivity.balance=MymoneyActivity.balance-Integer.valueOf(etAccount.getText().toString());
                         finish();
                     }
 
-                    ToastUtils.show(ExtractActivity.this,commonBean.getMsg());
+                    ToastUtils.show(ExtractActivity.this,xxtimeBean.getMsg());
                     break;
-                case 2:
-                    studentAccountBean= JSONObject.parseObject(msg.obj.toString(),StudentAccountBean.class);
-                    if (studentAccountBean!=null&&studentAccountBean.getBflag().equals("1")){
-                        int p=studentAccountBean.getDefaultAList().size()-1;
-                        if (StringUtils.isEmpty(studentAccountBean.getDefaultAList().get(p).getAccountid())){
-                            if(channel==1){
-                                ToastUtils.show(ExtractActivity.this,"请先绑定支付宝账号");
-                            }else if (channel==2){
-                                ToastUtils.show(ExtractActivity.this,"请先绑定微信账号");
-                            }
-                        }else {
-                            params=new RequestParams();
-                            params.put("reqCode","save");
-                            params.put("userid", SharedUtils.getUserId(ExtractActivity.this));
-                            params.put("amount",etAccount.getText().toString());
-                            params.put("channel",channel);
-                            Log.e("param==>",params.toString());
-                            ExtractActivity.this.post("studentWithdraw",params,"save");
-                        }
-                    }
-                    break;
+
             }
         }
     };
@@ -85,12 +69,15 @@ public class ExtractActivity extends BaseActivity {
         etAccount =(EditText)findViewById(R.id.etAccount);
         tvTpye  =(TextView) findViewById(R.id.tvTpye);
         btnOk =(Button) findViewById(R.id.btnOk);
+        etName =(EditText)findViewById(R.id.etName);
+        etNumber =(EditText)findViewById(R.id.etNumber);
+        etBank=(EditText)findViewById(R.id.etBank);
+        rlBank=(LinearLayout) findViewById(R.id.rlBank);
     }
 
     @Override
     public void initDatas() {
         setTitle("提现");
-//        balance=getIntent().getIntExtra("balance",0);
     }
 
     @Override
@@ -119,20 +106,31 @@ public class ExtractActivity extends BaseActivity {
                 Jump(intent,PAY);
                 break;
             case R.id.btnOk:
-                if (StringUtils.isEmpty(etAccount.getText().toString())){
-                    ToastUtils.show(this,"请输入提现金额");
-                    return;
-                }
-
                 if (StringUtils.isEmpty(tvTpye.getText().toString())){
                     ToastUtils.show(this,"请选择提现方式");
                     return;
                 }
 
-                if (tvTpye.getText().toString().equals("支付宝")){
-                    channel=1;
-                }else {
-                    channel=2;
+                if (StringUtils.isEmpty(etName.getText().toString())){
+                    ToastUtils.show(this,"请输入用户名或姓名");
+                    return;
+                }
+
+                if (StringUtils.isEmpty(etNumber.getText().toString())){
+                    ToastUtils.show(this,"请输入支付宝、微信账号或银行卡卡号");
+                    return;
+                }
+
+                if (StringUtils.isEmpty(etAccount.getText().toString())){
+                    ToastUtils.show(this,"请输入提现金额");
+                    return;
+                }
+
+                if (tvTpye.getText().toString().equals("银行卡")){
+                    if (StringUtils.isEmpty(etBank.getText().toString())){
+                        ToastUtils.show(this,"请输入开户行名称");
+                        return;
+                    }
                 }
 
                 if (Integer.valueOf(etAccount.getText().toString())>MymoneyActivity.balance){
@@ -140,13 +138,16 @@ public class ExtractActivity extends BaseActivity {
                     return;
                 }
 
-                    params=new RequestParams();
-                    params.put("reqCode","getAccount");
-                    params.put("userid", SharedUtils.getUserId(this));
-                    params.put("type",channel);
-                    Log.e("param==>",params.toString());
-                    post("studentAccount",params,"getAccount");
-
+                params=new RequestParams();
+                params.put("accessToken",SharedUtils.getToken(this));
+                params.put("withdraw.name",etName.getText().toString());
+                params.put("withdraw.channel",tvTpye.getText().toString());
+                params.put("withdraw.account",etNumber.getText().toString());
+                params.put("withdraw.amount",etAccount.getText().toString());
+                if (tvTpye.getText().toString().equals("银行卡")){
+                    params.put("withdraw.banks",etBank.getText().toString());
+                }
+                post("withdraw!save",params);
 
                 break;
         }
@@ -156,16 +157,19 @@ public class ExtractActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode==PAY&&resultCode==SelecctPAY){
             tvTpye.setText(data.getStringExtra("name"));
+            if (tvTpye.getText().toString().equals("银行卡")){
+                rlBank.setVisibility(View.VISIBLE);
+            }else {
+                rlBank.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("save")){
+        if (requestname.equals("withdraw!save")){
             msg.what=1;
-        }else if (requestname.equals("getAccount")){
-            msg.what=2;
         }
         msg.obj=response;
         handler.sendMessage(msg);

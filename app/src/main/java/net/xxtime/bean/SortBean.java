@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class SortBean implements Serializable {
     public String name;
     public int sortType;
+    public String sortName;
 }

@@ -3,8 +3,6 @@ package net.xxtime.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +15,7 @@ import com.loopj.android.http.RequestParams;
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
-import net.xxtime.bean.SendMsgCodeBean;
-import net.xxtime.bean.UserBean;
+import net.xxtime.bean.UseBean;
 import net.xxtime.utils.SharedUtils;
 
 public class ResetActivity extends BaseActivity {
@@ -30,7 +27,7 @@ public class ResetActivity extends BaseActivity {
     private Message msg;
 
     private CommonBean commonBean;
-    private UserBean userBean;
+    private UseBean userBean;
     private String Userid="";
 
     private Handler handler=new Handler(){
@@ -38,10 +35,10 @@ public class ResetActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    userBean= JSONObject.parseObject(msg.obj.toString(),UserBean.class);
-                    if (userBean!=null&&userBean.getBflag().equals("1")){
+                    userBean= JSONObject.parseObject(msg.obj.toString(),UseBean.class);
+                   /* if (userBean!=null&&userBean.getBflag().equals("1")){
                        Userid=userBean.getDefaultAList().get(0).getUserid();
-                    }
+                    }*/
                     break;
                 case 2:
                     commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
@@ -52,7 +49,7 @@ public class ResetActivity extends BaseActivity {
                          */
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         Jump(intent);
-                        SharedUtils.setUserNamePwd(ResetActivity.this,telephone,etPwd.getText().toString(),userBean.getDefaultAList().get(0).getUserid());
+//                        SharedUtils.setUserNamePwd(ResetActivity.this,telephone,etPwd.getText().toString(),userBean.getDefaultAList().get(0).getUserid());
 
                     }
                      ToastUtils.show(ResetActivity.this,commonBean.getMsg());

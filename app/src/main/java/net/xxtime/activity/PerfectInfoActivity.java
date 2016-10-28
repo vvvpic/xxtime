@@ -40,6 +40,9 @@ import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.StudentUserInfoBean;
 import net.xxtime.bean.StudentUserPictureBean;
+import net.xxtime.bean.StudentViewByUserIdBean;
+import net.xxtime.bean.UserPictureBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.listener.DeleteListener;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.ImageUtils;
@@ -67,8 +70,8 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
     private PopupWindow choosePhotoWindow;
 
-    private StudentUserPictureBean studentUserPictureBean;
-    private StudentUserInfoBean studentUserInfoBean;
+    private StudentViewByUserIdBean studentschool;
+    private UserPictureBean userPictureBean;
 
     private RelativeLayout  rlAvatar;
     private ImageView ivAvatar;
@@ -80,7 +83,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private RadioButton  rbtnStudentYes, rbtnStudentNo;
     private TextView tvCity , tvLanguage;
     private RadioButton rbtnLanC, rbtnLanWork, rbtnLanS;
-    private TextView etBrift;
+    private EditText etBrift;
 
     private int choosephoto=0;//0头像 1照片
     private String avatar="";
@@ -92,34 +95,31 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private CommonBean commonBean;
     private int uploadint=0,up=0;
 
-    private String lables="";
-
     private LinearLayout llSchool;
     private TextView tvEnrollmentyear , tvSchool, tvDegree;
     private EditText etSchoolType, etMajorname;
 
+    private XxtimeBean xxtimeBean;
 
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
-                    if (commonBean!=null){
+                    xxtimeBean= JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null){
 //                        ToastUtils.show(PerfectInfoActivity.this,commonBean.getMsg());
-                        if (commonBean.getBflag().equals("1")){
+                        if (xxtimeBean.getStatus().equals("1")){
                             if (!StringUtils.isEmpty(avatar)){
                                 if (avatar.indexOf("http://")<0){
                                     params=new RequestParams();
-                                    params.put("reqCode","uploadImages");
-                                    params.put("userid", SharedUtils.getUserId(PerfectInfoActivity.this));
-                                    params.put("type",1);
+                                    params.put("accessToken",SharedUtils.getToken(PerfectInfoActivity.this));
                                     File myFile = new File(avatar);
                                     try {
-                                        params.put("file1", myFile);
+                                        params.put("file", myFile);
                                     } catch(FileNotFoundException e) {}
                                     uploadint++;
-                                    pullpost("studentUser", params,"uploadImages");
+                                    pullpost("user!photo", params);
                                 }
                             }
 
@@ -127,15 +127,13 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                                 for (int i=0;i<listphotos.size();i++){
                                     if (listphotos.get(i).indexOf("http://")<0){
                                         params=new RequestParams();
-                                        params.put("reqCode","uploadImages");
-                                        params.put("userid", SharedUtils.getUserId(PerfectInfoActivity.this));
-                                        params.put("type",2);
+                                        params.put("accessToken",SharedUtils.getToken(PerfectInfoActivity.this));
                                         File myFile = new File(listphotos.get(i));
                                         try {
-                                            params.put("file1", myFile);
+                                            params.put("files", myFile);
                                         } catch(FileNotFoundException e) {}
                                         uploadint++;
-                                        pullpost("studentUser", params,"uploadImages");
+                                        pullpost("user-picture!save", params);
                                     }
                                 }
                             }
@@ -158,10 +156,10 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                     }
                     break;
                 case 3:
-                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
-                    if (commonBean!=null){
-                        ToastUtils.show(PerfectInfoActivity.this,commonBean.getMsg());
-                        if (commonBean.getBflag().equals("1")){
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null){
+                        ToastUtils.show(PerfectInfoActivity.this,xxtimeBean.getMsg());
+                        if (xxtimeBean.getStatus().equals("1")){
                             listphotos.remove(delpos);
                             photoRAdapter.notifyDataSetChanged();
                         }
@@ -197,7 +195,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         rbtnLanC =(RadioButton) findViewById(R.id.rbtnLanC);
         rbtnLanWork =(RadioButton) findViewById(R.id.rbtnLanWork);
         rbtnLanS =(RadioButton) findViewById(R.id.rbtnLanS);
-        etBrift=(TextView) findViewById(R.id.etBrift);
+        etBrift=(EditText) findViewById(R.id.etBrift);
 
         llSchool =(LinearLayout) findViewById(R.id.llSchool);
         tvEnrollmentyear  =(TextView) findViewById(R.id.tvEnrollmentyear);
@@ -215,17 +213,21 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
     @Override
     public void initDatas() {
-        studentUserPictureBean= (StudentUserPictureBean) getIntent().getSerializableExtra("photos");
-        studentUserInfoBean=(StudentUserInfoBean)  getIntent().getSerializableExtra("studentUser");
+        studentschool= (StudentViewByUserIdBean) getIntent().getSerializableExtra("studentschool");
+        userPictureBean= (UserPictureBean) getIntent().getSerializableExtra("photos");
         initChooseWindow();
         listphotos=new ArrayList<>();
 
         setTitle("完善个人信息");
-        if (studentUserInfoBean!=null) {
+        if (Contact.userViewBean!=null) {
             setIserInfo();
         }
 
-        if (studentUserPictureBean!=null&&studentUserPictureBean.getDefaultAList()!=null){
+        if (studentschool!=null){
+            setStudentschool();
+        }
+
+        if (userPictureBean!=null&&userPictureBean.getUserPictures()!=null){
             setPhotoRAdapter();
         }
 
@@ -234,136 +236,117 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
 
     }
 
+    private void setStudentschool(){
+        if (!StringUtils.isEmpty(studentschool.getStudent().getCollege().getName())){
+            tvSchool.setText(studentschool.getStudent().getCollege().getName());
+            schoolname=studentschool.getStudent().getCollege().getName();
+            schoolCode=studentschool.getStudent().getCollege().getId();
+        }
+
+        if (!StringUtils.isEmpty(studentschool.getStudent().getFaculty())){
+            etSchoolType.setText(studentschool.getStudent().getFaculty());
+        }
+
+        if (!StringUtils.isEmpty(studentschool.getStudent().getYear())){
+            tvEnrollmentyear.setText(studentschool.getStudent().getYear());
+        }
+
+        if (!StringUtils.isEmpty(studentschool.getStudent().getDegree().getName())){
+            tvDegree.setText(studentschool.getStudent().getDegree().getName());
+            degreename=studentschool.getStudent().getDegree().getName();
+        }
+
+        if (!StringUtils.isEmpty(studentschool.getStudent().getDiscipline())){
+            etMajorname.setText(studentschool.getStudent().getDiscipline());
+        }
+    }
+
     private void setPhotoRAdapter(){
-        for (int i=0;i<studentUserPictureBean.getDefaultAList().size();i++){
-            listphotos.add(studentUserPictureBean.getDefaultAList().get(i).getPicture());
+        for (int i=0;i<userPictureBean.getUserPictures().size();i++){
+            listphotos.add(userPictureBean.getUserPictures().get(i).getUrl());
         }
 
     }
 
     private void setIserInfo(){
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getNickname())){
-            etNiceName.setText(studentUserInfoBean.getDefaultAList().get(0).getNickname());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getNickname())){
+            etNiceName.setText(Contact.userViewBean.getUser().getNickname());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getName())){
-            etName.setText(studentUserInfoBean.getDefaultAList().get(0).getName());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getUsername())){
+            etName.setText(Contact.userViewBean.getUser().getUsername());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getName())){
-            etName.setText(studentUserInfoBean.getDefaultAList().get(0).getName());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getGender())){
-            gender=Integer.valueOf(studentUserInfoBean.getDefaultAList().get(0).getGender());
-            if (studentUserInfoBean.getDefaultAList().get(0).getGender().equals("1")) {
+        if (Contact.userViewBean.getUser().getMale()==1){
                rbtn_male.setChecked(true);
-
-                llSchool.setVisibility(View.VISIBLE);
+               llSchool.setVisibility(View.VISIBLE);
             }else {
                 rbtn_female.setChecked(false);
                 llSchool.setVisibility(View.GONE);
-            }
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSchoolname())){
-            tvSchool.setText(studentUserInfoBean.getDefaultAList().get(0).getSchoolname());
-            schoolname=studentUserInfoBean.getDefaultAList().get(0).getSchoolname();
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getBirthday())){
+            tvBrith.setText(Contact.userViewBean.getUser().getBirthday());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getDegreename())){
-            tvDegree.setText(studentUserInfoBean.getDefaultAList().get(0).getDegreename());
-            degreeid=Integer.valueOf(studentUserInfoBean.getDefaultAList().get(0).getDegreeid());
-            degreename=studentUserInfoBean.getDefaultAList().get(0).getDegreename();
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getHight())){
+            etHeight.setText(Contact.userViewBean.getUser().getHight());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEnrollmentyear())){
-            tvEnrollmentyear.setText(studentUserInfoBean.getDefaultAList().get(0).getEnrollmentyear());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getWeight())){
+            etWeight.setText(Contact.userViewBean.getUser().getWeight());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getDepartmentname())){
-            etSchoolType.setText(studentUserInfoBean.getDefaultAList().get(0).getDepartmentname());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getEmail())){
+            etEmail.setText(Contact.userViewBean.getUser().getEmail());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getMajorname())){
-            etMajorname.setText(studentUserInfoBean.getDefaultAList().get(0).getMajorname());
-        }
-
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getBirthday())){
-            tvBrith.setText(studentUserInfoBean.getDefaultAList().get(0).getBirthday());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getHeight())){
-            etHeight.setText(studentUserInfoBean.getDefaultAList().get(0).getHeight());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getWeight())){
-            etWeight.setText(studentUserInfoBean.getDefaultAList().get(0).getWeight());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEmail())){
-            etEmail.setText(studentUserInfoBean.getDefaultAList().get(0).getEmail());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getIsstudent())){
-            if (studentUserInfoBean.getDefaultAList().get(0).getIsstudent().equals("1")) {
+        if (Contact.userViewBean.getUser().getIsStudent()==1){
                 rbtnStudentYes.setChecked(true);
-
                 llSchool.setVisibility(View.VISIBLE);
             }else {
                 rbtnStudentNo.setChecked(true);
                 llSchool.setVisibility(View.GONE);
-            }
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEmail())){
-            etEmail.setText(studentUserInfoBean.getDefaultAList().get(0).getEmail());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getProvince().getName())
+                ||!StringUtils.isEmpty(Contact.userViewBean.getUser().getDistrict().getName())||
+                !StringUtils.isEmpty(Contact.userViewBean.getUser().getCity().getName())){
+            tvCity.setText(Contact.userViewBean.getUser().getProvince().getName()+Contact.userViewBean.getUser().getCity().getName()
+                    +Contact.userViewBean.getUser().getDistrict().getName());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getProvincename())
-                ||!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getCityname())||
-                !StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getAreaname())){
-            tvCity.setText(studentUserInfoBean.getDefaultAList().get(0).getProvincename()+studentUserInfoBean.getDefaultAList().get(0).getCityname()
-                    +studentUserInfoBean.getDefaultAList().get(0).getAreaname());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignname())){
-            tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getForeignname());
-            foreignname=studentUserInfoBean.getDefaultAList().get(0).getForeignname();
+         if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getForeign().getName())){
+            tvLanguage.setText(Contact.userViewBean.getUser().getForeign().getName());
+             foreignname=Contact.userViewBean.getUser().getForeign().getName();
         }else {
-            if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign())){
-                tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign());
-                otherforeign=studentUserInfoBean.getDefaultAList().get(0).getOtherforeign();
-            }else {
-                tvLanguage.setText("");
-            }
+            tvLanguage.setText("");
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignlevel())){
-            if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("1")) {
+
+        if (Contact.userViewBean.getUser().getForeignLevel()>0){
+            if (Contact.userViewBean.getUser().getForeignLevel()==1) {
                 rbtnLanC.setChecked(true);
-            }else if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("2")) {
+            }else if (Contact.userViewBean.getUser().getForeignLevel()==2) {
                 rbtnLanWork.setChecked(true);
-            }else if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("3")) {
+            }else if (Contact.userViewBean.getUser().getForeignLevel()==3) {
                 rbtnLanS.setChecked(true);
             }
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids())){
-            etBrift.setText(Contact.getLables(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids()));
-            lables=studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids();
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getIntro())){
+            etBrift.setText(Contact.userViewBean.getUser().getIntro());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getLogo())){
-            avatar=studentUserInfoBean.getDefaultAList().get(0).getLogo();
-            ImageLoader.getInstance().displayImage(studentUserInfoBean.getDefaultAList().get(0).getLogo(),ivAvatar, OptionsUtils.getSimpleOptions(80));
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getPhoto())){
+            avatar=Contact.userViewBean.getUser().getPhoto();
+            ImageLoader.getInstance().displayImage(Contact.userViewBean.getUser().getPhoto(),ivAvatar,OptionsUtils.getSimpleOptions(80));
         }
 
-        provinecode=studentUserInfoBean.getDefaultAList().get(0).getProvince();
-        citycode=studentUserInfoBean.getDefaultAList().get(0).getCity();
-        areacode=studentUserInfoBean.getDefaultAList().get(0).getArea();
-        foreignid=studentUserInfoBean.getDefaultAList().get(0).getForeignid();
+        provinecode=Contact.userViewBean.getUser().getProvince().getId();
+        citycode=Contact.userViewBean.getUser().getCity().getId();
+        areacode=Contact.userViewBean.getUser().getDistrict().getId();
+        foreignid=Contact.userViewBean.getUser().getForeign().getId();
     }
 
 
@@ -384,7 +367,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
         tvCity.setOnClickListener(this);
         tvLanguage.setOnClickListener(this);
         btnBrowse.setOnClickListener(this);
-        etBrift.setOnClickListener(this);
+//        etBrift.setOnClickListener(this);
         rbtnStudentNo.setOnClickListener(this);
         rbtnStudentYes.setOnClickListener(this);
 
@@ -426,7 +409,6 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                     choosePhotoWindow.dismiss();
                 break;
             case R.id.btnCam:
-
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, REQUEST_C_IMAGE);
                 if (choosePhotoWindow!=null)
@@ -457,7 +439,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 }
 
                 if (rbtn_female.isChecked()){
-                    gender=0;
+                    gender=2;
                 }else if(rbtn_male.isChecked()){
                     gender=1;
                 }
@@ -486,75 +468,68 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 }
 
                 params=new RequestParams();
-                params.put("reqCode","modifyStudentUserInfo");
-                params.put("userid", SharedUtils.getUserId(this));
-                params.put("nickname",etNiceName.getText().toString());
-                params.put("name",etName.getText().toString());
-                params.put("gender",gender);
-                params.put("isstudent",isstudent);
-                params.put("province",provinecode);
-                params.put("city",citycode);
-                params.put("area",areacode);
-
-                if (!StringUtils.isEmpty(otherforeign)){
-                    params.put("otherforeign",otherforeign);
+                params.put("accessToken",SharedUtils.getToken(this));
+                params.put("id",SharedUtils.getUserId(this));
+                params.put("user.nickname",etNiceName.getText().toString());
+                params.put("user.realname",etName.getText().toString());
+                params.put("user.male",gender);
+                params.put("user.isStudent",isstudent);
+                params.put("user.province.id",provinecode);
+                params.put("user.city.id",citycode);
+                params.put("user.district.id",areacode);
+                if (!StringUtils.isEmpty(degreeid)){
+                    params.put("student.degree.id",degreeid);
                 }
-
-                if (degreeid>-1){
-                    params.put("degreeid",degreeid);
-                }
-
                 if (!StringUtils.isEmpty(tvSchool.getText().toString())){
-                    params.put("schoolname",tvSchool.getText().toString());
+                    params.put("student.college.id",schoolCode);
                 }
-
                 if (!StringUtils.isEmpty(etMajorname.getText().toString())){
-                    params.put("majorname",etMajorname.getText().toString());
+                    params.put("student.discipline",etMajorname.getText().toString());
                 }
 
                 if (!StringUtils.isEmpty(etSchoolType.getText().toString())){
-                    params.put("departmentname",etSchoolType.getText().toString());
+                    params.put("student.faculty",etSchoolType.getText().toString());
                 }
 
                 if (!StringUtils.isEmpty(tvEnrollmentyear.getText().toString())){
-                    params.put("enrollmentyear",tvEnrollmentyear.getText().toString().substring(0,4));
+                    params.put("student.year",tvEnrollmentyear.getText().toString().substring(0,4));
                 }
 
                 if (!StringUtils.isEmpty(tvBrith.getText().toString())){
-                    params.put("birthday",tvBrith.getText().toString());
+                    params.put("user.birthday",tvBrith.getText().toString());
                 }
 
                 if (!StringUtils.isEmpty(etHeight.getText().toString())){
-                    params.put("height",etHeight.getText().toString());
+                    params.put("user.hight",etHeight.getText().toString());
                 }
 
                 if (!StringUtils.isEmpty(etWeight.getText().toString())){
-                    params.put("weight",etWeight.getText().toString());
+                    params.put("user.weight",etWeight.getText().toString());
                 }
 
                 if (!StringUtils.isEmpty(etEmail.getText().toString())){
-                    params.put("email",etEmail.getText().toString());
+                    params.put("user.email",etEmail.getText().toString());
                 }
 
                 if (!StringUtils.isEmpty(tvLanguage.getText().toString())){
-                    params.put("foreignid",foreignid);
+                    params.put("user.foreign.id",foreignid);
                 }
 
                 if (rbtnLanC.isChecked()){
-                    params.put("foreignlevel",1);
+                    params.put("user.foreignLevel",1);
                 }else if (rbtnLanWork.isChecked()){
-                    params.put("foreignlevel",2);
+                    params.put("user.foreignLevel",2);
                 }else if (rbtnLanS.isChecked()){
-                    params.put("foreignlevel",3);
+                    params.put("user.foreignLevel",3);
                 }
 
                 if (!StringUtils.isEmpty(etBrift.getText().toString())){
-                    params.put("self_appraisalids",lables);
+                    params.put("user.intro",etBrift.getText().toString());
                 }
 
                 Log.e("param==>",params.toString());
 
-                post("studentUser",params,"modifyStudentUserInfo");
+                post("user!update",params);
 
                 break;
             case R.id.tvBrith:
@@ -616,7 +591,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                     intent.putExtra("foreignlevel","学术交流");
                 }
 
-                intent.putExtra("self_appraisalids",lables);
+                intent.putExtra("self_appraisalids",etBrift.getText().toString());
 
                 intent.putStringArrayListExtra("photos", (ArrayList<String>) listphotos);
 
@@ -627,10 +602,10 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                 Jump(intent);
 
                 break;
-            case R.id.etBrift:
+           /* case R.id.etBrift:
                 intent=new Intent(this,LablesActivity.class);
                 Jump(intent,LABLE);
-                break;
+                break;*/
             case R.id.rbtnStudentNo:
                 if (rbtnStudentNo.isChecked()){
                     llSchool.setVisibility(View.GONE);
@@ -685,8 +660,6 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
                         photoRAdapter=new PhotoRAdapter(listphotos,this,this,0);
                         gvPhotos.setAdapter(photoRAdapter);
                     }
-
-
                 }
             }
         } else if (requestCode == SET_PHOTO) {
@@ -739,20 +712,18 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
             }else if (!StringUtils.isEmpty(otherforeign)){
                 tvLanguage.setText(otherforeign);
             }
-        }else if (requestCode==LABLE&&resultCode==LABLE){
-            lables=data.getStringExtra("lables");
-            etBrift.setText(Contact.getLables(lables));
-        }else if (requestCode==SCHOOL&&resultCode==SCHOOL){
+        } else if (requestCode==SCHOOL&&resultCode==SCHOOL){
             schoolname=data.getStringExtra("schoolname");
+            schoolCode=data.getStringExtra("schoolCode");
             tvSchool.setText(schoolname);
         }else if (requestCode==DEGREE&&resultCode==DEGREE){
             degreename=data.getStringExtra("degreename");
-            degreeid=data.getIntExtra("degreeid",0);
+            degreeid=data.getStringExtra("degreeid");
             tvDegree.setText(degreename);
         }
     }
 
-    private int degreeid=-1;
+    private String degreeid="";
     private String degreename;
     private String schoolname;
     private String city;
@@ -762,6 +733,7 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     private String foreignname;
     private String foreignid;
     private String otherforeign;
+    private String schoolCode;
 
     /*
 	 * 裁剪头像
@@ -800,11 +772,13 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("modifyStudentUserInfo")){
+        if (requestname.equals("user!update")){
             msg.what=1;
-        }else if (requestname.equals("uploadImages")){
+        }else if (requestname.equals("user-picture!save")){
             msg.what=2;
-        }else if (requestname.equals("deleteStudentUserPictureMulti")){
+        }else if (requestname.equals("user!photo")){
+            msg.what=2;
+        }else if (requestname.equals("user-picture!delete")){
             msg.what=3;
         }
 
@@ -816,12 +790,12 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     public void ondel(int position) {
         delpos=position;
         if (listphotos.get(position).indexOf("http://")>-1){
-            int userpictureids=getImageid(listphotos.get(position));
-            if (userpictureids>-1){
+            String userpictureids=getImageid(listphotos.get(position));
+            if (!StringUtils.isEmpty(userpictureids)){
                 params=new RequestParams();
-                params.put("reqCode","deleteStudentUserPictureMulti");
-                params.put("userpictureids", userpictureids);
-                pullpost("studentUser",params,"deleteStudentUserPictureMulti");
+                params.put("accessToken",SharedUtils.getToken(this));
+                params.put("id", userpictureids);
+                post("user-picture!delete",params);
             }
         }else {
             listphotos.remove(position);
@@ -830,15 +804,15 @@ public class PerfectInfoActivity extends BaseActivity implements AdapterView.OnI
     }
 
     private int delpos=-1;
-    private int getImageid(String url){
+    private String getImageid(String url){
 
-        if (studentUserPictureBean!=null){
-            for (int i=0;i<studentUserPictureBean.getDefaultAList().size();i++){
-                if (studentUserPictureBean.getDefaultAList().get(i).getPicture().equals(url)){
-                    return studentUserPictureBean.getDefaultAList().get(i).getUserpictureid();
+        if (userPictureBean!=null){
+            for (int i=0;i<userPictureBean.getUserPictures().size();i++){
+                if (userPictureBean.getUserPictures().get(i).getUrl().equals(url)){
+                    return userPictureBean.getUserPictures().get(i).getId();
                 }
             }
         }
-        return -1;
+        return "";
     }
 }

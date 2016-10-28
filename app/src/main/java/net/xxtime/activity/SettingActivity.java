@@ -78,6 +78,7 @@ public class SettingActivity extends BaseActivity {
             case R.id.btnQuit://退出登录
                 SharedUtils.setUserNamePwd(this, SharedUtils.getUserName(this),
                         SharedUtils.getUserPwd(this),"");
+                SharedUtils.setToken(this,"");
                 ToastUtils.show(this,"退出成功");
                 intent=new Intent(this,LoginActivity.class);
                 /**

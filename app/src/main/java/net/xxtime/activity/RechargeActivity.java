@@ -21,6 +21,7 @@ import com.pingplusplus.android.Pingpp;
 
 import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
+import net.xxtime.bean.CardorderSaveBean;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.PingpayBean;
 import net.xxtime.bean.StudentOrderBean;
@@ -34,6 +35,7 @@ import java.util.Map;
 
 /***
  * 诚意金充值
+ * 第二版本
  */
 public class RechargeActivity extends BaseActivity {
 
@@ -43,16 +45,21 @@ public class RechargeActivity extends BaseActivity {
     private ImageView ivAccount;
     private Button btnOk;
 
+    private RelativeLayout  rlWeixin;
+    private ImageView ivWeixin;
+
     private int pay=1;
 //    private int earnestmoney;
 
     private Message msg;
 
-    private StudentOrderBean studentOrderBean;
+//    private StudentOrderBean studentOrderBean;
 
     private CommonBean commonBean;
 
     private PingpayBean pingpayBean;
+
+    private CardorderSaveBean cardorderSaveBean;
 
     private String charge_url;
 
@@ -61,9 +68,9 @@ public class RechargeActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    studentOrderBean= JSONObject.parseObject(msg.obj.toString(),StudentOrderBean.class);
-                    if (studentOrderBean!=null&&studentOrderBean.getBflag().equals("1")){
-                        params = new RequestParams();
+                    cardorderSaveBean= JSONObject.parseObject(msg.obj.toString(),CardorderSaveBean.class);
+                    if (cardorderSaveBean!=null&&cardorderSaveBean.getStatus().equals("1")){
+                      /*  params = new RequestParams();
                         params.put("reqCode", "pingpay");
                         params.put("order_type","studentOrder");
                         params.put("body", "诚意金充值");
@@ -72,24 +79,46 @@ public class RechargeActivity extends BaseActivity {
                        // params.put("price", 50);
                         if (pay==1) {
                             params.put("channel", "alipay");
+                        }else if (pay==3){
+                            params.put("channel", "wx");
                         }
                         params.put("order_no",studentOrderBean.getDefaultAList().get(0).getOrdercode());
-                        RechargeActivity.this.post("pingpay", params, "pingpay");
+                        Log.e("param==>",params.toString());
+                        RechargeActivity.this.post("pingpay", params, "pingpay");*/
+                        params=new RequestParams();
+                        params.put("orderNo",cardorderSaveBean.getCardorder().getNo());
+                        params.put("amount",5000);
+                        if (pay==1) {
+                            params.put("channel", "alipay");
+                        }else if (pay==3){
+                            params.put("channel", "wx");
+                        }
+                        params.put("body", "诚意金充值"+SharedUtils.getUserId(RechargeActivity.this));
+                        params.put("subject", "诚意金充值");
+                        params.put("orderType","studentOrder");
+                        Log.e("param==>",params.toString());
+                        RechargeActivity.this.post("ping-pay!pay",params);
                     }
                     break;
                 case 2:
                   /*  pingpayBean=JSONObject.parseObject(msg.obj.toString(),PingpayBean.class);
                     if (pingpayBean!=null&&pingpayBean.getBflag().equals("1")){*/
                     try {
-                        org.json.JSONObject jsonObject=new org.json.JSONObject(msg.obj.toString());
+                     /*   org.json.JSONObject jsonObject=new org.json.JSONObject(msg.obj.toString());
                         Intent intent = new Intent();
                         String packageName = getPackageName();
                         ComponentName componentName = new ComponentName(packageName, packageName + ".wxapi.WXPayEntryActivity");
                         intent.setComponent(componentName);
                         Log.e("defaultAList==>",jsonObject.getString("defaultAList").substring(1,jsonObject.getString("defaultAList").length()-1));
                         intent.putExtra(com.pingplusplus.android.PaymentActivity.EXTRA_CHARGE,jsonObject.getString("defaultAList").substring(1,jsonObject.getString("defaultAList").length()-1) );
+                        startActivityForResult(intent, Pingpp.REQUEST_CODE_PAYMENT);*/
+                        Intent intent = new Intent();
+                        String packageName = getPackageName();
+                        ComponentName componentName = new ComponentName(packageName, packageName + ".wxapi.WXPayEntryActivity");
+                        intent.setComponent(componentName);
+                        intent.putExtra(com.pingplusplus.android.PaymentActivity.EXTRA_CHARGE,msg.obj.toString());
                         startActivityForResult(intent, Pingpp.REQUEST_CODE_PAYMENT);
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -111,6 +140,8 @@ public class RechargeActivity extends BaseActivity {
         rlAccount=(RelativeLayout)findViewById(R.id.rlAccount);
         ivAccount=(ImageView) findViewById(R.id.ivAccount);
         btnOk=(Button) findViewById(R.id.btnOk);
+        rlWeixin =(RelativeLayout)findViewById(R.id.rlWeixin);
+        ivWeixin=(ImageView) findViewById(R.id.ivWeixin);
     }
 
     @Override
@@ -130,6 +161,7 @@ public class RechargeActivity extends BaseActivity {
         rlAccount.setOnClickListener(this);
         rlAlipay.setOnClickListener(this);
         btnOk.setOnClickListener(this);
+        rlWeixin.setOnClickListener(this);
     }
 
     @Override
@@ -146,17 +178,34 @@ public class RechargeActivity extends BaseActivity {
            case  R.id.rlAlipay:
                setChoose(ivAlipay,1);
             break;
+            case R.id.rlWeixin:
+                setChoose(ivWeixin,3);
+                break;
             case R.id.btnOk:
-                params = new RequestParams();
-                params.put("reqCode", "save");
-                params.put("type",2);
-                params.put("userid", SharedUtils.getUserId(this));
-                params.put("price", 50);
+//                params = new RequestParams();
+//                params.put("reqCode", "save");
+//                params.put("type",2);
+//                params.put("userid", SharedUtils.getUserId(this));
+//                params.put("price", 50);
+//                if (pay==1) {
+//                    params.put("channel", "alipay");
+//                }else if (pay==3){
+//                    params.put("channel", "wx");
+//                }
+//                params.put("amount",50);
+//                pullpost("studentOrder", params, "save");
+                params=new RequestParams();
+                params.put("accessToken",SharedUtils.getToken(this));
+                params.put("cardOrder.amount",50);
                 if (pay==1) {
-                    params.put("channel", "alipay");
+                    params.put("cardOrder.channel","alipay");
+                }else if (pay==3){
+                    params.put("cardOrder.channel", "wx");
                 }
-                params.put("amount",50);
-                pullpost("studentOrder", params, "save");
+
+                params.put("cardOrder.type",2);
+                post("card-order!save",params);
+
                 break;
         }
     }
@@ -165,15 +214,16 @@ public class RechargeActivity extends BaseActivity {
         this.pay=pay;
         ivAccount.setImageResource(R.mipmap.agree_n);
         ivAlipay.setImageResource(R.mipmap.agree_n);
+        ivWeixin.setImageResource(R.mipmap.agree_n);
         iv.setImageResource(R.mipmap.agree_p);
     }
 
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("save")){
+        if (requestname.equals("card-order!save")){
             msg.what=1;
-        }else if (requestname.equals("pingpay")){
+        }else if (requestname.equals("ping-pay!pay")){
             msg.what=2;
         }
         msg.obj=response;

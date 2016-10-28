@@ -1,11 +1,11 @@
 package net.xxtime.wxapi;
- 
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
-import com.tencent.mm.sdk.openapi.ConstantsAPI;
+
+import com.tencent.mm.sdk.constants.ConstantsAPI;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.ShowMessageFromWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import android.content.Intent;

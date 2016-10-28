@@ -19,16 +19,16 @@ import java.util.List;
 public class LanguageAdapter extends BaseAdapter {
 
     private Context context;
-    private List<ForeignBean.DefaultAListBean> listDefaults;
+    private List<ForeignBean.ForeignsBean> listDefaults;
 
-    public LanguageAdapter(List<ForeignBean.DefaultAListBean> listDefaults, Context context) {
+    public LanguageAdapter(List<ForeignBean.ForeignsBean> listDefaults, Context context) {
         this.listDefaults=listDefaults;
         this.context=context;
     }
 
     @Override
     public int getCount() { 
-        return listDefaults.size()+1;
+        return listDefaults.size();
     }
 
     @Override
@@ -59,8 +59,8 @@ public class LanguageAdapter extends BaseAdapter {
         if (listDefaults.size()==position){
             area_item.tv_name.setText("其他");
         }else {
-            if (!StringUtils.isEmpty(listDefaults.get(position).getForeignname())) {
-                area_item.tv_name.setText(listDefaults.get(position).getForeignname());
+            if (!StringUtils.isEmpty(listDefaults.get(position).getName())) {
+                area_item.tv_name.setText(listDefaults.get(position).getName());
             }
         }
 

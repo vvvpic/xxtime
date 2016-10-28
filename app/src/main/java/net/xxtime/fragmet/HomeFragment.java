@@ -43,6 +43,7 @@ import net.xxtime.adapter.AccountAdapter;
 import net.xxtime.adapter.BannerAdapter;
 import net.xxtime.adapter.DateAdapter;
 import net.xxtime.adapter.JobAdapter;
+import net.xxtime.adapter.NewJobAdapter;
 import net.xxtime.adapter.SortAdapter;
 import net.xxtime.base.fragment.BaseFragment;
 import net.xxtime.bean.AccountBean;
@@ -50,6 +51,7 @@ import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.GetHomeLbtBean;
 import net.xxtime.bean.JobByConditionBean;
+import net.xxtime.bean.JobSearchBean;
 import net.xxtime.bean.SortBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.DataUtils;
@@ -112,14 +114,22 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
     private TextView tvLoading;
     private int indexPage=1;
 
-    private JobByConditionBean jobByConditionBean;
-    private List<JobByConditionBean.DefaultAListBean> listDefaults;
+//    private JobByConditionBean jobByConditionBean;
+//    private List<JobByConditionBean.DefaultAListBean> listDefaults;
 
-    private JobAdapter jobAdapter;
+//    private JobAdapter jobAdapter;
+
+    private NewJobAdapter newJobAdapter;
 
     private Dialog personaldialog;
 
     private CommonBean commonBean;
+
+    private List<JobSearchBean.JobsBean> listJobs;
+    private JobSearchBean jobSearchBean;
+
+    private int payType=-1;
+    private String workDate;
 
     private Handler handler=new Handler(){
         @Override
@@ -139,13 +149,13 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                     break;
                 case 2:
                     if (indexPage==1){
-                        listDefaults.clear();
+                        listJobs.clear();
                     }
-                    jobByConditionBean=JSONObject.parseObject(msg.obj.toString(),JobByConditionBean.class);
-                    if (jobByConditionBean!=null&&jobByConditionBean.getBflag().equals("1")){
-                        if (jobByConditionBean.getDefaultAList()!=null&&jobByConditionBean.getDefaultAList().size()>0) {
-                            listDefaults.addAll(jobByConditionBean.getDefaultAList());
-                            if (jobByConditionBean.getDefaultAList().size()==10){
+                    jobSearchBean=JSONObject.parseObject(msg.obj.toString(),JobSearchBean.class);
+                    if (jobSearchBean!=null&&jobSearchBean.getStatus().equals("1")){
+                        if (jobSearchBean.getJobs()!=null&&jobSearchBean.getJobs().size()>0) {
+                            listJobs.addAll(jobSearchBean.getJobs());
+                            if (jobSearchBean.getJobs().size()==10){
                                 ivLoading.setVisibility(View.VISIBLE);
                                 tvLoading.setText("加载中...");
                             }else {
@@ -160,7 +170,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                         ivLoading.setVisibility(View.GONE);
                         tvLoading.setText("加载完毕");
                     }
-                    jobAdapter.notifyDataSetChanged();
+                    newJobAdapter.notifyDataSetChanged();
                     break;
                 case 3:
                     curpos++;
@@ -258,22 +268,22 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         listAccounts=new ArrayList<>();
         accountBean=new AccountBean();
         accountBean.name="日结";
-        accountBean.settlementtime=1;
+        accountBean.settlementtime=0;
         listAccounts.add(accountBean);
 
         accountBean=new AccountBean();
         accountBean.name="周结";
-        accountBean.settlementtime=2;
+        accountBean.settlementtime=1;
         listAccounts.add(accountBean);
 
         accountBean=new AccountBean();
         accountBean.name="月结";
-        accountBean.settlementtime=3;
+        accountBean.settlementtime=2;
         listAccounts.add(accountBean);
 
         accountBean=new AccountBean();
         accountBean.name="完工结算";
-        accountBean.settlementtime=4;
+        accountBean.settlementtime=3;
         listAccounts.add(accountBean);
 
         accountBean=new AccountBean();
@@ -287,29 +297,34 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         listsorts=new ArrayList<>();
         sortBean=new SortBean();
         sortBean.name="默认排序";
-        sortBean.sortType=-1;
+        sortBean.sortName="";
         listsorts.add(sortBean);
 
         sortBean=new SortBean();
         sortBean.name="最新发布 ";
-        sortBean.sortType=1;
+        sortBean.sortName="addTime";
         listsorts.add(sortBean);
 
         sortBean=new SortBean();
         sortBean.name="好评优先";
-        sortBean.sortType=2;
+        sortBean.sortName="commentNum";
         listsorts.add(sortBean);
 
         sortBean=new SortBean();
         sortBean.name="人气优先";
-        sortBean.sortType=3;
+        sortBean.sortName="jobApplyNum";
         listsorts.add(sortBean);
+
         sortAdapter=new SortAdapter(listsorts,getActivity(),0);
         lvSort.setAdapter(sortAdapter);
 
-        listDefaults=new ArrayList<>();
+      /*  listDefaults=new ArrayList<>();
         jobAdapter=new JobAdapter(listDefaults,getActivity());
-        lvHome.setAdapter(jobAdapter);
+        lvHome.setAdapter(jobAdapter);*/
+
+        listJobs=new ArrayList<>();
+        newJobAdapter=new NewJobAdapter(listJobs,getActivity());
+        lvHome.setAdapter(newJobAdapter);
     }
 
     /**
@@ -370,14 +385,33 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         params.put("reqCode","getHomeLbt");
         params.put("city",CityCode);
         pullpost("job",params,"getHomeLbt");
-        choosedate="";
-        choosesort=-1;
-        chooseaccount=-1;
+        workDate="";
+        choosesort="";
+        payType=-1;
 
     }
 
     private void getgetJobByCondition(){
         params=new RequestParams();
+        params.put("accessToken",SharedUtils.getToken(getActivity()));
+        if (payType!=-1) {
+            params.put("query.payType",payType);
+        }
+        params.put("query.cityId",CityCode);
+        if (!StringUtils.isEmpty(workDate)){
+            params.put("query.workDate",workDate);
+        }
+
+        if (!StringUtils.isEmpty(choosesort)) {
+            params.put("query.order",choosesort);
+            params.put("addTime",true);
+        }
+
+        params.put("query.begin",indexPage);
+
+        Log.e("param==>",params.toString());
+        pullpost("job!search",params);
+       /* params=new RequestParams();
         params.put("reqCode","getJobByCondition");
         params.put("indexPage",indexPage);
         params.put("city",CityCode);
@@ -393,7 +427,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
             params.put("jobdate",choosedate);
         }
         Log.e("param==>",params.toString());
-        pullpost("job",params,"getJobByCondition");
+        pullpost("job",params,"getJobByCondition");*/
     }
 
     @Override
@@ -438,12 +472,12 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         lvHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0||position==1||position==listDefaults.size()+2){
+                /*if (position==0||position==1||position==listDefaults.size()+2){
                     return;
                 }
                 intent=new Intent(getActivity(),JobDetailsActivity.class);
                 intent.putExtra("jobcode",listDefaults.get(position-2).getJobcode());
-                homeActivity.Jump(intent);
+                homeActivity.Jump(intent);*/
             }
         });
         btnCancel.setOnClickListener(this);
@@ -506,7 +540,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
         msg=new Message();
         if (requestname.equals("getHomeLbt")){
             msg.what=1;
-        }else if (requestname.equals("getJobByCondition")){
+        }else if (requestname.equals("job!search")){
             msg.what=2;
         }else if (requestname.equals("checkStudentUserInfo")){
             msg.what=4;
@@ -596,9 +630,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
     private int datecurpos=0;
     private int accountpos=4;
     private int sortpos=0;
-    private String choosedate;
-    private int choosesort=-1;
-    private int chooseaccount=-1;
+    private String choosesort="";
     SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss ");
 
     @Override
@@ -611,13 +643,13 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 dateWindow.dismiss();
                 indexPage=1;
                 if (position==listdates.size()){
-                    choosedate="";
+                    workDate="";
                     tvDate.setText("全部日期");
                 }else {
                     if (listdates.get(position)==0){
                         return;
                     }
-                    choosedate=formatter.format(new Date(listdates.get(position)));
+                    workDate=formatter.format(new Date(listdates.get(position)));
                     tvDate.setText(formatter.format(new Date(listdates.get(position))).substring(0,10));
                 }
                 getgetJobByCondition();
@@ -626,7 +658,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 accountpos=position;
                 accountAdapter.setCur(position);
                 accountWindow.dismiss();
-                chooseaccount=listAccounts.get(position).settlementtime;
+                payType=listAccounts.get(position).settlementtime;
                 tvAccount.setText(listAccounts.get(position).name);
                 indexPage=1;
                 getgetJobByCondition();
@@ -635,7 +667,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemSele
                 sortpos=position;
                 sortAdapter.setCur(position);
                 sortWindow.dismiss();
-                choosesort=listsorts.get(position).sortType;
+                choosesort=listsorts.get(position).sortName;
                 tvSort.setText(listsorts.get(position).name);
                 indexPage=1;
                 getgetJobByCondition();

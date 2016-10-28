@@ -741,7 +741,7 @@
                 android:text="自我评价"
                 android:padding="15dp"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/etBrift"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -752,7 +752,7 @@
                 android:padding="15dp"
                 android:gravity="top|left"
                 android:textColorHint="@color/hint_color"
-                android:hint="请自我评价"
+                android:hint="请输入自我评价"
                 android:lines="3"
                 android:maxLines="3"
                 android:background="@null"/>

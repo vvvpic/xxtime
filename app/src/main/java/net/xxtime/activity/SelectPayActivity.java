@@ -43,6 +43,7 @@ public class SelectPayActivity extends BaseActivity implements AdapterView.OnIte
         listpays=new ArrayList<>();
         listpays.add("支付宝");
         listpays.add("微信");
+        listpays.add("银行卡");
         payAdapter=new PayAdapter(listpays,this);
         lvPays.setAdapter(payAdapter);
     }

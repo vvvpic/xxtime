@@ -43,6 +43,7 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
     public Intent intent;
 
     public static String BASE_URL="http://www.xxtime.net/student/";
+    public static String NEW_BASE_URL="http://www.xxtime.net:6002/api/";
     private InputMethodManager inputMethodManager;
     /* 加载框 */
     private Dialog loadDialog;
@@ -184,6 +185,7 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
                 if(statusCode==0){
                     ToastUtils.show(BaseActivity.this, "请检查你的网络状况");
                 }
+                onFail(statusCode);
                 disMiss();
             }
 
@@ -211,7 +213,9 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
                Log.e("onFailure==>",statusCode+"");
                 if(statusCode==0){
                     ToastUtils.show(BaseActivity.this, "请检查你的网络状况");
+
                 }
+
                 disMiss();
             }
 
@@ -221,6 +225,82 @@ public abstract class BaseActivity extends FragmentActivity implements InitListe
             }
 
         });
+    }
+
+    public void post(final String requestname, RequestParams params){
+
+        httpClient.post(this, NEW_BASE_URL+requestname, params,  new AsyncHttpResponseHandler()
+        {
+
+            @Override
+            public void onStart() {
+                show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode , Header[] headers, byte[] responseBody) {
+                Log.e(requestname, new String(responseBody));
+                Log.e("statusCode==>", statusCode+"");
+                OnReceive(requestname, new String(responseBody));
+                for (Header h : headers) {
+                    Log.e(h.getName(), h.getValue());
+                }
+                if (!requestname.equals("user!update")) {
+                    disMiss();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("statusCode==>", statusCode+"");
+                if(statusCode==0){
+                    ToastUtils.show(BaseActivity.this, "请检查你的网络状况");
+                }
+                onFail(statusCode);
+                disMiss();
+            }
+
+        });
+
+    }
+
+    public  void pullpost(final String requestname, RequestParams params){
+
+        httpClient.post(this, NEW_BASE_URL+requestname, params,  new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.e("responseBody==>",new String(responseBody));
+
+                OnReceive(requestname, new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("onFailure==>",statusCode+"");
+                if(statusCode==0){
+                    ToastUtils.show(BaseActivity.this, "请检查你的网络状况");
+
+                }
+
+                disMiss();
+            }
+
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                BaseActivity.this.onProgress(bytesWritten, totalSize);
+            }
+
+        });
+    }
+
+
+    public void onFail(int statusCode){
+
     }
 
 

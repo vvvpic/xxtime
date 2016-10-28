@@ -18,6 +18,7 @@ import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.SendMsgCodeBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.SharedUtils;
 
 public class AlterPwdActivity extends BaseActivity {
@@ -26,9 +27,7 @@ public class AlterPwdActivity extends BaseActivity {
     private Button btnOk;
 
     private Message msg;
-
-
-    private CommonBean commonBean;
+    private XxtimeBean xxtimeBean;
 
     private Handler handler=new Handler(){
         @Override
@@ -36,9 +35,8 @@ public class AlterPwdActivity extends BaseActivity {
             switch (msg.what){
 
                 case 1:
-                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
-
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null&&xxtimeBean.getStatus().equals("1")){
                         SharedUtils.setUserNamePwd(AlterPwdActivity.this, SharedUtils.getUserName(AlterPwdActivity.this),
                                 etNewPwd.getText().toString(),"");
                         ToastUtils.show(AlterPwdActivity.this,"修改密码成功");
@@ -112,12 +110,17 @@ public class AlterPwdActivity extends BaseActivity {
                     ToastUtils.show(this,"请保持密码一致");
                     return;
                 }
-                params=new RequestParams();
+              /*  params=new RequestParams();
                 params.put("reqCode","modifyStudentUserPassword");
                 params.put("userid",SharedUtils.getUserId(this));
                 params.put("oldPassword",etOldPwd.getText().toString());
                 params.put("password",etNewPwd.getText().toString());
-                post("studentUser",params,"modifyStudentUserPassword");
+                post("studentUser",params,"modifyStudentUserPassword");*/
+                params=new RequestParams();
+                params.put("accessToken",SharedUtils.getToken(this));
+                params.put("oldPassword",etOldPwd.getText().toString());
+                params.put("newPassword",etNewPwd.getText().toString());
+                post("user!password",params);
                 break;
         }
     }
@@ -125,7 +128,7 @@ public class AlterPwdActivity extends BaseActivity {
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("modifyStudentUserPassword")){
+        if (requestname.equals("user!password")){
             msg.what=1;
         }
         msg.obj=response;

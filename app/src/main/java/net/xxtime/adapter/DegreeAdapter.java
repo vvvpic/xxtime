@@ -18,9 +18,9 @@ import java.util.List;
 public class DegreeAdapter extends BaseAdapter {
 
     private Context context;
-    private List<DegreeBean.DefaultAListBean> listDefaults;
+    private List<DegreeBean.DegreesBean> listDefaults;
 
-    public DegreeAdapter( List<DegreeBean.DefaultAListBean>  listDefaults, Context context) {
+    public DegreeAdapter( List<DegreeBean.DegreesBean>  listDefaults, Context context) {
         this.listDefaults=listDefaults;
         this.context=context;
     }
@@ -56,8 +56,8 @@ public class DegreeAdapter extends BaseAdapter {
         area_item.iv_a.setVisibility(View.GONE);
 
 
-        if (!StringUtils.isEmpty(listDefaults.get(position).getDegreename())){
-            area_item.tv_name.setText(listDefaults.get(position).getDegreename());
+        if (!StringUtils.isEmpty(listDefaults.get(position).getName())){
+            area_item.tv_name.setText(listDefaults.get(position).getName());
         }
 
         return convertView;

@@ -16,6 +16,7 @@ import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.SendMsgCodeBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.SharedUtils;
 
@@ -31,16 +32,16 @@ public class AlterMobileActivity extends BaseActivity {
 
     private int second=60;
 
-    private CommonBean commonBean;
+    private XxtimeBean xxtimeBean;
 
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    sendMsgCodeBean= JSONObject.parseObject(msg.obj.toString(),SendMsgCodeBean.class);
-                    if (sendMsgCodeBean!=null){
-                        if (sendMsgCodeBean.getBflag().equals("1")){
+                    xxtimeBean= JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null){
+                        if (xxtimeBean.getStatus().equals("1")){
                             btnSend.setEnabled(false);
                             sendEmptyMessage(3);
                         }
@@ -49,17 +50,16 @@ public class AlterMobileActivity extends BaseActivity {
 
                     break;
                 case 2:
-                    commonBean=JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
 
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
+                    if (xxtimeBean!=null&&xxtimeBean.getStatus().equals("1")){
                         SharedUtils.setUserNamePwd(AlterMobileActivity.this,etNewMobile.getText().toString(),
-                                SharedUtils.getUserPwd(AlterMobileActivity.this),SharedUtils.getUserId(AlterMobileActivity.this));
+                        SharedUtils.getUserPwd(AlterMobileActivity.this),SharedUtils.getUserId(AlterMobileActivity.this));
                         ToastUtils.show(AlterMobileActivity.this,"更换手机号成功");
                         finish();
                     }else {
                         ToastUtils.show(AlterMobileActivity.this,"更换手机号失败");
                     }
-
 
                     break;
                 case 3:
@@ -123,10 +123,9 @@ public class AlterMobileActivity extends BaseActivity {
                     return;
                 }
                 params=new RequestParams();
-                params.put("reqCode","sendMsgCode");
-                params.put("telephone",etNewMobile.getText().toString());
-                params.put("type",2);
-                post("studentUser",params,"sendMsgCode");
+                params.put("username",etNewMobile.getText().toString());
+                params.put("type","register");
+                post("code!save",params);
                 break;
             case R.id.btnAlter:
 
@@ -154,11 +153,11 @@ public class AlterMobileActivity extends BaseActivity {
                     ToastUtils.show(this,"请输入正确验证码");
                     return;
                 }
-                params=new RequestParams();
+              /*  params=new RequestParams();
                 params.put("reqCode","modifyStudentUserInfo");
                 params.put("userid",SharedUtils.getUserId(this));
                 params.put("telephone",etNewMobile.getText().toString());
-                pullpost("studentUser",params,"modifyStudentUserInfo");
+                pullpost("studentUser",params,"modifyStudentUserInfo");*/
 
                 break;
              }
@@ -167,7 +166,7 @@ public class AlterMobileActivity extends BaseActivity {
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("sendMsgCode")){
+        if (requestname.equals("code!save")){
             msg.what=1;
         }else if (requestname.equals("modifyStudentUserInfo")){
             msg.what=2;

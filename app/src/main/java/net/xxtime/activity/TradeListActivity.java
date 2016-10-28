@@ -16,6 +16,9 @@ import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.TradeListBean;
 import net.xxtime.utils.SharedUtils;
 
+/**
+ * 第二版
+ */
 public class TradeListActivity extends BaseActivity {
 
     private ListView lvTrades;
@@ -64,9 +67,9 @@ public class TradeListActivity extends BaseActivity {
     public void initDatas() {
         setTitle("交易明细");
         params=new RequestParams();
-        params.put("reqCode","getTradeDetails");
-        params.put("userid", SharedUtils.getUserId(this));
-        post("studentUser",params,"getTradeDetails");
+        params.put("accessToken",SharedUtils.getToken(this));
+        params.put("query.userId",SharedUtils.getUserId(this));
+        post("bill!search",params);
     }
 
     @Override

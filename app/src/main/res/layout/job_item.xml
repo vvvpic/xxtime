@@ -41,6 +41,7 @@
                 android:textSize="9sp"
                 android:text="报名中"
                 android:gravity="center"
+                android:visibility="gone"
                 android:background="@drawable/garey_border"
                 android:layout_gravity="bottom|center_horizontal"/>
 

@@ -110,6 +110,44 @@
         android:layout_marginLeft="15dp"
         android:background="@color/line_color"/>
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:text="密码"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/txt_333"/>
+
+        <EditText
+            android:id="@+id/etNewPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/content"
+            android:textColor="@color/txt_333"
+            android:textColorHint="@color/hint_color"
+            android:hint="请输入密码"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:layout_toRightOf="@id/tv2"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:layout_marginLeft="15dp"
+        android:background="@color/line_color"/>
+
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
@@ -121,7 +159,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/content"
         android:gravity="center"
-        android:text="下一步"
+        android:text="确认"
         android:background="@drawable/btn_garey"/>
 
 </LinearLayout>

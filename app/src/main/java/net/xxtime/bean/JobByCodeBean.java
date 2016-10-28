@@ -202,6 +202,7 @@ public class JobByCodeBean implements Serializable {
         public int isCheng=0;
         public String missDates;
         public List<CommentBean> commentList;
+        public String imgs;
 
         public String getBuslogo() {
             return buslogo;

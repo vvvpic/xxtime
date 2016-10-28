@@ -178,6 +178,60 @@ public abstract class BaseFragment extends Fragment implements InitListener,OnCl
         });
     }
 
+    public void post(final String requestname, RequestParams params ){
+        homeActivity.httpClient.post(getActivity(), homeActivity.NEW_BASE_URL+requestname , params,  new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onStart() {
+                homeActivity.show();
+            }
+            @Override
+            public void onSuccess(int statusCode , Header[] headers, byte[] responseBody) {
+                Log.e(requestname, new String(responseBody));
+                Log.e("statusCode==>", statusCode+"");
+                Receive(requestname, new String(responseBody));
+                homeActivity.disMiss();
+                for (Header h : headers) {
+                    Log.e(h.getName(), h.getValue());
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("statusCode==>", statusCode+"");
+                if(statusCode==0){
+                    ToastUtils.show(getActivity(), "请检查你的网络状况");
+                }
+                homeActivity. disMiss();
+            }
+
+        });
+
+    }
+
+    public  void pullpost(final String requestname, RequestParams params){
+        homeActivity.httpClient.post(getActivity(), homeActivity.NEW_BASE_URL+requestname, params,  new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.e("responseBody==>",new String(responseBody));
+                Receive(requestname, new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("onFailure==>",statusCode+"");
+                if(statusCode==0){
+                    ToastUtils.show(getActivity(), "请检查你的网络状况");
+                }
+            }
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+            }
+        });
+    }
 
 
     @Override

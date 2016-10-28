@@ -152,6 +152,8 @@ public class ApplyActivity extends BaseActivity implements AdapterView.OnItemCli
 
         if (!StringUtils.isEmpty(jobstarttime)&&!StringUtils.isEmpty(jobendtime)) {
             tvTime.setText(jobstarttime.substring(0,5)+"~"+jobendtime.substring(0,5));
+        }else {
+            tvTime.setText("00:00~00:00");
         }
 
         listtimes=new ArrayList<>();

@@ -3,10 +3,7 @@ package net.xxtime.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +17,7 @@ import net.xxtime.R;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CommonBean;
 import net.xxtime.bean.SendMsgCodeBean;
-import net.xxtime.bean.UserBean;
+import net.xxtime.bean.XxtimeBean;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.SharedUtils;
 
@@ -30,39 +27,40 @@ public class ForgetActivity extends BaseActivity {
 
     private Message msg;
 
-    private SendMsgCodeBean sendMsgCodeBean;
+    private XxtimeBean xxtimeBean;
 
     private int second=60;
 
     private CommonBean commonBean;
+
+    private EditText etNewPwd;
 
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    sendMsgCodeBean=JSONObject.parseObject(msg.obj.toString(),SendMsgCodeBean.class);
-                    if (sendMsgCodeBean!=null){
-                        if (sendMsgCodeBean.getBflag().equals("1")){
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null){
+                        if (xxtimeBean.getStatus().equals("1")){
                             btnSend.setEnabled(false);
                             btnNext.setEnabled(true);
                             btnNext.setBackgroundResource(R.drawable.btn_blue_seletor);
                             sendEmptyMessage(3);
                         }
-                        ToastUtils.show(ForgetActivity.this,sendMsgCodeBean.getMsg());
+                        ToastUtils.show(ForgetActivity.this,xxtimeBean.getMsg());
                     }
 
                     break;
                 case 2:
-                    commonBean= JSONObject.parseObject(msg.obj.toString(),CommonBean.class);
-                    if (commonBean!=null&&commonBean.getBflag().equals("1")){
-                        params=new RequestParams();
-                        params.put("reqCode","sendMsgCode");
-                        params.put("telephone",etPhone.getText().toString());
-                        params.put("type",2);
-                        pullpost("studentUser",params,"sendMsgCode");
-                    }else{
-                        ToastUtils.show(ForgetActivity.this,commonBean.getMsg());
+                    xxtimeBean=JSONObject.parseObject(msg.obj.toString(),XxtimeBean.class);
+                    if (xxtimeBean!=null){
+                        if (xxtimeBean.getStatus().equals("1")){
+                            SharedUtils.setToken(ForgetActivity.this,"");
+                            SharedUtils.setUserNamePwd(ForgetActivity.this,etPhone.getText().toString(),etNewPwd.getText().toString(),"");
+                            finish();
+                        }
+                        ToastUtils.show(ForgetActivity.this,xxtimeBean.getMsg());
                     }
                     break;
 
@@ -93,6 +91,7 @@ public class ForgetActivity extends BaseActivity {
         etPhone =(EditText)findViewById(R.id.etPhone) ;
         etCode =(EditText)findViewById(R.id.etCode) ;
         btnSend =(Button) findViewById(R.id.btnSend) ;
+        etNewPwd =(EditText)findViewById(R.id.etNewPwd) ;
         btnNext=(Button) findViewById(R.id.btnNext) ;
     }
 
@@ -133,10 +132,14 @@ public class ForgetActivity extends BaseActivity {
                     return;
                 }
 
-                params=new RequestParams();
+              /*  params=new RequestParams();
                 params.put("reqCode","checkStudentUserByPhone");
                 params.put("telephone",etPhone.getText().toString());
-                pullpost("studentUser",params,"checkStudentUserByPhone");
+                pullpost("studentUser",params,"checkStudentUserByPhone");*/
+                params=new RequestParams();
+                params.put("username",etPhone.getText().toString());
+                params.put("type","password");
+                post("code!save",params);
 
                 break;
             case R.id.btnNext:
@@ -156,19 +159,21 @@ public class ForgetActivity extends BaseActivity {
                     return;
                 }
 
-                if (sendMsgCodeBean!=null&&sendMsgCodeBean.getDefaultAList()!=null&&sendMsgCodeBean.getDefaultAList().size()>0){
-                    if (!sendMsgCodeBean.getDefaultAList().get(0).getRandomCode().equals(etCode.getText().toString())){
-                        ToastUtils.show(this,"请输入正确验证码");
-                        return;
-                    }
-                }else {
-                    ToastUtils.show(this,"请输入正确验证码");
+                if (StringUtils.isEmpty(etNewPwd.getText().toString())){
+                    ToastUtils.show(this,"请输入密码");
                     return;
                 }
 
-                intent=new Intent(this,ResetActivity.class);
+             /*   intent=new Intent(this,ResetActivity.class);
                 intent.putExtra("telephone",etPhone.getText().toString());
-                Jump(intent);
+                Jump(intent);*/
+
+                params=new RequestParams();
+                params.put("user.username",etPhone.getText().toString());
+                params.put("user.password",etNewPwd.getText().toString());
+                params.put("code",etCode.getText().toString());
+                Log.e("param==>",params.toString());
+                post("user!find",params);
 
                 break;
         }
@@ -203,9 +208,9 @@ public class ForgetActivity extends BaseActivity {
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("sendMsgCode")){
+        if (requestname.equals("code!save")){
             msg.what=1;
-        }else if (requestname.equals("checkStudentUserByPhone")){
+        }else if (requestname.equals("user!find")){
             msg.what=2;
         }
         msg.obj=response;

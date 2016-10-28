@@ -20,9 +20,13 @@ import net.xxtime.R;
 import net.xxtime.adapter.LanguageAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.ForeignBean;
+import net.xxtime.utils.SharedUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * 选择语言
+ */
 public class SelectLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
     private ListView lvLanguage;
@@ -39,8 +43,8 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
             switch (msg.what){
                 case 1:
                     foreignBean= JSONObject.parseObject(msg.obj.toString(),ForeignBean.class);
-                    if (foreignBean!=null&&foreignBean.getBflag().equals("1")){
-                        languageAdapter=new LanguageAdapter(foreignBean.getDefaultAList(),SelectLanguageActivity.this);
+                    if (foreignBean!=null&&foreignBean.getStatus().equals("1")){
+                        languageAdapter=new LanguageAdapter(foreignBean.getForeigns(),SelectLanguageActivity.this);
                         lvLanguage.setAdapter(languageAdapter);
                     }
                     break;
@@ -62,8 +66,8 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
     public void initDatas() {
         setTitle("选择外语");
         params=new RequestParams();
-        params.put("reqCode","getForeign");
-        post("studentUser",params,"getForeign");
+        params.put("accessToken", SharedUtils.getToken(this));
+        post("foreign!list",params);
 
     }
 
@@ -90,7 +94,7 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("getForeign")){
+        if (requestname.equals("foreign!list")){
             msg.what=1;
         }
         msg.obj=response;
@@ -99,13 +103,13 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (foreignBean.getDefaultAList().size()==position){
+        if (foreignBean.getForeigns().size()==position){
             setEdit();
             return;
         }
         intent=new Intent();
-        intent.putExtra("foreignname",foreignBean.getDefaultAList().get(position).getForeignname());
-        intent.putExtra("foreignid",foreignBean.getDefaultAList().get(position).getForeignid()+"");
+        intent.putExtra("foreignname",foreignBean.getForeigns().get(position).getName());
+        intent.putExtra("foreignid",foreignBean.getForeigns().get(position).getId()+"");
         setResult(SelecctLanguge,intent);
         finish();
     }

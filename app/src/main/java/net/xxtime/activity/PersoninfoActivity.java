@@ -26,6 +26,9 @@ import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.CheckStudentBean;
 import net.xxtime.bean.StudentUserInfoBean;
 import net.xxtime.bean.StudentUserPictureBean;
+import net.xxtime.bean.StudentViewByUserIdBean;
+import net.xxtime.bean.UserPictureBean;
+import net.xxtime.bean.UserViewBean;
 import net.xxtime.listener.DeleteListener;
 import net.xxtime.utils.Contact;
 import net.xxtime.utils.OptionsUtils;
@@ -36,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 完善用户资料
+ * 用户资料信息
  */
 public class PersoninfoActivity extends BaseActivity implements AdapterView.OnItemClickListener,DeleteListener{
 
@@ -57,41 +60,68 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
     private TextView tvRight;
     private TextView tvSex, tvStudent, tvLanguageType;
     private String title;
-    private StudentUserInfoBean studentUserInfoBean;
     private Message msg;
 
     private LinearLayout llSchool;
     private TextView tvEnrollmentyear , tvSchool, tvDegree;
     private EditText etSchoolType, etMajorname;
 
-
-    private StudentUserPictureBean studentUserPictureBean;
+    private StudentViewByUserIdBean studentViewByUserIdBean;
+    private UserPictureBean userPictureBean;
 
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    studentUserInfoBean= JSONObject.parseObject(msg.obj.toString(),StudentUserInfoBean.class);
-                    if (studentUserInfoBean!=null&&studentUserInfoBean.getBflag().equals("1")){
-                        setIserInfo();
+                    studentViewByUserIdBean=JSONObject.parseObject(msg.obj.toString(),StudentViewByUserIdBean.class);
+                    if (studentViewByUserIdBean!=null&&studentViewByUserIdBean.getStatus().equals("1")){
+                        setSchool();
                     }
                     break;
                 case 2:
-                    studentUserPictureBean=JSONObject.parseObject(msg.obj.toString(),StudentUserPictureBean.class);
-                    if (studentUserPictureBean!=null&&studentUserPictureBean.getBflag().equals("1")){
+                    userPictureBean=JSONObject.parseObject(msg.obj.toString(),UserPictureBean.class);
+                    if (userPictureBean!=null&&userPictureBean.getStatus().equals("1")){
                         setPhotoRAdapter();
+                    }
+                    break;
+                case 3:
+                    Contact.userViewBean= JSONObject.parseObject(msg.obj.toString(),UserViewBean.class);
+                    if ( Contact.userViewBean!=null&& Contact.userViewBean.getStatus().equals("1")){
+                        setIserInfo();
                     }
                     break;
             }
         }
     };
 
+    private void setSchool(){
+    if (!StringUtils.isEmpty(studentViewByUserIdBean.getStudent().getCollege().getName())){
+            tvSchool.setText(studentViewByUserIdBean.getStudent().getCollege().getName());
+        }
+
+        if (!StringUtils.isEmpty(studentViewByUserIdBean.getStudent().getFaculty())){
+            etSchoolType.setText(studentViewByUserIdBean.getStudent().getFaculty());
+        }
+
+        if (!StringUtils.isEmpty(studentViewByUserIdBean.getStudent().getYear())){
+            tvEnrollmentyear.setText(studentViewByUserIdBean.getStudent().getYear());
+        }
+
+        if (!StringUtils.isEmpty(studentViewByUserIdBean.getStudent().getDegree().getName())){
+            tvDegree .setText(studentViewByUserIdBean.getStudent().getDegree().getName());
+        }
+
+        if (!StringUtils.isEmpty(studentViewByUserIdBean.getStudent().getDiscipline())){
+            etMajorname.setText(studentViewByUserIdBean.getStudent().getDiscipline());
+        }
+    }
+
     private void setPhotoRAdapter(){
         listphotos=new ArrayList<>();
-        if (studentUserPictureBean.getDefaultAList()!=null){
-            for (int i=0;i<studentUserPictureBean.getDefaultAList().size();i++){
-                listphotos.add(studentUserPictureBean.getDefaultAList().get(i).getPicture());
+        if (userPictureBean.getUserPictures()!=null){
+            for (int i=0;i<userPictureBean.getUserPictures().size();i++){
+                listphotos.add(userPictureBean.getUserPictures().get(i).getUrl());
             }
         }
         photoRAdapter=new PhotoRAdapter(listphotos,this,this,1);
@@ -99,109 +129,73 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     private void setIserInfo(){
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getNickname())){
-            etNiceName.setText(studentUserInfoBean.getDefaultAList().get(0).getNickname());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getNickname())){
+            etNiceName.setText(Contact.userViewBean.getUser().getNickname());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getName())){
-            etName.setText(studentUserInfoBean.getDefaultAList().get(0).getName());
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getUsername())){
+            etName.setText(Contact.userViewBean.getUser().getUsername());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getName())){
-            etName.setText(studentUserInfoBean.getDefaultAList().get(0).getName());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getGender())){
-            if (studentUserInfoBean.getDefaultAList().get(0).getGender().equals("1")) {
-                tvSex.setText("男");
-            }else {
-                tvSex.setText("女");
-            }
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getBirthday())){
-            tvBrith.setText(studentUserInfoBean.getDefaultAList().get(0).getBirthday());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getHeight())){
-            etHeight.setText(studentUserInfoBean.getDefaultAList().get(0).getHeight());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getWeight())){
-            etWeight.setText(studentUserInfoBean.getDefaultAList().get(0).getWeight());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEmail())){
-            etEmail.setText(studentUserInfoBean.getDefaultAList().get(0).getEmail());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getIsstudent())){
-            if (studentUserInfoBean.getDefaultAList().get(0).getIsstudent().equals("1")) {
-                tvStudent.setText("是");
-                llSchool.setVisibility(View.VISIBLE);
-            }else {
-                tvStudent.setText("否");
-                llSchool.setVisibility(View.GONE);
-            }
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEmail())){
-            etEmail.setText(studentUserInfoBean.getDefaultAList().get(0).getEmail());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSchoolname())){
-            tvSchool.setText(studentUserInfoBean.getDefaultAList().get(0).getSchoolname());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getDegreename())){
-            tvDegree.setText(studentUserInfoBean.getDefaultAList().get(0).getDegreename());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getEnrollmentyear())){
-            tvEnrollmentyear.setText(studentUserInfoBean.getDefaultAList().get(0).getEnrollmentyear());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getDepartmentname())){
-            etSchoolType.setText(studentUserInfoBean.getDefaultAList().get(0).getDepartmentname());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getMajorname())){
-            etMajorname.setText(studentUserInfoBean.getDefaultAList().get(0).getMajorname());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getProvincename())
-                ||!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getCityname())||
-                !StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getAreaname())){
-            tvCity.setText(studentUserInfoBean.getDefaultAList().get(0).getProvincename()+studentUserInfoBean.getDefaultAList().get(0).getCityname()
-            +studentUserInfoBean.getDefaultAList().get(0).getAreaname());
-        }
-
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignname())){
-            tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getForeignname());
+        if (Contact.userViewBean.getUser().getMale()==1) {
+            tvSex.setText("男");
         }else {
-            if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign())){
-                tvLanguage.setText(studentUserInfoBean.getDefaultAList().get(0).getOtherforeign());
-            }else {
-                tvLanguage.setText("");
-            }
+            tvSex.setText("女");
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getForeignlevel())){
-            if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("1")) {
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getBirthday())){
+            tvBrith.setText(Contact.userViewBean.getUser().getBirthday());
+        }
+
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getHight())){
+            etHeight.setText(Contact.userViewBean.getUser().getHight());
+        }
+
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getWeight())){
+            etWeight.setText(Contact.userViewBean.getUser().getWeight());
+        }
+
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getEmail())){
+            etEmail.setText(Contact.userViewBean.getUser().getEmail());
+        }
+
+        if (Contact.userViewBean.getUser().getIsStudent()==1) {
+            tvStudent.setText("是");
+            llSchool.setVisibility(View.VISIBLE);
+        }else {
+            tvStudent.setText("否");
+            llSchool.setVisibility(View.GONE);
+        }
+
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getProvince().getName())
+                ||!StringUtils.isEmpty(Contact.userViewBean.getUser().getDistrict().getName())||
+                !StringUtils.isEmpty(Contact.userViewBean.getUser().getCity().getName())){
+            tvCity.setText(Contact.userViewBean.getUser().getProvince().getName()+Contact.userViewBean.getUser().getCity().getName()
+                    +Contact.userViewBean.getUser().getDistrict().getName());
+        }
+
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getForeign().getName())){
+            tvLanguage.setText(Contact.userViewBean.getUser().getForeign().getName());
+        }else {
+            tvLanguage.setText("");
+        }
+
+        if (Contact.userViewBean.getUser().getForeignLevel()>0){
+            if (Contact.userViewBean.getUser().getForeignLevel()==1) {
                 tvLanguageType.setText("日常问候");
-            }else if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("2")) {
+            }else if (Contact.userViewBean.getUser().getForeignLevel()==2) {
                 tvLanguageType.setText("工作交流");
-            }else if (studentUserInfoBean.getDefaultAList().get(0).getForeignlevel().equals("3")) {
+            }else if (Contact.userViewBean.getUser().getForeignLevel()==3) {
                 tvLanguageType.setText("学术交流");
             }
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids())){
-            etBrift.setText(Contact.getLables(studentUserInfoBean.getDefaultAList().get(0).getSelf_appraisalids()));
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getIntro())){
+            etBrift.setText(Contact.userViewBean.getUser().getIntro());
         }
 
-        if (!StringUtils.isEmpty(studentUserInfoBean.getDefaultAList().get(0).getLogo())){
-           ImageLoader.getInstance().displayImage(studentUserInfoBean.getDefaultAList().get(0).getLogo(),ivAvatar,OptionsUtils.getSimpleOptions(80));
+        if (!StringUtils.isEmpty(Contact.userViewBean.getUser().getPhoto())){
+            ImageLoader.getInstance().displayImage(Contact.userViewBean.getUser().getPhoto(),ivAvatar,OptionsUtils.getSimpleOptions(80));
         }
     }
 
@@ -209,10 +203,12 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("getStudentUserInfo")){
+        if (requestname.equals("student!viewByUserId")){
             msg.what=1;
-        }else if (requestname.equals("getStudentUserPicture")){
+        }else if (requestname.equals("user-picture!list")){
             msg.what=2;
+        }else  if (requestname.equals("user!view")){
+            msg.what=3;
         }
         msg.obj=response;
         handler.sendMessage(msg);
@@ -253,113 +249,8 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
 
     }
 
-    private String nickname;
-    private String name;
-    private String gender;
-    private String isstudent;
-    private String city;
-    private String birthday;
-    private String height;
-    private String weight;
-    private String email;
-    private String foreignname;
-    private String foreignlevel;
-    private String self_appraisalids;
-    private String avatar;
-
     @Override
     public void initDatas() {
-       /* title=getIntent().getStringExtra("title");
-        nickname=getIntent().getStringExtra("nickname");
-        name=getIntent().getStringExtra("name");
-        gender=getIntent().getStringExtra("gender");
-        isstudent=getIntent().getStringExtra("isstudent");
-        city=getIntent().getStringExtra("city");
-        birthday=getIntent().getStringExtra("birthday");
-        height=getIntent().getStringExtra("height");
-        weight=getIntent().getStringExtra("weight");
-        email=getIntent().getStringExtra("email");
-        foreignname=getIntent().getStringExtra("foreignname");
-        foreignlevel=getIntent().getStringExtra("foreignlevel");
-        self_appraisalids=getIntent().getStringExtra("self_appraisalids");
-        avatar=getIntent().getStringExtra("avatar");
-        listphotos=getIntent().getStringArrayListExtra("photos");
-
-        if (!StringUtils.isEmpty(title)){
-            setTitle(title);
-            if (title.equals("简历预览")){
-
-            }else {
-                tvRight.setVisibility(View.VISIBLE);
-                tvRight.setText("完成");
-            }
-        }
-
-
-
-        if (!StringUtils.isEmpty(nickname)){
-            etNiceName.setText(nickname);
-        }
-
-        if (!StringUtils.isEmpty(name)){
-            etName.setText(name);
-        }
-
-        if (!StringUtils.isEmpty(gender)){
-            tvSex.setText(gender+"");
-        }
-
-        if (!StringUtils.isEmpty(isstudent)){
-            tvStudent.setText(isstudent);
-        }
-
-        if (!StringUtils.isEmpty(city)){
-            tvCity.setText(city);
-        }
-
-        if (!StringUtils.isEmpty(birthday)){
-            tvBrith.setText(birthday);
-        }
-
-        if (!StringUtils.isEmpty(height)){
-            etHeight.setText(height);
-        }
-
-        if (!StringUtils.isEmpty(email)){
-            etEmail.setText(email);
-        }
-
-        if (!StringUtils.isEmpty(weight)){
-            etWeight.setText(weight);
-        }
-
-        if (!StringUtils.isEmpty(foreignname)){
-            tvLanguage.setText(foreignname);
-        }
-
-        if (!StringUtils.isEmpty(foreignlevel)){
-            tvLanguageType.setText(foreignlevel);
-        }
-
-        if (!StringUtils.isEmpty(self_appraisalids)){
-            etBrift.setText(self_appraisalids);
-        }
-
-        if (!StringUtils.isEmpty(avatar)){
-            ImageLoader.getInstance().displayImage("file://"+avatar,ivAvatar, OptionsUtils.getSimpleOptions(80));
-        }
-
-        if (listphotos!=null) {
-            photoRAdapter = new PhotoRAdapter(listphotos, this, this, 1);
-            gvPhotos.setAdapter(photoRAdapter);
-        }*/
-
-        params=new RequestParams();
-        params.put("reqCode","getStudentUserInfo");
-        params.put("userid", SharedUtils.getUserId(this));
-        Log.e("param==>",params.toString());
-        post("studentUser",params,"getStudentUserInfo");
-
 
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("编辑");
@@ -380,21 +271,18 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     public void ResumeDatas() {
-        if (start) {
-            params = new RequestParams();
-            params.put("reqCode", "getStudentUserInfo");
-            params.put("userid", SharedUtils.getUserId(this));
-            Log.e("param==>", params.toString());
-            pullpost("studentUser", params, "getStudentUserInfo");
-        }
-
         params=new RequestParams();
-        params.put("reqCode","getStudentUserPicture");
-        params.put("userid", SharedUtils.getUserId(this));
-        Log.e("param==>",params.toString());
-        pullpost("studentUser",params,"getStudentUserPicture");
-
-        start=true;
+        params.put("accessToken",SharedUtils.getToken(this));
+        pullpost("student!viewByUserId",params);
+        params.put("query.userId",SharedUtils.getUserId(this));
+        pullpost("user-picture!list",params);
+        if (Contact.userViewBean!=null) {
+            setIserInfo();
+        }
+        params=new RequestParams();
+        params.put("accessToken",SharedUtils.getToken(this));
+        params.put("id",SharedUtils.getUserId(this));
+        pullpost("user!view",params);
     }
 
     @Override
@@ -402,8 +290,8 @@ public class PersoninfoActivity extends BaseActivity implements AdapterView.OnIt
         switch (v.getId()){
             case R.id.tvRight:
                 intent=new Intent(this,PerfectInfoActivity.class);
-                intent.putExtra("studentUser",studentUserInfoBean);
-                intent.putExtra("photos", studentUserPictureBean);
+                intent.putExtra("studentschool",studentViewByUserIdBean);
+                intent.putExtra("photos",userPictureBean );
                 Jump(intent);
 
                 break;

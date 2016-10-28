@@ -15,6 +15,7 @@ import net.xxtime.adapter.DegreeAdapter;
 import net.xxtime.adapter.SchoolAdapter;
 import net.xxtime.base.activity.BaseActivity;
 import net.xxtime.bean.DegreeBean;
+import net.xxtime.utils.SharedUtils;
 
 /**
  * 选择学历
@@ -34,8 +35,8 @@ public class SelectDegreeActivity extends BaseActivity implements AdapterView.On
             switch (msg.what){
                 case 1:
                     degreeBean= JSONObject.parseObject(msg.obj.toString(),DegreeBean.class);
-                    if (degreeBean!=null&&degreeBean.getBflag().equals("1")){
-                        degreeAdapter=new DegreeAdapter(degreeBean.getDefaultAList(),SelectDegreeActivity.this);
+                    if (degreeBean!=null&&degreeBean.getStatus().equals("1")){
+                        degreeAdapter=new DegreeAdapter(degreeBean.getDegrees(),SelectDegreeActivity.this);
                         lvDegrees.setAdapter(degreeAdapter);
                     }
                     break;
@@ -58,8 +59,8 @@ public class SelectDegreeActivity extends BaseActivity implements AdapterView.On
     public void initDatas() {
         setTitle("选择学历");
         params=new RequestParams();
-        params.put("reqCode","getDegree");
-        pullpost("studentUser",params,"getDegree");
+        params.put("accessToken", SharedUtils.getToken(this));
+        pullpost("degree!list",params);
     }
 
 
@@ -71,8 +72,8 @@ public class SelectDegreeActivity extends BaseActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         intent=new Intent();
-        intent.putExtra("degreename",degreeBean.getDefaultAList().get(position).getDegreename());
-        intent.putExtra("degreeid",degreeBean.getDefaultAList().get(position).getDegreeid());
+        intent.putExtra("degreename",degreeBean.getDegrees().get(position).getName());
+        intent.putExtra("degreeid",degreeBean.getDegrees().get(position).getId());
         setResult(DEGREE,intent);
         finish();
     }
@@ -97,7 +98,7 @@ public class SelectDegreeActivity extends BaseActivity implements AdapterView.On
     @Override
     public void OnReceive(String requestname, String response) {
         msg=new Message();
-        if (requestname.equals("getDegree")){
+        if (requestname.equals("degree!list")){
             msg.what=1;
         }
         msg.obj=response;
